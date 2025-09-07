@@ -1,184 +1,146 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Register - Amar Club</title>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" />
-  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
-  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Roboto', sans-serif; }
-    body {
-      background: linear-gradient(to right, #00c6ff, #0072ff);
-      padding: 20px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-    }
-    .register-box {
-      width: 100%;
-      max-width: 420px;
-      background: #fff;
-      padding: 30px;
-      border-radius: 20px;
-      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-      position: relative;
-    }
-    .logo {
-      display: block;
-      margin: 0 auto 20px;
-      width: 120px;
-    }
-    h2 {
-      text-align: center;
-      margin-bottom: 5px;
-      color: #222;
-    }
-    .sub-text {
-      text-align: center;
-      margin-bottom: 25px;
-      color: #666;
-    }
-    .input-group { margin-bottom: 20px; }
-    .input-group label {
-      display: flex;
-      align-items: center;
-      font-weight: 600;
-      margin-bottom: 6px;
-      color: #333;
-    }
-    .input-group label .material-icons { margin-right: 6px; color: #0072ff; }
-    .input-group input {
-      width: 100%;
-      padding: 12px;
-      border-radius: 10px;
-      border: 1px solid #ccc;
-      font-size: 15px;
-    }
-    .input-inline {
-      display: flex;
-      gap: 10px;
-    }
-    .input-inline input { flex: 1; }
-    .input-inline button {
-      padding: 0 16px;
-      border: none;
-      border-radius: 10px;
-      background: #0072ff;
-      color: #fff;
-      font-weight: 600;
-      cursor: pointer;
-      transition: 0.3s;
-    }
-    .input-inline button:hover { background: #005bb5; }
-    .checkbox {
-      display: flex;
-      align-items: center;
-      font-size: 14px;
-      margin-bottom: 15px;
-    }
-    .checkbox input { margin-right: 10px; }
-    .checkbox a {
-      color: #e53935;
-      text-decoration: none;
-    }
-    .btn-register {
-      width: 100%;
-      background: linear-gradient(to right, #00c853, #00bfa5);
-      color: white;
-      padding: 14px;
-      border-radius: 30px;
-      font-size: 16px;
-      font-weight: bold;
-      border: none;
-      cursor: pointer;
-      transition: 0.3s;
-    }
-    .btn-register:hover { opacity: 0.9; }
-    .login-link {
-      text-align: center;
-      margin-top: 20px;
-      font-size: 14px;
-    }
-    .login-link a {
-      color: #0072ff;
-      font-weight: bold;
-      text-decoration: none;
-    }
-    /* OTP Popup Styling */
-    .otp-popup {
-      position: fixed;
-      top: 20px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: #0072ff;
-      color: #fff;
-      padding: 15px 25px;
-      border-radius: 12px;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-      font-weight: bold;
-      display: none;
-      z-index: 9999;
-      animation: slideDown 0.5s;
-    }
-    @keyframes slideDown {
-      0% { transform: translate(-50%, -100%); opacity: 0; }
-      100% { transform: translate(-50%, 0); opacity: 1; }
-    }
-  </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Register - Amar Club</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" />
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Roboto', sans-serif; }
+body {
+  background: linear-gradient(135deg, #00c6ff, #0072ff);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 20px;
+}
+.register-box {
+  width: 100%;
+  max-width: 430px;
+  background: #fff;
+  padding: 35px 30px;
+  border-radius: 25px;
+  box-shadow: 0 15px 35px rgba(0,0,0,0.25);
+  position: relative;
+}
+.logo {
+  display: block;
+  margin: 0 auto 20px;
+  width: 120px;
+}
+h2 {
+  text-align: center;
+  margin-bottom: 5px;
+  color: #222;
+  font-size: 28px;
+}
+.sub-text {
+  text-align: center;
+  margin-bottom: 25px;
+  color: #555;
+}
+.input-group { margin-bottom: 20px; }
+.input-group label {
+  display: flex;
+  align-items: center;
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: #333;
+}
+.input-group label .material-icons { margin-right: 8px; color: #0072ff; }
+.input-group input {
+  width: 100%;
+  padding: 14px;
+  border-radius: 12px;
+  border: 1px solid #ccc;
+  font-size: 15px;
+  transition: 0.3s;
+}
+.input-group input:focus { border-color: #0072ff; outline: none; box-shadow: 0 0 8px rgba(0,114,255,0.2); }
+.checkbox {
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+  margin-bottom: 20px;
+}
+.checkbox input { margin-right: 10px; width: 16px; height: 16px; }
+.checkbox a { color: #e53935; text-decoration: none; }
+.btn-register {
+  width: 100%;
+  background: linear-gradient(to right, #00c853, #00bfa5);
+  color: white;
+  padding: 16px;
+  border-radius: 30px;
+  font-size: 17px;
+  font-weight: bold;
+  border: none;
+  cursor: pointer;
+  transition: 0.3s;
+}
+.btn-register:hover { opacity: 0.9; }
+.login-link {
+  text-align: center;
+  margin-top: 22px;
+  font-size: 14px;
+  color: #555;
+}
+.login-link a {
+  color: #0072ff;
+  font-weight: bold;
+  text-decoration: none;
+  transition: 0.3s;
+}
+.login-link a:hover { text-decoration: underline; }
+@media(max-width:480px){
+  .register-box { padding: 25px 20px; }
+  h2 { font-size: 24px; }
+}
+</style>
 </head>
 <body>
-  <!-- OTP Popup -->
-  <div id="otpPopup" class="otp-popup">Your OTP: 123456</div>
 
-  <div class="register-box">
-    <img src="https://i.postimg.cc/PrQzGjDD/20250907-082638.png" alt="Logo" class="logo" />
-    <h2>Register</h2>
-    <p class="sub-text">Please register using your email</p>
-    <form id="registerForm">
-      <div class="input-group">
-        <label><span class="material-icons">email</span>Email</label>
-        <input type="email" id="email" required placeholder="Enter your email" />
-      </div>
+<div class="register-box">
+  <img src="https://i.postimg.cc/PrQzGjDD/20250907-082638.png" alt="Logo" class="logo" />
+  <h2>Register</h2>
+  <p class="sub-text">Please register using your email</p>
 
-      <div class="input-group">
-        <label><span class="material-icons">lock</span>Verification Code</label>
-        <div class="input-inline">
-          <input type="text" id="verificationCode" placeholder="Not required in this version" disabled />
-          <button type="button" id="sendCodeBtn">Send</button>
-        </div>
-      </div>
-
-      <div class="input-group">
-        <label><span class="material-icons">vpn_key</span>Password</label>
-        <input type="password" id="password" required placeholder="Set your password" />
-      </div>
-
-      <div class="input-group">
-        <label><span class="material-icons">vpn_key</span>Confirm Password</label>
-        <input type="password" id="confirmPassword" required placeholder="Confirm your password" />
-      </div>
-
-      <div class="input-group">
-        <label><span class="material-icons">person_add</span>Invite Code</label>
-        <input type="text" id="inviteCode" placeholder="Enter invitation code" />
-      </div>
-
-      <div class="checkbox">
-        <input type="checkbox" id="agree" required />
-        <label for="agree">I agree to the <a href="privacy.html" target="_blank">Privacy Agreement</a></label>
-      </div>
-
-      <button class="btn-register" type="submit">Register</button>
-    </form>
-
-    <div class="login-link">
-      <p>Already have an account? <a href="login.html">Login</a></p>
+  <form id="registerForm">
+    <div class="input-group">
+      <label><span class="material-icons">email</span>Email</label>
+      <input type="email" id="email" required placeholder="Enter your email" />
     </div>
-  </div>  
+
+    <div class="input-group">
+      <label><span class="material-icons">vpn_key</span>Password</label>
+      <input type="password" id="password" required placeholder="Set your password" />
+    </div>
+
+    <div class="input-group">
+      <label><span class="material-icons">vpn_key</span>Confirm Password</label>
+      <input type="password" id="confirmPassword" required placeholder="Confirm your password" />
+    </div>
+
+    <div class="input-group">
+      <label><span class="material-icons">person_add</span>Invite Code</label>
+      <input type="text" id="inviteCode" placeholder="Invitation code will appear here" readonly />
+    </div>
+
+    <div class="checkbox">
+      <input type="checkbox" id="agree" required />
+      <label for="agree">I agree to the <a href="privacy.html" target="_blank">Privacy Agreement</a></label>
+    </div>
+
+    <button class="btn-register" type="submit">Register</button>
+  </form>
+
+  <div class="login-link">
+    <p>Already have an account? <a href="login.html">Login</a></p>
+  </div>
+</div>
 
 <script>
   // Firebase config
@@ -195,42 +157,6 @@
   firebase.initializeApp(firebaseConfig);
   const auth = firebase.auth();
 
-  // Function to show OTP popup
-  function showOTPPopup(code) {
-    const popup = document.getElementById("otpPopup");
-    popup.textContent = `Your OTP: ${code}`;
-    popup.style.display = "block";
-    setTimeout(() => {
-      popup.style.display = "none";
-    }, 3000);
-  }
-
-  // Handle "Send" button click
-  document.getElementById("sendCodeBtn").addEventListener("click", () => {
-    const email = document.getElementById("email").value.trim();
-    if (!email) {
-      alert("Please enter your email first.");
-      return;
-    }
-
-    // Retrieve or create verification code
-    const storedCodes = JSON.parse(localStorage.getItem("verificationCodes")) || {};
-    let otp;
-
-    if (storedCodes[email]) {
-      otp = storedCodes[email];
-      alert("🔁 Code already exists for this email.");
-    } else {
-      otp = Math.floor(100000 + Math.random() * 900000);
-      storedCodes[email] = otp;
-      localStorage.setItem("verificationCodes", JSON.stringify(storedCodes));
-      alert("✅ Verification code generated!");
-    }
-
-    document.getElementById("verificationCode").value = otp;
-    showOTPPopup(otp); // Show popup
-  });
-
   // Handle form submission
   document.getElementById("registerForm").addEventListener("submit", (e) => {
     e.preventDefault();
@@ -238,27 +164,29 @@
     const password = document.getElementById("password").value;
     const confirmPassword = document.getElementById("confirmPassword").value;
 
-    if (password !== confirmPassword) {
+    if(password !== confirmPassword){
       alert("❌ Passwords do not match.");
       return;
     }
 
     auth.createUserWithEmailAndPassword(email, password)
       .then(() => {
-        alert("✅ Successfully Registered! Redirecting to dashboard...");
-        setTimeout(() => { window.location.href = "dashboard.html"; }, 2500);
+        alert("✅ Successfully Registered! Redirecting...");
+        setTimeout(()=>{ window.location.href="dashboard.html"; }, 2000);
       })
-      .catch((error) => {
-        alert("❌ " + error.message);
+      .catch((error)=>{
+        alert("❌ "+error.message);
       });
   });
 
-  // Autofill Invite Code from URL
-  window.addEventListener("DOMContentLoaded", () => {
-    const urlParams = new URLSearchParams(window.location.search);
-    const refCode = urlParams.toString(); // Get full query string like "?QADLr"
-    if (refCode) {
-      document.getElementById("inviteCode").value = refCode.replace("?", "");
+  // Autofill Invite Code from URL (readonly)
+  window.addEventListener("DOMContentLoaded", ()=>{
+    const query = window.location.search; // gets "?QADLr"
+    if(query.startsWith("?") && query.length>1){
+      const refCode = query.slice(1);
+      const inviteInput = document.getElementById("inviteCode");
+      inviteInput.value = refCode;
+      inviteInput.setAttribute("readonly", true);
     }
   });
 </script>
