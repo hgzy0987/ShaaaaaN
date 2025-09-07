@@ -99,10 +99,49 @@ h2 {
   .register-box { padding: 25px 20px; }
   h2 { font-size: 24px; }
 }
+
+/* Professional Install App Popup */
+#installPopup {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0,0,0,0.6);
+  display: none;
+  justify-content: center; align-items: center;
+  z-index: 9999;
+}
+#installPopup .popup-box {
+  background: #fff;
+  padding: 25px;
+  border-radius: 18px;
+  max-width: 360px;
+  text-align: center;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+  animation: fadeIn 0.4s ease;
+}
+#installPopup h3 { margin-bottom: 12px; color: #222; font-size: 20px; }
+#installPopup p { font-size: 14px; color: #555; margin-bottom: 20px; }
+#installPopup button {
+  background: linear-gradient(to right, #0072ff, #00c6ff);
+  border: none;
+  padding: 12px 20px;
+  border-radius: 25px;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  margin: 5px;
+  transition: 0.3s;
+}
+#installPopup button:hover { opacity: 0.9; }
+@keyframes fadeIn {
+  from {opacity: 0; transform: scale(0.9);}
+  to {opacity: 1; transform: scale(1);}
+}
 </style>
 </head>
 <body>
 
+<!-- Register Box -->
 <div class="register-box">
   <img src="https://i.postimg.cc/PrQzGjDD/20250907-082638.png" alt="Logo" class="logo" />
   <h2>Register</h2>
@@ -142,6 +181,16 @@ h2 {
   </div>
 </div>
 
+<!-- Install Popup -->
+<div id="installPopup">
+  <div class="popup-box">
+    <h3>📲 Install Amar Club</h3>
+    <p>Get quick access by installing this app on your device.</p>
+    <button id="installBtn">Install</button>
+    <button onclick="closePopup()">Maybe Later</button>
+  </div>
+</div>
+
 <script>
   // Firebase config
   const firebaseConfig = {
@@ -171,24 +220,48 @@ h2 {
 
     auth.createUserWithEmailAndPassword(email, password)
       .then(() => {
-        alert("✅ Successfully Registered! Redirecting...");
-        setTimeout(()=>{ window.location.href="dashboard.html"; }, 2000);
+        // Direct redirect
+        window.location.href="dashboard.html";
       })
       .catch((error)=>{
         alert("❌ "+error.message);
       });
   });
 
-  // Autofill Invite Code from URL (readonly)
+  // Autofill Invite Code from URL
   window.addEventListener("DOMContentLoaded", ()=>{
-    const query = window.location.search; // gets "?QADLr"
+    const query = window.location.search;
     if(query.startsWith("?") && query.length>1){
       const refCode = query.slice(1);
       const inviteInput = document.getElementById("inviteCode");
       inviteInput.value = refCode;
       inviteInput.setAttribute("readonly", true);
     }
+
+    // Show install popup on entry
+    document.getElementById("installPopup").style.display = "flex";
   });
+
+  // PWA Install Event
+  let deferredPrompt;
+  window.addEventListener("beforeinstallprompt", (e) => {
+    e.preventDefault();
+    deferredPrompt = e;
+    document.getElementById("installPopup").style.display = "flex";
+  });
+
+  document.getElementById("installBtn").addEventListener("click", async () => {
+    if (deferredPrompt) {
+      deferredPrompt.prompt();
+      await deferredPrompt.userChoice;
+      deferredPrompt = null;
+    }
+    closePopup();
+  });
+
+  function closePopup(){
+    document.getElementById("installPopup").style.display = "none";
+  }
 </script>
 </body>
 </html>
