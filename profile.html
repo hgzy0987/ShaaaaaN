@@ -144,13 +144,13 @@
           document.getElementById('planName').textContent = data.planName || 'None';
         });
       } else {
-        location.href = "login.html";
+        location.href = "index.html";
       }
     });
 
     window.logout = function () {
       signOut(auth).then(() => {
-        location.href = "login.html";
+        location.href = "index.html";
       });
     }
   </script></body>
