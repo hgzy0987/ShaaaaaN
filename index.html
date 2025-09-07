@@ -1,159 +1,179 @@
-<!DOCTYPE html><html lang="en">
+<!DOCTYPE html>
+<html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Login - Amar Club</title>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" />
-  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
-  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Roboto', sans-serif; }
-    body {
-      background: linear-gradient(to right, #00c6ff, #0072ff);
-      padding: 20px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-    }
-    .login-box {
-      width: 100%;
-      max-width: 420px;
-      background: #fff;
-      padding: 30px;
-      border-radius: 20px;
-      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-      position: relative;
-    }
-    .logo {
-      display: block;
-      margin: 0 auto 20px;
-      width: 150px;
-    }
-    h2 {
-      text-align: center;
-      margin-bottom: 10px;
-      color: #222;
-      font-size: 28px;
-    }
-    .sub-text {
-      text-align: center;
-      margin-bottom: 25px;
-      color: #666;
-      font-size: 15px;
-    }
-    .input-group { margin-bottom: 20px; }
-    .input-group label {
-      display: flex;
-      align-items: center;
-      font-weight: 600;
-      margin-bottom: 6px;
-      color: #333;
-    }
-    .input-group label .material-icons { margin-right: 6px; color: #0072ff; }
-    .input-group input {
-      width: 100%;
-      padding: 12px;
-      border-radius: 10px;
-      border: 1px solid #ccc;
-      font-size: 15px;
-    }
-    .forgot {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin: 20px 0;
-      font-size: 15px;
-    }
-    .forgot .material-icons {
-      font-size: 20px;
-      margin-right: 6px;
-      color: #e53935;
-    }
-    .forgot a {
-      color: #e53935;
-      text-decoration: none;
-      font-weight: 500;
-    }
-    .btn-login {
-      width: 100%;
-      background: linear-gradient(to right, #00c853, #00bfa5);
-      color: white;
-      padding: 14px;
-      border-radius: 30px;
-      font-size: 16px;
-      font-weight: bold;
-      border: none;
-      cursor: pointer;
-      margin-top: 10px;
-    }
-    .register-link {
-      text-align: center;
-      margin-top: 20px;
-      font-size: 14px;
-    }
-    .register-link a {
-      color: #0072ff;
-      font-weight: bold;
-      text-decoration: none;
-    }
-  </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Login - TRUST BD 24</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" />
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Roboto', sans-serif; }
+  body {
+    background: linear-gradient(to right, #00c6ff, #0072ff);
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+  }
+  .login-box {
+    width: 100%;
+    max-width: 420px;
+    background: #fff;
+    padding: 30px;
+    border-radius: 20px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    position: relative;
+  }
+  .logo {
+    display: block;
+    margin: 0 auto 20px;
+    width: 150px;
+  }
+  h2 {
+    text-align: center;
+    margin-bottom: 10px;
+    color: #222;
+    font-size: 28px;
+  }
+  .sub-text {
+    text-align: center;
+    margin-bottom: 25px;
+    color: #666;
+    font-size: 15px;
+  }
+  .input-group { margin-bottom: 20px; }
+  .input-group label {
+    display: flex;
+    align-items: center;
+    font-weight: 600;
+    margin-bottom: 6px;
+    color: #333;
+  }
+  .input-group label .material-icons { margin-right: 6px; color: #0072ff; }
+  .input-group input {
+    width: 100%;
+    padding: 12px;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    font-size: 15px;
+    transition: 0.3s;
+  }
+  .input-group input.error {
+    border-color: #e53935;
+    box-shadow: 0 0 8px rgba(229,57,53,0.3);
+  }
+  .forgot {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 20px 0;
+    font-size: 15px;
+  }
+  .forgot .material-icons {
+    font-size: 20px;
+    margin-right: 6px;
+    color: #e53935;
+  }
+  .forgot a {
+    color: #e53935;
+    text-decoration: none;
+    font-weight: 500;
+  }
+  .btn-login {
+    width: 100%;
+    background: linear-gradient(to right, #00c853, #00bfa5);
+    color: white;
+    padding: 14px;
+    border-radius: 30px;
+    font-size: 16px;
+    font-weight: bold;
+    border: none;
+    cursor: pointer;
+    margin-top: 10px;
+  }
+  .register-link {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 14px;
+  }
+  .register-link a {
+    color: #0072ff;
+    font-weight: bold;
+    text-decoration: none;
+  }
+</style>
 </head>
 <body>
-  <div class="login-box">
-    <img src="https://i.postimg.cc/PrQzGjDD/20250907-082638.png" alt="Logo" class="logo" />
-    <h2>Login</h2>
-    <p class="sub-text">Welcome back! Please login</p><form id="loginForm">
-  <div class="input-group">
-    <label><span class="material-icons">email</span>Email</label>
-    <input type="email" id="email" required placeholder="Enter your email" />
+
+<div class="login-box">
+  <img src="https://i.postimg.cc/PrQzGjDD/20250907-082638.png" alt="Logo" class="logo" />
+  <h2>Login</h2>
+  <p class="sub-text">Welcome back! Please login</p>
+
+  <form id="loginForm">
+    <div class="input-group">
+      <label><span class="material-icons">email</span>Email</label>
+      <input type="email" id="email" required placeholder="Enter your email" />
+    </div>
+
+    <div class="input-group">
+      <label><span class="material-icons">lock</span>Password</label>
+      <input type="password" id="password" required placeholder="Enter your password" />
+    </div>
+
+    <div class="forgot">
+      <span class="material-icons">lock_reset</span>
+      <a href="forget.html">Forgot Password?</a>
+    </div>
+
+    <button class="btn-login" type="submit">Login</button>
+  </form>
+
+  <div class="register-link">
+    <p>Don't have an account? <a href="signup.html">Register</a></p>
   </div>
-
-  <div class="input-group">
-    <label><span class="material-icons">lock</span>Password</label>
-    <input type="password" id="password" required placeholder="Enter your password" />
-  </div>
-
-  <div class="forgot">
-    <span class="material-icons">lock_reset</span>
-    <a href="forget.html">Forgot Password?</a>
-  </div>
-
-  <button class="btn-login" type="submit">Login</button>
-</form>
-
-<div class="register-link">
-  <p>Don't have an account? <a href="signup.html">Register</a></p>
 </div>
 
-  </div>  <script>
-   const firebaseConfig = {
-  apiKey: "AIzaSyBCyR4yHRj4Yze2-M27tktHtV_f03EoVvs",
-  authDomain: "trust-bd-d889e.firebaseapp.com",
-  projectId: "trust-bd-d889e",
-  storageBucket: "trust-bd-d889e.firebasestorage.app",
-  messagingSenderId: "413112954640",
-  appId: "1:413112954640:web:beb99410c8b9ecd4037f95",
-  measurementId: "G-8JEWWCZ0Y4"
-};
+<script>
+  // Firebase config
+  const firebaseConfig = {
+    apiKey: "AIzaSyBCyR4yHRj4Yze2-M27tktHtV_f03EoVvs",
+    authDomain: "trust-bd-d889e.firebaseapp.com",
+    projectId: "trust-bd-d889e",
+    storageBucket: "trust-bd-d889e.firebasestorage.app",
+    messagingSenderId: "413112954640",
+    appId: "1:413112954640:web:beb99410c8b9ecd4037f95",
+    measurementId: "G-8JEWWCZ0Y4"
+  };
+  firebase.initializeApp(firebaseConfig);
+  const auth = firebase.auth();
 
-    firebase.initializeApp(firebaseConfig);
-    const auth = firebase.auth();
+  const loginForm = document.getElementById("loginForm");
+  const emailInput = document.getElementById("email");
+  const passwordInput = document.getElementById("password");
 
-    document.getElementById("loginForm").addEventListener("submit", (e) => {
-      e.preventDefault();
-      const email = document.getElementById("email").value;
-      const password = document.getElementById("password").value;
+  loginForm.addEventListener("submit", (e) => {
+    e.preventDefault();
 
-      auth.signInWithEmailAndPassword(email, password)
-        .then(() => {
-          alert("Login successful!");
-          window.location.href = "dashboard.html";
-        })
-        .catch((error) => {
-          alert(error.message);
-        });
-    });
-  </script></body>
+    // Remove previous error states
+    emailInput.classList.remove("error");
+    passwordInput.classList.remove("error");
+
+    auth.signInWithEmailAndPassword(emailInput.value, passwordInput.value)
+      .then(() => {
+        // Success: Direct redirect without alert
+        window.location.href = "dashboard.html";
+      })
+      .catch(() => {
+        // Error: highlight fields in red
+        emailInput.classList.add("error");
+        passwordInput.classList.add("error");
+      });
+  });
+</script>
+
+</body>
 </html>
