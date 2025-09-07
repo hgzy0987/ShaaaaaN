@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Trust BD Transaction History</title>
 
+<!-- Tailwind CSS -->
 <script src="https://cdn.tailwindcss.com"></script>
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
 
@@ -30,8 +31,10 @@ const depositsDiv = document.getElementById("deposits");
 const withdrawDiv = document.getElementById("withdraw");
 const tabDeposit = document.getElementById("tab-deposit");
 const tabWithdraw = document.getElementById("tab-withdraw");
+const depositWrapper = document.getElementById("deposit-wrapper");
+const withdrawWrapper = document.getElementById("withdraw-wrapper");
 
-// Function to load deposits
+// Load Deposit History
 async function loadDeposits(uid){
   const depositQ = query(collection(db, "deposits"), where("uid", "==", uid));
   const depositSnap = await getDocs(depositQ);
@@ -41,7 +44,7 @@ async function loadDeposits(uid){
     depositsDiv.innerHTML = `<p class="text-center text-gray-400">No deposits found.</p>`;
   } else {
     const deposits = [];
-    depositSnap.forEach(doc=>deposits.push(doc.data()));
+    depositSnap.forEach(doc => deposits.push(doc.data()));
     deposits.sort((a,b)=>new Date(b.time)-new Date(a.time));
     deposits.forEach(data=>{
       const date = new Date(data.time).toLocaleString();
@@ -65,7 +68,7 @@ async function loadDeposits(uid){
   }
 }
 
-// Function to load withdraws
+// Load Withdraw History
 async function loadWithdraw(uid){
   const withdrawQ = query(collection(db, "withdraws"), where("uid", "==", uid));
   const withdrawSnap = await getDocs(withdrawQ);
@@ -75,7 +78,7 @@ async function loadWithdraw(uid){
     withdrawDiv.innerHTML = `<p class="text-center text-gray-400">No withdraws found.</p>`;
   } else {
     const withdraws = [];
-    withdrawSnap.forEach(doc=>withdraws.push(doc.data()));
+    withdrawSnap.forEach(doc => withdraws.push(doc.data()));
     withdraws.sort((a,b)=>new Date(b.time)-new Date(a.time));
     withdraws.forEach(data=>{
       const date = new Date(data.time).toLocaleString();
@@ -113,20 +116,21 @@ onAuthStateChanged(auth, async (user)=>{
 
 // Tab switching
 tabDeposit.addEventListener("click", ()=>{
-  tabDeposit.classList.add("bg-rose-500", "text-white");
-  tabDeposit.classList.remove("bg-white", "text-rose-500");
-  tabWithdraw.classList.add("bg-white", "text-rose-500");
-  tabWithdraw.classList.remove("bg-rose-500", "text-white");
-  depositsDiv.parentElement.style.display = "block";
-  withdrawDiv.parentElement.style.display = "none";
+  tabDeposit.classList.add("bg-rose-500","text-white");
+  tabDeposit.classList.remove("bg-white","text-rose-500");
+  tabWithdraw.classList.add("bg-white","text-rose-500");
+  tabWithdraw.classList.remove("bg-rose-500","text-white");
+  depositWrapper.classList.remove("hidden");
+  withdrawWrapper.classList.add("hidden");
 });
+
 tabWithdraw.addEventListener("click", ()=>{
-  tabWithdraw.classList.add("bg-rose-500", "text-white");
-  tabWithdraw.classList.remove("bg-white", "text-rose-500");
-  tabDeposit.classList.add("bg-white", "text-rose-500");
-  tabDeposit.classList.remove("bg-rose-500", "text-white");
-  depositsDiv.parentElement.style.display = "none";
-  withdrawDiv.parentElement.style.display = "block";
+  tabWithdraw.classList.add("bg-rose-500","text-white");
+  tabWithdraw.classList.remove("bg-white","text-rose-500");
+  tabDeposit.classList.add("bg-white","text-rose-500");
+  tabDeposit.classList.remove("bg-rose-500","text-white");
+  withdrawWrapper.classList.remove("hidden");
+  depositWrapper.classList.add("hidden");
 });
 </script>
 
@@ -139,6 +143,7 @@ tabWithdraw.addEventListener("click", ()=>{
 </head>
 <body class="bg-rose-50 min-h-screen flex flex-col items-center px-4 py-6">
 
+<!-- Header -->
 <div class="w-full max-w-md bg-white rounded-3xl shadow-xl p-4 mb-4 flex items-center justify-between border border-rose-200">
   <div class="flex items-center space-x-3">
     <img src="https://i.postimg.cc/26mXPJWP/20250622-213805.jpg" alt="Logo" class="w-12 h-12 rounded-full shadow-md"/>
@@ -155,13 +160,13 @@ tabWithdraw.addEventListener("click", ()=>{
   <button id="tab-withdraw" class="flex-1 py-2 bg-white text-rose-500 font-semibold transition-colors duration-200">Withdraw</button>
 </div>
 
-<!-- Deposit Section -->
-<div class="w-full max-w-md mb-6">
+<!-- Deposit Wrapper -->
+<div id="deposit-wrapper" class="w-full max-w-md mb-6">
   <div id="deposits" class="space-y-3 text-sm text-gray-700 max-h-[400px] overflow-y-auto p-2"></div>
 </div>
 
-<!-- Withdraw Section -->
-<div class="w-full max-w-md mb-6" style="display:none;">
+<!-- Withdraw Wrapper -->
+<div id="withdraw-wrapper" class="w-full max-w-md mb-6 hidden">
   <div id="withdraw" class="space-y-3 text-sm text-gray-700 max-h-[400px] overflow-y-auto p-2"></div>
 </div>
 
