@@ -276,7 +276,7 @@
     onAuthStateChanged(auth, (user) => {
       if (user) {
         const uid = user.uid.slice(0, 5);
-        const referralURL = `https://trust-bd.netlify.app/?${uid}`;
+        const referralURL = `trust-bd24.netlify.app/?${uid}`;
         document.getElementById("referralLink").innerText = referralURL;
       } else {
         document.getElementById("referralLink").innerText = "User not logged in";
