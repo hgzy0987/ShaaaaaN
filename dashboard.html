@@ -1,4 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Advanced Entry Popup with Custom Cancel Icon</title>
 
+<!-- Google Fonts & Icons -->
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+
+<style>
+body { font-family: 'Roboto', sans-serif; margin:0; }
+
+/* ================= Overlay ================= */
+.adv-popup-overlay {
+    position: fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    background: rgba(0,0,0,0.75);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 99999;
+    backdrop-filter: blur(4px);
+}
+
+/* ================= Popup Box ================= */
+.adv-popup-box {
+    background: linear-gradient(145deg, #ffffff, #f3f3f3);
+    border-radius: 25px;
+    width: 90%;
+    max-width: 480px;
+    padding: 30px 25px;
+    position: relative;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.4);
+    text-align: center;
+    animation: adv-popup-anim 0.4s ease-in-out;
+}
+
+.adv-popup-box img.popup-img {
+    width: 100%;
+    max-height: 260px;
+    object-fit: cover;
+    border-radius: 20px;
+    margin-bottom: 20px;
+    border: 2px solid #3b82f6;
+}
+
+.adv-popup-text {
+    font-size: 17px;
+    font-weight: 500;
+    color: #111;
+    margin-bottom: 25px;
+    line-height: 1.5;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.1);
+}
+
+.adv-popup-button {
+    background: linear-gradient(90deg,#3b82f6,#2563eb);
+    color: #fff;
+    border: none;
+    padding: 14px 30px;
+    border-radius: 12px;
+    font-size: 16px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 500;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+.adv-popup-button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+}
+
+/* ================= Close/Cancel Icon ================= */
+.adv-popup-close {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    width: 28px;
+    height: 28px;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+.adv-popup-close:hover { transform: rotate(20deg); }
+
+@keyframes adv-popup-anim {
+    from {transform: scale(0.7); opacity: 0;}
+    to {transform: scale(1); opacity: 1;}
+}
+
+@media (max-width: 420px) {
+    .adv-popup-text {font-size: 15px;}
+    .adv-popup-button {font-size: 15px; padding: 12px 22px;}
+}
+</style>
+</head>
+<body>
+
+<!-- ================= Popup HTML ================= -->
+<div class="adv-popup-overlay" id="advPopupOverlay">
+    <div class="adv-popup-box">
+        <img src="https://i.postimg.cc/4xYfF4gf/cancel.png" alt="Cancel" class="adv-popup-close" id="advPopupClose">
+        <img src="" alt="Popup Image" class="popup-img" id="advPopupImage">
+        <div class="adv-popup-text" id="advPopupText">Loading Premium Content...</div>
+        <a href="#" target="_blank" class="adv-popup-button" id="advPopupButton">
+            <i class="fas fa-gem"></i> Click Here
+        </a>
+    </div>
+</div>
+
+<!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+
+<script>
+// ================= Firebase Config =================
+const firebaseConfig = {
+  apiKey: "AIzaSyCwiUR6oJRjTBFa2ajTdb-5Owc_I6Dw2S0",
+  authDomain: "fir-bot-bd5e8.firebaseapp.com",
+  databaseURL: "https://fir-bot-bd5e8-default-rtdb.firebaseio.com",
+  projectId: "fir-bot-bd5e8",
+  storageBucket: "fir-bot-bd5e8.appspot.com",
+  messagingSenderId: "501448994050",
+  appId: "1:501448994050:web:fb1c102dcaeb23bf93261b",
+  measurementId: "G-3ERPTBHN6N"
+};
+firebase.initializeApp(firebaseConfig);
+const db = firebase.database();
+
+// ================= Elements =================
+const overlay = document.getElementById('advPopupOverlay');
+const closeBtn = document.getElementById('advPopupClose');
+const img = document.getElementById('advPopupImage');
+const text = document.getElementById('advPopupText');
+const btn = document.getElementById('advPopupButton');
+
+// ================= Close Function =================
+closeBtn.addEventListener('click', () => { overlay.style.display='none'; });
+
+// ================= Fetch Data from Firebase =================
+db.ref('popup').on('value', snapshot => {
+    const data = snapshot.val();
+    if(data){
+        img.src = data.image || '';
+        text.textContent = data.text || 'Premium Content';
+        btn.textContent = data.buttonText || 'Click Here';
+        btn.href = data.buttonLink || '#';
+        overlay.style.display = 'flex'; // Always show on page load
+    } else {
+        overlay.style.display = 'none';
+    }
+});
+</script>
+</body>
+</html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
