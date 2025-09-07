@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Trust BD Live Chat</title>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined|Material+Icons" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Roboto', sans-serif;
+      background: linear-gradient(to bottom right, #e3f2fd, #ffffff);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      height: 100vh;
+      padding: 10px;
+    }
+
+    .chat-wrapper {
+      width: 100%;
+      max-width: 480px;
+      background: #fff;
+      border-radius: 16px;
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      overflow: hidden;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .header {
+      background-color: #1976d2;
+      color: white;
+      padding: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      font-weight: 600;
+    }
+
+    .header .material-icons-outlined {
+      margin-right: 8px;
+    }
+
+    .chat-body {
+      flex: 1;
+      padding: 15px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .chat-msg {
+      max-width: 80%;
+      padding: 10px 14px;
+      background-color: #e3f2fd;
+      border-radius: 18px 18px 18px 0;
+      margin-bottom: 10px;
+      align-self: flex-start;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+      position: relative;
+      animation: fadeIn 0.4s ease;
+    }
+
+    .chat-msg.typing::after {
+      content: "...";
+      font-weight: bold;
+      animation: blink 1s infinite;
+    }
+
+    @keyframes blink {
+      0% { opacity: 1; }
+      50% { opacity: 0.2; }
+      100% { opacity: 1; }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .chat-image {
+      width: 100%;
+      height: auto;
+      border-bottom: 1px solid #eee;
+    }
+
+    .button-bar {
+      padding: 10px;
+      border-top: 1px solid #ddd;
+      background: #fafafa;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
+    }
+
+    .option-btn {
+      background-color: #1976d2;
+      color: white;
+      border: none;
+      padding: 10px 16px;
+      font-size: 14px;
+      border-radius: 24px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      flex-shrink: 0;
+      transition: 0.3s;
+    }
+
+    .option-btn:hover {
+      background-color: #0d47a1;
+    }
+
+    .support-form, .support-response {
+      padding: 15px;
+      display: none;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .support-form input {
+      padding: 10px;
+      font-size: 14px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+    }
+
+    .support-form button {
+      background: #1976d2;
+      color: white;
+      border: none;
+      padding: 10px;
+      border-radius: 8px;
+      font-size: 15px;
+      cursor: pointer;
+    }
+
+    .support-response img {
+      max-width: 100px;
+      align-self: center;
+    }
+
+    .telegram-btn {
+      background: #0088cc;
+      color: white;
+      padding: 10px;
+      border-radius: 24px;
+      text-align: center;
+      text-decoration: none;
+      font-weight: bold;
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .telegram-btn .material-icons {
+      font-size: 18px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="chat-wrapper">
+  <div class="header">
+    <span class="material-icons-outlined">chat</span> Trust BD Live Chat
+  </div>
+
+  <img class="chat-image" src="https://i.postimg.cc/wvVkt2BL/operator-man-working-with-laptop-flat-design-vector-illustration-flyer-design-support-service-concep.jpg" alt="Operator"/>
+
+  <div class="chat-body" id="chatBody">
+    <!-- Messages will appear here -->
+  </div>
+
+  <div class="support-form" id="supportForm">
+    <input type="text" placeholder="Your Name" id="nameInput" />
+    <input type="email" placeholder="Your Email" id="emailInput" />
+    <button onclick="submitSupport()">Submit</button>
+  </div>
+
+  <div class="support-response" id="supportResponse">
+    <div class="chat-msg">Dear Customer! All our representatives are busy at the moment. Please wait a moment. Or contact us on Telegram. Thank you.</div>
+    <img src="https://i.postimg.cc/3Jdb6k97/customer-service-call-center-character-flat-cartoon-business-people-illustration-vector-design-40876.jpg"/>
+    <a href="https://t.me/TrustBD_Support_bot" target="_blank" class="telegram-btn">
+      <span class="material-icons">send</span> Chat On Telegram Agent
+    </a>
+  </div>
+
+  <div class="button-bar">
+    <button class="option-btn" onclick="sendMessage('Refaral Bonus Problem')">
+      <span class="material-icons">redeem</span> Refaral Bonus
+    </button>
+    <button class="option-btn" onclick="sendMessage('Deposit Problem')">
+      <span class="material-icons">account_balance_wallet</span> Deposit
+    </button>
+    <button class="option-btn" onclick="sendMessage('Withdraw Problem')">
+      <span class="material-icons">credit_card</span> Withdraw
+    </button>
+    <button class="option-btn" onclick="sendMessage('How can Buy Package')">
+      <span class="material-icons">shopping_bag</span> Buy Package
+    </button>
+    <button class="option-btn" onclick="openSupportForm()">
+      <span class="material-icons">support_agent</span> Customer Support
+    </button>
+  </div>
+</div>
+
+<script>
+  const chatBody = document.getElementById("chatBody");
+  const supportForm = document.getElementById("supportForm");
+  const supportResponse = document.getElementById("supportResponse");
+
+  function sendMessage(type) {
+    supportForm.style.display = "none";
+    supportResponse.style.display = "none";
+
+    const msg = document.createElement("div");
+    msg.className = "chat-msg typing";
+    msg.textContent = type;
+    chatBody.appendChild(msg);
+    chatBody.scrollTop = chatBody.scrollHeight;
+
+    setTimeout(() => {
+      msg.classList.remove("typing");
+      msg.textContent = getReply(type);
+    }, 1200);
+  }
+
+  function getReply(type) {
+    switch(type) {
+      case "Refaral Bonus Problem":
+        return "Please ensure your referred user used your code. If not reflected, contact our support.";
+      case "Deposit Problem":
+        return "Deposit issues are normally resolved within 30 minutes. Please wait or contact us.";
+      case "Withdraw Problem":
+        return "Withdraws take 1–12 hours to process. Kindly wait if the time hasn't passed.";
+      case "How can Buy Package":
+        return "Go to Dashboard > Buy Package and select your preferred package.";
+      default:
+        return "Thank you!";
+    }
+  }
+
+  function openSupportForm() {
+    supportForm.style.display = "flex";
+    supportResponse.style.display = "none";
+  }
+
+  function submitSupport() {
+    const name = document.getElementById("nameInput").value.trim();
+    const email = document.getElementById("emailInput").value.trim();
+    if (!name || !email) {
+      alert("Please fill in both fields.");
+      return;
+    }
+
+    supportForm.style.display = "none";
+    supportResponse.style.display = "flex";
+  }
+</script>
+
+</body>
+</html>

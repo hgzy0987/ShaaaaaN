@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Reset Password - Amar Club</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Roboto', sans-serif; }
+    body {
+      background: linear-gradient(to right, #00c6ff, #0072ff);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 20px;
+    }
+    .reset-box {
+      width: 100%;
+      max-width: 400px;
+      background: #fff;
+      border-radius: 20px;
+      padding: 30px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+      text-align: center;
+    }
+    .reset-box .material-icons {
+      font-size: 48px;
+      color: #0072ff;
+      margin-bottom: 10px;
+    }
+    h2 {
+      color: #222;
+      font-size: 26px;
+      margin-bottom: 10px;
+    }
+    p {
+      color: #555;
+      font-size: 15px;
+      margin-bottom: 25px;
+    }
+    input[type="email"] {
+      width: 100%;
+      padding: 12px;
+      border-radius: 10px;
+      border: 1px solid #ccc;
+      font-size: 15px;
+      margin-bottom: 20px;
+    }
+    button {
+      width: 100%;
+      background: linear-gradient(to right, #00c853, #00bfa5);
+      color: #fff;
+      padding: 14px;
+      font-size: 16px;
+      font-weight: bold;
+      border: none;
+      border-radius: 30px;
+      cursor: pointer;
+    }
+    .back-link {
+      margin-top: 20px;
+      font-size: 14px;
+    }
+    .back-link a {
+      color: #0072ff;
+      text-decoration: none;
+      font-weight: 500;
+    }
+  </style>
+</head>
+<body>
+  <div class="reset-box">
+    <span class="material-icons">lock_reset</span>
+    <h2>Forgot Password?</h2>
+    <p>Enter your email to receive a reset link</p>
+    <input type="email" id="resetEmail" placeholder="Enter your email" required />
+    <button onclick="sendResetEmail()">Send Reset Link</button>
+    <div class="back-link">
+      <p>Remember your password? <a href="login.html">Back to Login</a></p>
+    </div>
+  </div>
+
+  <script>
+    const firebaseConfig = {
+  apiKey: "AIzaSyBCyR4yHRj4Yze2-M27tktHtV_f03EoVvs",
+  authDomain: "trust-bd-d889e.firebaseapp.com",
+  projectId: "trust-bd-d889e",
+  storageBucket: "trust-bd-d889e.firebasestorage.app",
+  messagingSenderId: "413112954640",
+  appId: "1:413112954640:web:beb99410c8b9ecd4037f95",
+  measurementId: "G-8JEWWCZ0Y4"
+};
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+
+    function sendResetEmail() {
+      const email = document.getElementById("resetEmail").value;
+      if (!email) {
+        alert("Please enter your email");
+        return;
+      }
+      auth.sendPasswordResetEmail(email)
+        .then(() => {
+          alert("Reset email sent! Please check your inbox.");
+        })
+        .catch(error => {
+          alert("Error: " + error.message);
+        });
+    }
+  </script>
+</body>
+</html>

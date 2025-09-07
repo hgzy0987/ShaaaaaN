@@ -1,0 +1,864 @@
+
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta <html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TRUST-BD</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Material Icons -->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+    }
+  </style>
+</head>
+<body class="bg-gradient-to-br from-white via-blue-50 to-blue-100 min-h-screen relative">
+
+  <!-- Tagline Banner (Fixed Top) -->
+  <div class="fixed top-0 left-0 right-0 z-50 bg-gradient-to-r from-blue-600 to-purple-600 text-white text-center py-2 shadow-md flex items-center justify-center gap-2">
+    <span class="material-icons">trending_up</span>
+    <span class="text-sm font-semibold tracking-wide">Trust BD is a Next Level Earnings Platform</span>
+  </div>
+
+  <!-- Top Navigation (Just Below Tagline) -->
+  <div class="fixed top-10 left-0 right-0 z-40 bg-white shadow-md rounded-b-xl">
+    <div class="flex justify-around py-3">
+      <a href="/deposit.html" class="flex flex-col items-center text-green-600 hover:scale-105 transition">
+      <img src="https://i.postimg.cc/ydSTKDND/wallet-8905934.png" alt="Exchange" class="w-8 h-8 mb-1">
+      <span class="text-xs font-semibold">Deposit</span>
+      </a>
+      <a href="/withdraw.html" class="flex flex-col items-center text-gray-600 hover:scale-105 transition">
+      <img src="https://i.postimg.cc/FHg8tnBM/money-withdrawal-9652666.png" alt="Exchange" class="w-8 h-8 mb-1">
+      <span class="text-xs font-semibold">Withdraw</span>
+      </a>
+      </a>
+      <a href="/refer.html" class="flex flex-col items-center text-orange-700 hover:scale-105 transition">
+      <img src="https://i.postimg.cc/FHd52Z4m/teamwork-17353017.png" alt="Exchange" class="w-8 h-8 mb-1">
+      <span class="text-xs font-semibold">Refer</span>
+      </a>
+      </a>
+      <a href="/exchange.html" class="flex flex-col items-center text-purple-500 hover:scale-105 transition">
+      <img src="https://i.postimg.cc/MT8S0jgw/currency-exchange-10195362.png" alt="Exchange" class="w-8 h-8 mb-1">
+      <span class="text-xs font-semibold">Exchange</span>
+      </a>
+      <a href="/adsincome.html" class="flex flex-col items-center text-blue-600 hover:scale-105 transition">
+      <img src="https://i.postimg.cc/yNsJdwx7/1527478.png" alt="Exchange" class="w-8 h-8 mb-1">
+      <span class="text-xs font-semibold">Ads Income</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- Main Content Area -->
+  <div class="pt-32 pb-24 px-4">
+    <div class="text-center text-xl font-bold text-blue-900">
+      👋 Welcome to TRUST-BD!
+    </div>
+    <p class="text-center text-gray-500 mt-2">
+      Start your journey with exclusive earnings today.
+    </p>
+    <div class="smart-slider-container">
+    <div class="smart-slider">
+    <img src="https://i.postimg.cc/3wWG13vZ/20250620-100053.jpg" alt="Slide 1" class="slide active">
+    <img src="https://i.postimg.cc/KcQZGBVR/20250620-100702.jpg" alt="Slide 2" class="slide">
+    <img src="https://i.postimg.cc/fT31Gdh4/20250620-100948.jpg" alt="Slide 3" class="slide">
+    <img src="https://i.postimg.cc/t4bQFg8L/20250620-101153.jpg" alt="Slide 4" class="slide">
+    </div>
+    </div>
+    
+    <style>
+    .smart-slider-container {
+    width: 100%;
+    max-width: 400px;
+    height: 200px;
+    overflow: hidden;
+    margin: auto;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    }
+    
+    .smart-slider {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    }
+    
+    .smart-slider .slide {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0;
+    transition: opacity 0.8s ease-in-out;
+    }
+    
+    .smart-slider .slide.active {
+    opacity: 1;
+    }
+    
+    @media screen and (max-width: 600px) {
+    .smart-slider-container {
+    height: 180px;
+    }
+    }
+    </style>
+    
+    <script>
+    const slides = document.querySelectorAll('.smart-slider .slide');
+    let currentSlide = 0;
+    
+    setInterval(() => {
+    slides[currentSlide].classList.remove('active');
+    currentSlide = (currentSlide + 1) % slides.length;
+    slides[currentSlide].classList.add('active');
+    }, 3000);
+    </script>
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>TRUST-BD Premium Safe UI</title>
+    
+    <style>
+    /* Scoped style - No 'all:unset', so Material Icons are safe */
+    
+    .trustbd-boxsection {
+    font-family: 'Segoe UI', sans-serif;
+    padding: 20px;
+    max-width: 420px;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    }
+    
+    .trustbd-boxheader {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 24px;
+    font-weight: 600;
+    gap: 8px;
+    color: #000;
+    }
+    
+    .trustbd-boxheader img {
+    width: 70px;
+    height: 70px;
+    }
+    
+    .trustbd-boxcard {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 20px;
+    border-radius: 16px;
+    background: #ffffffcc;
+    backdrop-filter: blur(6px);
+    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease;
+    }
+    
+    .trustbd-boxcard:hover {
+    transform: scale(1.015);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+    }
+    
+    .trustbd-boxleft {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    }
+    
+    .trustbd-boxleft img {
+    width: 28px;
+    height: 28px;
+    }
+    
+    .trustbd-boxleft span {
+    font-size: 16px;
+    color: #000;
+    font-weight: 500;
+    }
+    
+    .trustbd-count {
+    font-size: 20px;
+    font-weight: bold;
+    color: #000;
+    min-width: 60px;
+    text-align: right;
+    }
+    
+    @media (max-width: 480px) {
+    .trustbd-boxsection {
+    padding: 16px;
+    }
+    
+    .trustbd-boxheader {
+    font-size: 20px;
+    }
+    
+    .trustbd-boxleft span {
+    font-size: 15px;
+    }
+    .trustbd-count {
+    font-size: 20px;
+    font-weight: bold;
+    color: #000;
+    min-width: 60px;
+    text-align: right;
+    letter-spacing: 0.5px;
+    }
+    
+    .trustbd-count {
+    font-size: 18px;
+    }
+    }
+    </style>
+    </head>
+    <body>
+    
+    <section class="trustbd-boxsection">
+    <div class="trustbd-boxheader">
+    <img src="https://i.postimg.cc/PrQzGjDD/20250907-082638.png" alt="logo" />
+    TRUST-BD
+    </div>
+    
+    <div class="trustbd-boxcard">
+    <div class="trustbd-boxleft">
+    <img src="https://i.postimg.cc/bNj9Rgtr/subscribers-11400527.png" alt="users icon" />
+    <span>Totally User</span>
+    </div>
+    <div class="trustbd-count" id="user-count">0</div>
+    </div>
+    
+    <div class="trustbd-boxcard">
+    <div class="trustbd-boxleft">
+    <img src="https://i.postimg.cc/Bbv4WH8K/growth-9737684.png" alt="earnings icon" />
+    <span>Totally Earnings</span>
+    </div>
+    <div class="trustbd-count" id="earnings-count">৳0</div>
+    </div>
+    
+    <div class="trustbd-boxcard">
+    <div class="trustbd-boxleft">
+    <img src="https://i.postimg.cc/J0gw9gVf/save-money-11062852.png" alt="deposit icon" />
+    <span>Totally Deposit</span>
+    </div>
+    <div class="trustbd-count" id="deposit-count">৳0</div>
+    </div>
+    </section>
+    
+    <script>
+    // Count animation
+    function animateValue(id, target, duration = 1500, prefix = '') {
+    const el = document.getElementById(id);
+    target = parseInt(target); // Ensure target is a number
+    
+    if (isNaN(target)) {
+    el.textContent = prefix + '0'; // fallback if target is invalid
+    return;
+    }
+    
+    let start = 0;
+    const step = Math.ceil(target / (duration / 30));
+    
+    const timer = setInterval(() => {
+    start += step;
+    if (start >= target) {
+    el.textContent = prefix + target;
+    clearInterval(timer);
+    } else {
+    el.textContent = prefix + start;
+    }
+    }, 290);
+    }
+    
+    // Example data
+    animateValue("user-count", 12740); // শুধু সংখ্যা
+    animateValue("earnings-count", 652800, 1500, '৳'); // টাকা চিহ্ন সহ
+    animateValue("deposit-count", 120500, 1500, '৳');  // টাকা চিহ্ন সহ
+    </script>
+    
+    </body>
+    </html>
+    <!-- Root element -->
+    <div id="trust-bd-partner-root"></div>
+    
+    <!-- Script to isolate with Shadow DOM -->
+    <script>
+    const root = document.getElementById("trust-bd-partner-root");
+    const shadow = root.attachShadow({ mode: "open" });
+    
+    shadow.innerHTML = `
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+    <style>
+    * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    }
+    
+    .trust-wrapper {
+    font-family: 'Segoe UI', sans-serif;
+    background: transparent;
+    text-align: center;
+    padding: 20px;
+    color: #222;
+    }
+    
+    .trust-wrapper h2 {
+    font-size: 22px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 20px;
+    }
+    
+    .trust-wrapper h2 .material-icons {
+    font-size: 28px;
+    color: #0a79df;
+    }
+    
+    .logo-marquee {
+    overflow: hidden;
+    position: relative;
+    height: 60px;
+    }
+    
+    .logo-track {
+    display: flex;
+    gap: 40px;
+    animation: scrollRightToLeft 20s linear infinite;
+    }
+    
+    .logo-track img {
+    height: 40px;
+    object-fit: contain;
+    transition: transform 0.3s ease;
+    }
+    
+    .logo-track img:hover {
+    transform: scale(1.1);
+    }
+    
+    @keyframes scrollRightToLeft {
+    0% { transform: translateX(100%); }
+    100% { transform: translateX(-100%); }
+    }
+    
+    @media (max-width: 600px) {
+    .trust-wrapper h2 {
+    font-size: 18px;
+    }
+    
+    .logo-track img {
+    height: 30px;
+    }
+    }
+    </style>
+    
+    <div class="trust-wrapper">
+    <h2>
+    <span class="material-icons">handshake</span>
+    TRUST-BD PARTNER PROGRAM
+    </h2>
+    <div class="logo-marquee">
+    <div class="logo-track">
+    <img src="https://i.postimg.cc/7PNFvKyG/Pocket-Option-Logo.png" alt="Nike" />
+    <img src="https://i.postimg.cc/y6vv75pR/20250620-112425.png" alt="Adidas" />
+    <img src="https://i.postimg.cc/mg73q60K/fidelity.png" alt="Apple" />
+    <img src="https://i.postimg.cc/J0wZPNpR/Merrill-Edge-20200517131838.png" alt="Microsoft" />
+    <img src="https://i.postimg.cc/D0g0LLDj/td-ameritrade.png" alt="Samsung" />
+    <img src="https://i.postimg.cc/Gt50Wps3/Fundrise-20191229094104.png" alt="Google" />
+    <img src="https://i.postimg.cc/k4Yh4pMf/etrade.png" alt="YouTube" />
+    </div>
+    </div>
+    </div>
+    `;
+    </script>
+    <!-- TRUST-BD CLAIM BONUS WIDGET START -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@dotlottie/player-component@2.7.12/dist/dotlottie-player.mjs" type="module"></script>
+    
+    <div class="trustbd-container">
+    <div class="trustbd-box">
+    <div class="trustbd-header">
+    <img src="https://i.postimg.cc/j5SB9rNt/bonus-9587131.png" alt="icon" class="trustbd-icon" />
+    TRUST-BD DAILY FREE BOUNCE
+    </div>
+    <button class="trustbd-btn" onclick="document.getElementById('trustbd-popup').style.display='flex'">
+    <img src="https://i.postimg.cc/3NcBwsdj/claim-14252153.png" class="trustbd-icon-sm" /> Claim Bonus
+    </button>
+    </div>
+    
+    <div class="trustbd-popup-overlay" id="trustbd-popup">
+    <div class="trustbd-popup">
+    <span class="trustbd-close" onclick="document.getElementById('trustbd-popup').style.display='none'">✖</span>
+    
+    <dotlottie-player
+    src="https://lottie.host/b2f01409-99ba-4c5b-8f44-25b01181e1c2/7naGQylJ6U.lottie"
+    background="transparent"
+    speed="1"
+    style="width: 100%; max-width: 300px; height: 300px;"
+    loop autoplay>
+    </dotlottie-player>
+    
+    <button class="trustbd-btn-orange" onclick="trustbdShowMessage()">
+    <img src="https://i.postimg.cc/ZRgBv4xq/roulette-5698854.png" class="trustbd-icon-sm" /> Spin Now
+    </button>
+    
+    <div id="trustbd-msg" style="display:none;">
+    <div class="trustbd-msg">
+    Dear customer! To enjoy this service, you must first deposit more than 1000 taka into your account.
+    </div>
+    <a href="deposit.html" class="trustbd-deposit-btn">
+    <img src="https://i.postimg.cc/ZnSv4ZPv/wallet-11185147.png" class="trustbd-icon-sm" /> Go To Deposit
+    </a>
+    </div>
+    </div>
+    </div>
+    </div>
+    
+    <style>
+    /* TRUST-BD SCOPED STYLES */
+    .trustbd-container * {
+    font-family: 'Poppins', sans-serif;
+    box-sizing: border-box;
+    }
+    
+    .trustbd-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 30px 15px;
+    background: transparent;
+    }
+    
+    .trustbd-box {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    border-radius: 16px;
+    padding: 20px;
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    }
+    
+    .trustbd-header {
+    font-size: 18px;
+    font-weight: 600;
+    color: #000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 20px;
+    }
+    
+    .trustbd-btn, .trustbd-btn-orange {
+    background: linear-gradient(135deg, #00c853, #00bfa5);
+    border: none;
+    padding: 12px 20px;
+    border-radius: 50px;
+    color: white;
+    font-weight: 500;
+    font-size: 15px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    transition: 0.2s ease;
+    }
+    
+    .trustbd-btn-orange {
+    background: linear-gradient(135deg, #ff9100, #ff3d00);
+    margin-top: 15px;
+    }
+    
+    .trustbd-btn:hover, .trustbd-btn-orange:hover {
+    transform: scale(1.03);
+    }
+    
+    .trustbd-popup-overlay {
+    display: none;
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0,0,0,0.6);
+    justify-content: center;
+    align-items: center;
+    z-index: 99999;
+    }
+    
+    .trustbd-popup {
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(20px);
+    border-radius: 20px;
+    padding: 25px;
+    width: 90%;
+    max-width: 400px;
+    text-align: center;
+    position: relative;
+    }
+    
+    .trustbd-close {
+    position: absolute;
+    top: 12px;
+    right: 14px;
+    font-size: 22px;
+    color: #fff;
+    cursor: pointer;
+    }
+    
+    .trustbd-msg {
+    color: #fff;
+    font-size: 14px;
+    margin: 15px 0 10px 0;
+    }
+    
+    .trustbd-deposit-btn {
+    background: linear-gradient(135deg, #ff3d00, #ff1744);
+    padding: 10px 18px;
+    border-radius: 40px;
+    color: white;
+    font-size: 14px;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 10px;
+    }
+    
+    .trustbd-icon {
+    width: 24px;
+    height: 24px;
+    }
+    
+    .trustbd-icon-sm {
+    width: 20px;
+    height: 20px;
+    }
+    </style>
+    
+    <script>
+    function trustbdShowMessage() {
+    document.getElementById('trustbd-msg').style.display = 'block';
+    }
+    </script>
+    <!-- TRUST-BD CLAIM BONUS WIDGET END -->
+    <div style="all: initial;">
+    <style>
+    .trust-bd-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    text-align: center;
+    padding: 20px;
+    background-color: transparent;
+    font-family: 'Segoe UI', sans-serif;
+    color: black;
+    max-width: 100%;
+    }
+    
+    .trust-bd-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    }
+    
+    .trust-bd-logo {
+    width: 70px;
+    height: 70px;
+    object-fit: contain;
+    }
+    
+    .trust-bd-text {
+    font-size: 1.2rem;
+    font-weight: bold;
+    }
+    
+    .trust-bd-image {
+    margin-top: 20px;
+    max-width: 90%;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+    
+    @media (min-width: 768px) {
+    .trust-bd-text {
+    font-size: 1.6rem;
+    }
+    .trust-bd-logo {
+    width: 50px;
+    height: 50px;
+    }
+    }
+    </style>
+    
+    <div class="trust-bd-container">
+    <div class="trust-bd-header">
+    <img src="https://i.postimg.cc/9XkZC5kz/20250619-144722.png" alt="TRUST-BD Logo" class="trust-bd-logo" />
+    <div class="trust-bd-text">TRUST-BD Now Available On Google Play Store & App Store </div>
+    </div>
+    <img src="https://i.postimg.cc/W4snztWm/download-app-store-get-it-google-play-button-icons-with-neumorphism-design-659151-351.jpg" alt="Download App" class="trust-bd-image" />
+    </div>
+    </div>
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>TRUST-BD Top 3</title>
+    <style>
+    .trustbd-top-users {
+    font-family: 'Segoe UI', sans-serif;
+    background: transparent;
+    padding: 20px;
+    max-width: 800px;
+    margin: auto;
+    text-align: center;
+    }
+    
+    .trustbd-top-users h2 {
+    font-size: 24px;
+    font-weight: bold;
+    color: #000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 30px;
+    }
+    
+    .top-users-list {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 10px;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    }
+    
+    .user-card {
+    background: rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+    border-radius: 16px;
+    padding: 15px;
+    flex: 0 0 30%;
+    color: #000;
+    text-align: center;
+    min-width: 100px;
+    max-width: 33%;
+    box-sizing: border-box;
+    }
+    
+    .user-card img {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 10px;
+    }
+    
+    .user-name {
+    font-weight: bold;
+    font-size: 16px;
+    margin-bottom: 5px;
+    }
+    
+    .user-earning {
+    font-size: 14px;
+    font-weight: 600;
+    color: #000;
+    }
+    
+    .user-card.center {
+    transform: translateY(-20px);
+    }
+    </style>
+    </head>
+    <body>
+    <div class="trustbd-top-users">
+    <h2>
+    <img src="https://i.postimg.cc/SxFGrYwh/podium.png" alt="Icon" width="54" height="54"/>
+    TRUST-BD TOP 3 USER
+    </h2>
+    
+    <div class="top-users-list">
+    <!-- Left User -->
+    <div class="user-card">
+    <img src="https://i.postimg.cc/gJsZvn3G/2.png" alt="User 1"/>
+    <div class="user-name">Rakib</div>
+    <div class="user-earning"><strong>৳62,000</strong></div>
+    </div>
+    
+    <!-- Center User -->
+    <div class="user-card center">
+    <img src="https://i.postimg.cc/rwDKKfhy/ribbon.png" alt="User 2"/>
+    <div class="user-name">Sabbir</div>
+    <div class="user-earning"><strong>৳98,500</strong></div>
+    </div>
+    
+    <!-- Right User -->
+    <div class="user-card">
+    <img src="https://i.postimg.cc/rwyFrQQR/medal.png" alt="User 3"/>
+    <div class="user-name">Nadia</div>
+    <div class="user-earning"><strong>৳59,800</strong></div>
+    </div>
+    </div>
+    </div>
+    </body>
+    </html>
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Age Notice</title>
+    <style>
+    /* Scoped styles - will not affect other code */
+    .age-notice-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    padding: 20px;
+    background-color: transparent;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #F44336;
+    box-sizing: border-box;
+    }
+    
+    .age-notice-logo {
+    width: 50px;
+    height: 50px;
+    object-fit: contain;
+    margin-right: 15px;
+    }
+    
+    .age-notice-text {
+    flex: 1;
+    font-size: 16px;
+    line-height: 1.6;
+    max-width: 500px;
+    }
+    
+    @media (max-width: 600px) {
+    .age-notice-container {
+    flex-direction: column;
+    text-align: center;
+    }
+    .age-notice-logo {
+    margin-right: 0;
+    margin-bottom: 10px;
+    }
+    }
+    </style>
+    </head>
+    <body>
+    <div class="age-notice-container">
+    <!-- Replace the src below with your own logo -->
+    <img src="https://i.postimg.cc/mDbfN2bY/no-minors.png" alt="Logo" class="age-notice-logo">
+    <div class="age-notice-text">
+    No one under the age of <strong>18 </strong>will enter this site. You must pay with the permission of your parents. Do not make any money transactions without the permission of your family. Thank you.
+    </div>
+    </div>
+    </body>
+    </html>
+</div>
+
+
+  <!-- Bottom Navigation (Fixed Bottom) -->
+  <div class="fixed bottom-0 left-0 right-0 z-50 bg-white border-t border-gray-200 shadow-inner">
+    <div class="flex justify-around py-3">
+      <a href="/profile.html" class="flex flex-col items-center text-gray-600 hover:text-blue-600 transition">
+        <span class="material-icons text-3xl">account_circle</span>
+        <span class="text-xs font-semibold">Profile</span>
+      </a>
+      <a href="/chat.html" class="flex flex-col items-center text-gray-600 hover:text-green-600 transition">
+        <span class="material-icons text-3xl">support_agent</span>
+        <span class="text-xs font-semibold">Live Chat</span>
+      </a>
+      <a href="/package.html" class="flex flex-col items-center text-gray-600 hover:text-purple-600 transition">
+        <span class="material-icons text-3xl">assignment</span>
+        <span class="text-xs font-semibold">Package</span>
+      </a>
+    </div>
+  </div>
+
+</body>
+</html>
+<!-- Firebase App (the core Firebase SDK) -->
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+
+<script>
+  // Firebase config
+  const firebaseConfig = {
+    apiKey: "AIzaSyBCyR4yHRj4Yze2-M27tktHtV_f03EoVvs",
+    authDomain: "trust-bd-d889e.firebaseapp.com",
+    projectId: "trust-bd-d889e",
+    storageBucket: "trust-bd-d889e.firebasestorage.app",
+    messagingSenderId: "413112954640",
+    appId: "1:413112954640:web:beb99410c8b9ecd4037f95",
+    measurementId: "G-8JEWWCZ0Y4"
+  };
+
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+  const auth = firebase.auth();
+
+  // Check login status
+  auth.onAuthStateChanged(function(user) {
+    if (!user) {
+      // Not logged in
+      window.location.href = "login.html";
+    } else {
+      console.log("User is logged in:", user.email);
+    }
+  });
+</script>
+<!-- Live Chat Button (TRUST-BD) -->
+<div id="trustbd-live-chat" style="position: fixed; bottom: 70px; right: 20px; z-index: 9999;">
+  <!-- You can replace this image src with your own icon -->
+  <img src="https://i.postimg.cc/SNb4yztK/support-18375574.png" id="chat-icon" alt="Chat" style="width: 50px; height: 50px; cursor: pointer; border-radius: 50%; box-shadow: 0 4px 10px rgba(0,0,0,0.2);" />
+  
+  <!-- Chat Popup -->
+  <div id="chat-popup" style="display: none; position: absolute; bottom: 70px; right: 0; background: #fff; color: #000; border-radius: 12px; box-shadow: 0 8px 20px rgba(0,0,0,0.2); width: 280px; padding: 16px; font-family: sans-serif; animation: slideUp 0.3s ease;">
+    <p style="margin: 0 0 12px 0; font-size: 15px; line-height: 1.4;">Dear customer! Contact us for any need and get your problem solved.</p>
+    <div style="display: flex; justify-content: flex-end; gap: 10px;">
+      <button onclick="document.getElementById('chat-popup').style.display='none'" style="padding: 6px 14px; background: #ccc; border: none; border-radius: 6px; cursor: pointer;">No</button>
+      <button onclick="window.open('https://t.me/trustbdofficial', '_blank')" style="padding: 6px 14px; background: #0A66C2; color: white; border: none; border-radius: 6px; cursor: pointer;">Yes</button>
+    </div>
+  </div>
+</div>
+
+<!-- Animation Style -->
+<style>
+@keyframes slideUp {
+  from { transform: translateY(20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+</style>
+
+<!-- JavaScript for toggle -->
+<script>
+document.getElementById('chat-icon').addEventListener('click', function () {
+  var popup = document.getElementById('chat-popup');
+  popup.style.display = popup.style.display === 'none' ? 'block' : 'none';
+});
+</script>

@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>bKash Premium Payment - TRUST BD</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet">
+  <script src="https://unpkg.com/@dotlottie/player-component@2.7.12/dist/dotlottie-player.mjs" type="module"></script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(#800080, #301934, #AD0AFD);
+      color: #255;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 20px;
+    }
+    .container {
+      background: #fff;
+      border-radius: 20px;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+      max-width: 480px;
+      width: 100%;
+      overflow: hidden;
+      animation: fadeInUp 0.8s ease;
+    }
+    .header {
+      background: linear-gradient(#AD0AFD,  #E6E6FA, #AD0AFD);
+      padding: 20px;
+      text-align: center;
+      color: #fff;
+    }
+    .header img {
+      width: 90px;
+      margin-bottom: 10px;
+      border-radius: 50%;
+      background: #fff;
+      padding: 8px;
+    }
+    .header 
+    h2 {
+        text-align: center;
+        margin-bottom: 25px;
+        color: #fff;
+        font-size: 1.8rem;
+        text-shadow: 1px 1px 2px #000;
+    }
+    .content {
+      padding: 25px 20px;
+    }
+    .info-box {
+      background: #f8f9fb;
+      padding: 18px;
+      border-radius: 16px;
+      margin-bottom: 20px;
+      border: 1px solid #e4e6eb;
+    }
+    .info-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 12px 0;
+      font-size: 15px;
+      font-weight: 600;
+      color: #444;
+    }
+    .copy-btn {
+      cursor: pointer;
+      background: #800080;
+      color: #fff;
+      border: none;
+      padding: 6px 12px;
+      border-radius: 8px;
+      margin-left: 10px;
+      font-size: 13px;
+      transition: background 0.3s;
+    }
+    .copy-btn:hover {
+      background: #800080;
+    }
+    p {
+      font-size: 14px;
+      line-height: 1.6;
+      color: #800080;
+      margin-bottom: 20px;
+    }
+    label {
+      font-size: 14px;
+      font-weight: 600;
+      color: #333;
+    }
+    input {
+      width: 100%;
+      padding: 14px;
+      border-radius: 12px;
+      border: 1px solid #ccc;
+      margin-top: 10px;
+      font-size: 15px;
+      outline: none;
+      transition: all 0.3s;
+    }
+    input:focus {
+      border-color: #F69220;
+      box-shadow: 0 0 0 3px rgba(246,146,32,0.2);
+    }
+    .btn {
+      margin-top: 25px;
+      width: 100%;
+      padding: 15px;
+      background: linear-gradient(#AD0AFD, #AD0AFD,#301934 );
+      color: white;
+      border: none;
+      font-size: 16px;
+      font-weight: 600;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+    .btn:hover {
+      transform: translateY(-2px);
+    }
+    .popup {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw; height: 100vh;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      background-color: rgba(0,0,0,0.7);
+      z-index: 9999;
+      backdrop-filter: blur(4px);
+    }
+    .popup-content {
+      background: white;
+      border-radius: 20px;
+      padding: 30px 20px;
+      text-align: center;
+      width: 90%;
+      max-width: 360px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+    }
+    .popup-content h3 {
+      margin-top: 15px;
+      font-size: 16px;
+      font-weight: 600;
+      color: #333;
+    }
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+  <div class="container animate__animated animate__fadeIn">
+    <div class="header">
+      <img src="https://uploads.onecompiler.io/43ea4pg72/43eq73f47/download%20(6).png" alt="bKash Logo">
+      <h2> রকেট পেমেন্ট জমা দিন</h2>
+    </div>
+    <div class="content">
+      <div class="info-box">
+        <div class="info-item">
+          <strong>পেমেন্ট নাম্বার:</strong>
+          <span id="bkashNumber">01829261192
+            <button class="copy-btn" onclick="copyText('01829261192')">কপি</button>
+          </span>
+        </div>
+        <div class="info-item">
+          <strong>পরিমাণ:</strong>
+          <span id="amountDisplay">৳0</span>
+        </div>
+      </div>
+      <p>উপরে দেওয়া নাম্বারে <strong>Rocket</strong> থেকে <strong>Send Money</strong> করুন এবং সফল লেনদেনের <strong>Transaction ID</strong> নিচে প্রদান করুন।</p>
+      <label for="trxId">লেনদেন আইডি:</label>
+      <input type="text" id="trxId" placeholder="Ex: TX12345678" />
+      <button class="btn" onclick="submitPayment()">জমা দিন</button>
+    </div>
+  </div>
+
+  <div id="popup" class="popup">
+    <div class="popup-content animate__animated animate__zoomIn">
+      <div id="popupAnimation"></div>
+      <h3 id="popupMessage"></h3>
+    </div>
+  </div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+    import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyBCyR4yHRj4Yze2-M27tktHtV_f03EoVvs",
+      authDomain: "trust-bd-d889e.firebaseapp.com",
+      projectId: "trust-bd-d889e",
+      storageBucket: "trust-bd-d889e.appspot.com",
+      messagingSenderId: "413112954640",
+      appId: "1:413112954640:web:beb99410c8b9ecd4037f95",
+      measurementId: "G-8JEWWCZ0Y4"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const firestore = getFirestore(app);
+
+    const amount = localStorage.getItem("depositAmount") || 0;
+    document.getElementById("amountDisplay").innerText = `৳${amount}`;
+
+    const validTrxIds = ["TX123456", "TXABC789", "TRX2025"];
+
+    window.copyText = function(text) {
+      navigator.clipboard.writeText(text).then(() => alert(" নাম্বার কপি হয়েছে!"));
+    }
+
+    function showPopup(type, message) {
+      const popup = document.getElementById("popup");
+      const animation = document.getElementById("popupAnimation");
+      const popupMsg = document.getElementById("popupMessage");
+
+      if (type === "success") {
+        animation.innerHTML = `<dotlottie-player src="https://lottie.host/b2b372b3-8825-485b-ac08-b53482e078f3/APTvGDc67i.lottie" background="transparent" speed="1" style="width: 340px; height: 200px" loop autoplay></dotlottie-player>`;
+        popupMsg.innerText = message || "✅ পেমেন্ট সফলভাবে জমা হয়েছে!";
+      } else {
+        animation.innerHTML = `<dotlottie-player src="https://lottie.host/434d9e32-e112-47d8-b7fd-6da85a0b6389/coMuvsLgHL.lottie" background="transparent" speed="1" style="width: 340px; height: 200px" loop autoplay></dotlottie-player>`;
+        popupMsg.innerText = message || "❌ লেনদেন আইডি সঠিক নয়!";
+      }
+
+      popup.style.display = "flex";
+      setTimeout(() => { popup.style.display = "none"; }, 7500);
+    }
+
+    window.submitPayment = function () {
+      const trxId = document.getElementById("trxId").value.trim();
+
+      if (!trxId) {
+        showPopup("error", "❌ লেনদেন আইডি লিখুন!");
+        return;
+      }
+
+      onAuthStateChanged(auth, (user) => {
+        if (!user) {
+          showPopup("error", "❌ অনুগ্রহ করে লগইন করুন!");
+          return;
+        }
+
+        const uid = user.uid;
+        const isValid = validTrxIds.includes(trxId);
+
+        const data = {
+          uid: uid,
+          method: "Rocket",
+          amount: parseInt(amount),
+          trxId: trxId,
+          status: isValid ? "pending" : "failed",
+          time: new Date().toISOString()
+        };
+
+        addDoc(collection(firestore, "deposits"), data)
+          .then(() => {
+            if (isValid) {
+              showPopup("success", " পেমেন্ট সফলভাবে জমা হয়েছে! দয়া করে কিছুক্ষণ অপেক্ষা করুন! ধন্যবাদ");
+              document.getElementById("trxId").value = "";
+            } else {
+              showPopup("error", "❌ লেনদেন আইডি সঠিক নয়! দয়া করে সঠিকভাবে পেমেন্ট করার পর ট্রানজেকশন আইডি জমা দিন। একাধিক ভুল সাবমিশন করলে একাউন্ট ব্লক হতে পারে!");
+            }
+          })
+          .catch((err) => {
+            showPopup("error", "❌ তথ্য সংরক্ষণ ব্যর্থ হয়েছে! আবার চেষ্টা করুন।");
+            console.error(err);
+          });
+      });
+    }
+  </script>
+</body>
+</html>

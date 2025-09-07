@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TRUST‑BD PAYMENT PAGE</title>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: 'Segoe UI', Tahoma, sans-serif; background: #f2f3f7; color: #333; }
+    .container { max-width: 480px; margin: 0 auto; padding: 16px; }
+    .header { text-align: center; margin-bottom: 16px; }
+    .header h2 {
+      font-size: 24px; font-weight: 700; margin: 0; color: #f57c00;
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+    }
+    .header .material-icons-outlined { font-size: 28px; }
+    .back-btn { display: flex; align-items: center; gap: 6px; cursor: pointer; color: #444; margin-bottom: 10px; }
+    .balance-box {
+      background: linear-gradient(135deg, #fdbb2d, #f57c00);
+      color: #fff; padding: 20px; border-radius: 16px;
+      display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;
+    }
+    .offer-button {
+  position: relative;
+  width: 30%;
+}
+
+.offer-button button {
+  width: 100%;
+  padding: 10px;
+  font-size: 15px;
+  font-weight: bold;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  background: #fff;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.offer-button button:hover {
+  background: #f57c00;
+  color: #fff;
+}
+
+.offer-badge {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  background: #00E676;
+  color: #fff;
+  font-size: 11px;
+  font-weight: bold;
+  padding: 2px 6px;
+  border-radius: 12px;
+  box-shadow: 0 0 5px rgba(0,0,0,0.2);
+}
+    .balance-box span { font-size: 20px; font-weight: bold; }
+    .methods { display: flex; justify-content: space-between; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
+    .method {
+      flex: 1 1 45%; background: #fff; border-radius: 12px;
+      padding: 10px; text-align: center; cursor: pointer;
+      border: 2px solid transparent; transition: 0.3s;
+    }
+    .method.active { border-color: #f57c00; box-shadow: 0 0 8px rgba(245,124,0,0.4); }
+    .method img { width: 38px; height: 38px; margin-bottom: 6px; }
+    .amount-buttons { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 16px; }
+    .amount-buttons button {
+      flex: 1 1 30%; padding: 10px; font-size: 15px; font-weight: bold;
+      border-radius: 10px; border: 1px solid #ccc; background: #fff;
+      cursor: pointer; transition: 0.2s;
+    }
+    .amount-buttons button:hover { background: #f57c00; color: #fff; }
+    .input-box { margin-bottom: 20px; }
+    .input-box label { display: block; margin-bottom: 6px; font-weight: 600; }
+    .input-box input {
+      width: 100%; padding: 12px; font-size: 16px;
+      border-radius: 10px; border: 1px solid #ccc;
+    }
+    .btn {
+      width: 100%; padding: 14px; font-size: 16px; border: none;
+      border-radius: 10px; background: #f57c00; color: #fff;
+      font-weight: bold; cursor: pointer;
+    }
+    .btn:hover { background: #ff9800; }
+    .note {
+      background: #fff8e1; padding: 12px; border-left: 4px solid #ffc107;
+      border-radius: 6px; font-size: 14px; margin-top: 20px;
+    }
+    .footer-img {
+      margin-top: 24px; width: 100%; border-radius: 16px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h2><span class="material-icons-outlined">payments</span> TRUST‑BD PAYMENT PAGE</h2>
+    </div>
+    <div class="back-btn" onclick="window.location.href='dashboard.html'">
+      <span class="material-icons-outlined">arrow_back</span>
+      <span>Back to Dashboard</span>
+    </div>
+
+    <div class="balance-box">
+      <div><span class="material-icons-outlined">account_balance_wallet</span> Balance</div>
+      <span id="balance">৳0.00</span>
+    </div>
+
+    <div class="methods">
+      <div class="method" onclick="selectMethod('bkash')" id="bkash">
+        <img src="https://i.postimg.cc/qMFt2YT3/images-1-4.png" alt="bKash">
+        <div>bKash</div>
+      </div>
+      <div class="method" onclick="selectMethod('nagad')" id="nagad">
+        <img src="https://i.postimg.cc/7Zp2rRtk/images-1-5.png" alt="Nagad">
+        <div>Nagad</div>
+      </div>
+      <div class="method" onclick="selectMethod('rocket')" id="rocket">
+        <img src="https://uploads.onecompiler.io/43ea4pg72/43eq73f47/download%20(6).png" alt="Rocket">
+        <div>Rocket</div>
+      </div>
+      <div class="method" onclick="selectMethod('upay')" id="upay">
+        <img src="https://uploads.onecompiler.io/43ea4pg72/43eq73f47/download%20(5).png" alt="Upay">
+        <div>Upay</div>
+      </div>
+    </div>
+<div class="amount-buttons">
+  <div class="offer-button">
+    <button onclick="setAmount(500)">৳500</button>
+    <span class="offer-badge">+5%</span>
+  </div>
+  <div class="offer-button">
+    <button onclick="setAmount(1000)">৳1K</button>
+    <span class="offer-badge">+12%</span>
+  </div>
+  <div class="offer-button">
+    <button onclick="setAmount(2500)">৳2.5K</button>
+    <span class="offer-badge">+25%</span>
+  </div>
+  <div class="offer-button">
+    <button onclick="setAmount(5000)">৳5K</button>
+    <span class="offer-badge">+20%</span>
+  </div>
+  <div class="offer-button">
+    <button onclick="setAmount(10000)">৳10K</button>
+    <span class="offer-badge">+20%</span>
+  </div>
+  <div class="offer-button">
+    <button onclick="setAmount(20000)">৳20K</button>
+    <span class="offer-badge">+20%</span>
+  </div>
+</div>
+
+    <div class="input-box">
+      <label for="amount">Enter Deposit Amount (৳500 – ৳20 000)</label>
+      <input type="number" id="amount" placeholder="৳ Amount" min="500" max="20000">
+    </div>
+
+    <button class="btn" onclick="proceedDeposit()">
+      <span class="material-icons-outlined">send</span> Proceed to Deposit
+    </button>
+      <img src="https://i.postimg.cc/qq2ps5BD/20250624-194442.jpg" class="footer-img" alt="Payment Illustration" />
+  </div>
+    <div class="note">
+      <ul>
+        <li>Minimum deposit ৳500, maximum ৳20,000.</li>
+        <li>Click on a quick amount for fast input.</li>
+        <li>Transferred amount must match the order.</li>
+        <li>Do not cancel after payment is made.</li>
+      </ul>
+    </div>
+
+    
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+    import { getDatabase, ref, get } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyBCyR4yHRj4Yze2-M27tktHtV_f03EoVvs",
+      authDomain: "trust-bd-d889e.firebaseapp.com",
+      projectId: "trust-bd-d889e",
+      storageBucket: "trust-bd-d889e.appspot.com",
+      messagingSenderId: "413112954640",
+      appId: "1:413112954640:web:beb99410c8b9ecd4037f95",
+      measurementId: "G-8JEWWCZ0Y4",
+      databaseURL: "https://trust-bd-d889e-default-rtdb.firebaseio.com"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getDatabase(app);
+
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        const uid = user.uid;
+        const balanceRef = ref(db, `users/${uid}/balance`);
+        get(balanceRef)
+          .then((snapshot) => {
+            if (snapshot.exists()) {
+              const balance = snapshot.val();
+              document.getElementById("balance").innerText = `৳${parseFloat(balance || 0).toFixed(2)}`;
+            }
+          })
+          .catch(console.error);
+      } else {
+        console.log("User not logged in.");
+      }
+    });
+
+    let selectedMethod = "";
+    window.selectMethod = (method) => {
+      ["bkash","nagad","rocket","upay"].forEach(id => document.getElementById(id).classList.remove("active"));
+      selectedMethod = method;
+      document.getElementById(method).classList.add("active");
+    };
+
+    window.setAmount = amount => document.getElementById("amount").value = amount;
+
+    window.proceedDeposit = () => {
+      const amount = parseInt(document.getElementById("amount").value, 10);
+      if (!selectedMethod) return alert("Please select a payment method.");
+      if (!amount || amount < 500 || amount > 20000) return alert("Please enter an amount between ৳500 and ৳20000.");
+      localStorage.setItem("depositAmount", amount);
+      window.location.href = `${selectedMethod}.html`;
+    };
+  </script>
+</body>
+</html>

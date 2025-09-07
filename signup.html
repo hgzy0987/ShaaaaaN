@@ -1,0 +1,230 @@
+<!DOCTYPE html><html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Register - Amar Club</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" />
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Roboto', sans-serif; }
+    body {
+      background: linear-gradient(to right, #00c6ff, #0072ff);
+      padding: 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+    .register-box {
+      width: 100%;
+      max-width: 420px;
+      background: #fff;
+      padding: 30px;
+      border-radius: 20px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    }
+    .logo {
+      display: block;
+      margin: 0 auto 20px;
+      width: 120px;
+    }
+    h2 {
+      text-align: center;
+      margin-bottom: 5px;
+      color: #222;
+    }
+    .sub-text {
+      text-align: center;
+      margin-bottom: 25px;
+      color: #666;
+    }
+    .input-group { margin-bottom: 20px; }
+    .input-group label {
+      display: flex;
+      align-items: center;
+      font-weight: 600;
+      margin-bottom: 6px;
+      color: #333;
+    }
+    .input-group label .material-icons { margin-right: 6px; color: #0072ff; }
+    .input-group input {
+      width: 100%;
+      padding: 12px;
+      border-radius: 10px;
+      border: 1px solid #ccc;
+      font-size: 15px;
+    }
+    .input-inline {
+      display: flex;
+      gap: 10px;
+    }
+    .input-inline input { flex: 1; }
+    .input-inline button {
+      padding: 0 16px;
+      border: none;
+      border-radius: 10px;
+      background: #0072ff;
+      color: #fff;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .checkbox {
+      display: flex;
+      align-items: center;
+      font-size: 14px;
+      margin-bottom: 15px;
+    }
+    .checkbox input { margin-right: 10px; }
+    .checkbox a {
+      color: #e53935;
+      text-decoration: none;
+    }
+    .btn-register {
+      width: 100%;
+      background: linear-gradient(to right, #00c853, #00bfa5);
+      color: white;
+      padding: 14px;
+      border-radius: 30px;
+      font-size: 16px;
+      font-weight: bold;
+      border: none;
+      cursor: pointer;
+    }
+    .login-link {
+      text-align: center;
+      margin-top: 20px;
+      font-size: 14px;
+    }
+    .login-link a {
+      color: #0072ff;
+      font-weight: bold;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="register-box">
+    <img src="https://i.postimg.cc/PrQzGjDD/20250907-082638.png" alt="Logo" class="logo" />
+    <h2>Register</h2>
+    <p class="sub-text">Please register using your email</p><form id="registerForm">
+  <div class="input-group">
+    <label><span class="material-icons">email</span>Email</label>
+    <input type="email" id="email" required placeholder="Enter your email" />
+  </div>
+
+  <div class="input-group">
+    <label><span class="material-icons">lock</span>Verification Code</label>
+    <div class="input-inline">
+      <input type="text" id="verificationCode" placeholder="Not required in this version" disabled />
+      <button type="button" id="sendCodeBtn">Send</button>
+    </div>
+  </div>
+
+  <div class="input-group">
+    <label><span class="material-icons">vpn_key</span>Password</label>
+    <input type="password" id="password" required placeholder="Set your password" />
+  </div>
+
+  <div class="input-group">
+    <label><span class="material-icons">vpn_key</span>Confirm Password</label>
+    <input type="password" id="confirmPassword" required placeholder="Confirm your password" />
+  </div>
+
+  <div class="input-group">
+    <label><span class="material-icons">person_add</span>Invite Code</label>
+    <input type="text" id="inviteCode" placeholder="Enter invitation code" />
+  </div>
+
+  <div class="checkbox">
+    <input type="checkbox" id="agree" required />
+    <label for="agree">I agree to the <a href="privacy.html" target="_blank">Privacy Agreement</a></label>
+  </div>
+
+  <button class="btn-register" type="submit">Register</button>
+</form>
+
+<div class="login-link">
+  <p>Already have an account? <a href="login.html">Login</a></p>
+</div>
+
+  </div>  
+<script>
+  // Firebase config
+  const firebaseConfig = {
+    apiKey: "AIzaSyBCyR4yHRj4Yze2-M27tktHtV_f03EoVvs",
+    authDomain: "trust-bd-d889e.firebaseapp.com",
+    projectId: "trust-bd-d889e",
+    storageBucket: "trust-bd-d889e.appspot.com",
+    messagingSenderId: "413112954640",
+    appId: "1:413112954640:web:beb99410c8b9ecd4037f95",
+    measurementId: "G-8JEWWCZ0Y4"
+  };
+
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+  const auth = firebase.auth();
+
+  // Handle "Send" button click
+  document.getElementById("sendCodeBtn").addEventListener("click", () => {
+    const email = document.getElementById("email").value.trim();
+    if (!email) {
+      alert("Please enter your email first.");
+      return;
+    }
+
+    // Retrieve or create verification code
+    const storedCodes = JSON.parse(localStorage.getItem("verificationCodes")) || {};
+
+    if (storedCodes[email]) {
+      document.getElementById("verificationCode").value = storedCodes[email];
+      alert("🔁 Code already exists for this email.");
+    } else {
+      const newCode = Math.floor(100000 + Math.random() * 900000);
+      storedCodes[email] = newCode;
+      localStorage.setItem("verificationCodes", JSON.stringify(storedCodes));
+      document.getElementById("verificationCode").value = newCode;
+      alert("✅ Verification code generated!");
+    }
+  });
+
+  // Handle form submission
+  document.getElementById("registerForm").addEventListener("submit", (e) => {
+    e.preventDefault();
+
+    const email = document.getElementById("email").value.trim();
+    const password = document.getElementById("password").value;
+    const confirmPassword = document.getElementById("confirmPassword").value;
+
+    if (password !== confirmPassword) {
+      alert("❌ Passwords do not match.");
+      return;
+    }
+
+    auth.createUserWithEmailAndPassword(email, password)
+      .then(() => {
+        alert("✅ Successfully Registered! Redirecting to dashboard...");
+        setTimeout(() => {
+          window.location.href = "dashboard.html";
+        }, 2500); // 2.5s delay
+      })
+      .catch((error) => {
+        alert("❌ " + error.message);
+      });
+  });
+
+  // Autofill Invite Code from URL
+  window.addEventListener("DOMContentLoaded", () => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const refCode = urlParams.toString(); // Get full query string like "?FdqN9"
+    
+    if (refCode) {
+      // Remove ? if exists and set to input
+      document.getElementById("inviteCode").value = refCode.replace("?", "");
+    }
+  });
+
+</script>
+</body>
+</html>

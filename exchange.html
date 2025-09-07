@@ -1,0 +1,227 @@
+<!DOCTYPE html><html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TRUST-BD MONEY EXCHANGE</title>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background: #f5f8fd;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px;
+    }
+    .container {
+      max-width: 450px;
+      width: 100%;
+      background: white;
+      border-radius: 20px;
+      padding: 20px;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+    }
+    .header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: #2c3e50;
+      margin-bottom: 20px;
+    }
+    .header i {
+      font-size: 26px;
+      color: #0066ff;
+    }
+    .image {
+      width: 100%;
+      border-radius: 15px;
+      margin-bottom: 20px;
+    }
+    .balance-box, .input-group {
+      background: #eef3fa;
+      padding: 15px;
+      border-radius: 12px;
+      margin-bottom: 15px;
+      box-shadow: inset 0 2px 5px rgba(0,0,0,0.05);
+    }
+    .balance {
+      font-size: 1.2rem;
+      font-weight: bold;
+      color: #333;
+    }
+    input {
+      width: 92%;
+      padding: 12px;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      margin-top: 5px;
+    }
+    button {
+      width: 100%;
+      background: #0066ff;
+      color: white;
+      padding: 12px;
+      border: none;
+      font-size: 1rem;
+      font-weight: bold;
+      border-radius: 10px;
+      cursor: pointer;
+      margin-top: 10px;
+      transition: background 0.3s;
+    }
+    button:hover {
+      background: #004acc;
+    }
+    .popup {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.6);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+    }
+    .popup-content {
+      background: white;
+      border-radius: 20px;
+      padding: 25px;
+      text-align: center;
+      width: 80%;
+      max-width: 350px;
+      position: relative;
+    }
+    .popup-content .close {
+      position: absolute;
+      top: 10px;
+      right: 15px;
+      font-size: 24px;
+      cursor: pointer;
+      color: #888;
+    }
+    .popup-message {
+      margin-top: 10px;
+      font-weight: bold;
+      font-size: 1.1rem;
+    }
+  </style>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.7.6/lottie.min.js"></script>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <i class="material-icons-outlined">sync_alt</i>
+      TRUST-BD MONEY EXCHANGE WITH FRIEND
+    </div>
+    <img class="image" src="https://i.postimg.cc/YCK1vqnR/people-using-mobile-bank-remittance-money-74855-6617.avif" alt="exchange" /><div class="balance-box">
+  <div class="balance">Your Main Balance: <span id="balance">Loading...</span> ৳</div>
+</div>
+
+<div class="input-group">
+  <label>Enter Your Friend UID (5-digit)</label>
+  <input type="text" id="friendUid" maxlength="5" placeholder="e.g. 12345" />
+</div>
+
+<div class="input-group">
+  <label>Enter Amount (300 - 20000 ৳)</label>
+  <input type="number" id="amount" placeholder="e.g. 500" />
+</div>
+
+<button onclick="exchangeMoney()">Exchange</button>
+
+  </div>  <div class="popup" id="popup">
+    <div class="popup-content">
+      <span class="close" onclick="closePopup()">&times;</span>
+      <div id="lottieContainer" style="width: 200px; height: 200px; margin: auto;"></div>
+      <div class="popup-message" id="popupMessage"></div>
+    </div>
+  </div>  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyBCyR4yHRj4Yze2-M27tktHtV_f03EoVvs",
+      authDomain: "trust-bd-d889e.firebaseapp.com",
+      projectId: "trust-bd-d889e",
+      storageBucket: "trust-bd-d889e.appspot.com",
+      messagingSenderId: "413112954640",
+      appId: "1:413112954640:web:beb99410c8b9ecd4037f95",
+      measurementId: "G-8JEWWCZ0Y4"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+
+    let currentUid = null;
+    firebase.auth().onAuthStateChanged((user) => {
+      if (user) {
+        currentUid = user.uid;
+        loadBalance();
+      } else {
+        alert("Please login to access exchange feature.");
+      }
+    });
+
+    function loadBalance() {
+      db.ref('users/' + currentUid + '/balance').on('value', (snapshot) => {
+        const balance = snapshot.val() || 0;
+        document.getElementById('balance').innerText = balance;
+      });
+    }
+
+    function exchangeMoney() {
+      const friendUid = document.getElementById('friendUid').value.trim();
+      const amount = parseInt(document.getElementById('amount').value);
+
+      if (friendUid.length !== 5 || isNaN(amount) || amount < 300 || amount > 20000) {
+        showPopup('Invalid UID or amount.', false);
+        return;
+      }
+
+      db.ref('users/' + currentUid + '/balance').once('value').then((snapshot) => {
+        const currentBalance = snapshot.val() || 0;
+
+        if (currentBalance >= amount) {
+          const updates = {};
+          updates['users/' + currentUid + '/balance'] = currentBalance - amount;
+          updates['users/' + friendUid + '/balance'] = firebase.database.ServerValue.increment(amount);
+
+          db.ref().update(updates).then(() => {
+            showPopup('Exchange Successful!', true);
+          });
+        } else {
+          showPopup('Insufficient Balance.', false);
+        }
+      });
+    }
+
+    function showPopup(message, isSuccess) {
+      const popup = document.getElementById('popup');
+      const messageBox = document.getElementById('popupMessage');
+      const container = document.getElementById('lottieContainer');
+      container.innerHTML = '';
+      messageBox.innerText = message;
+      popup.style.display = 'flex';
+      const path = isSuccess
+        ? 'https://lottie.host/693a63f0-0d84-4222-857e-a0adf1f77118/A7H9whEOxz.json'
+        : 'https://lottie.host/64466937-cfce-4511-974f-0031900de9bf/itdRvNPbUL.json';
+      lottie.loadAnimation({
+        container: container,
+        renderer: 'svg',
+        loop: true,
+        autoplay: true,
+        path: path
+      });
+    }
+
+    function closePopup() {
+      document.getElementById('popup').style.display = 'none';
+    }
+  </script></body>
+</html>

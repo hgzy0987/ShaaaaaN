@@ -1,0 +1,864 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>TRUST-BD Ads Click Income</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
+  <style>
+    * {margin:0; padding:0; box-sizing:border-box;}
+    body {
+      font-family:'Inter',sans-serif;
+      background:linear-gradient(135deg,#0f0f13,#1a1a22);
+      color:#e5e7eb;
+      min-height:100vh;
+    }
+
+    /* Header */
+    header {
+      background:linear-gradient(90deg,#111827,#1f2937);
+      color:white;
+      padding:18px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      border-bottom:2px solid rgba(255,255,255,0.1);
+      backdrop-filter: blur(12px);
+      box-shadow:0 6px 18px rgba(0,0,0,0.6);
+    }
+    header .left {display:flex; align-items:center; gap:12px;}
+    header .left .material-icons-outlined {
+      cursor:pointer; font-size:26px;
+      background:#1f2937; color:#60a5fa;
+      border-radius:50%; padding:6px;
+      transition:0.3s;
+    }
+    header .left .material-icons-outlined:hover {
+      transform:scale(1.1);
+      background:#374151;
+    }
+    header h3 {font-size:18px; font-weight:700; letter-spacing:1px;}
+
+    /* Top Banner */
+    .top-image {
+      width:100%; height:auto; max-height:230px; object-fit:cover;
+      border-bottom:4px solid #2563eb;
+      border-radius:0 0 18px 18px;
+      box-shadow:0 6px 14px rgba(0,0,0,0.6);
+    }
+
+    /* Filter Menu */
+    .filter-menu {
+      display:flex;
+      justify-content:center;
+      gap:12px;
+      padding:14px;
+      background:#111827;
+      border-bottom:2px solid #1f2937;
+      flex-wrap:wrap;
+    }
+    .filter-btn {
+      padding:10px 16px;
+      border-radius:30px;
+      border:none;
+      cursor:pointer;
+      font-weight:600;
+      background:#1f2937;
+      color:#d1d5db;
+      transition:all 0.3s ease;
+      box-shadow:0 2px 5px rgba(0,0,0,0.5);
+    }
+    .filter-btn.active,
+    .filter-btn:hover {
+      background:linear-gradient(90deg,#2563eb,#1d4ed8);
+      color:#fff;
+      transform:translateY(-2px);
+      box-shadow:0 6px 12px rgba(0,0,0,0.6);
+    }
+
+    /* Ads List */
+    .ad-list {
+      padding:20px;
+      display:flex;
+      flex-direction:column;
+      gap:18px;
+    }
+    .ad-card {
+      background:#1f2937;
+      border-radius:20px;
+      box-shadow:0 6px 20px rgba(0,0,0,0.6);
+      padding:16px 20px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      transition:transform 0.3s, box-shadow 0.3s;
+    }
+    .ad-card:hover {
+      transform:translateY(-5px);
+      box-shadow:0 12px 24px rgba(0,0,0,0.8);
+    }
+    .ad-info {display:flex; align-items:center; gap:14px;}
+    .ad-info img {
+      width:65px; height:65px; border-radius:12px;
+      box-shadow:0 3px 8px rgba(0,0,0,0.6);
+    }
+    .ad-details {display:flex; flex-direction:column; font-size:14px; color:#d1d5db;}
+    .ad-details strong {font-size:15px; font-weight:700; color:#fff;}
+    .amount {
+      font-weight:700; font-size:16px;
+      color:#60a5fa; margin-bottom:6px; text-align:right;
+    }
+    .view-btn {
+      background:linear-gradient(90deg,#2563eb,#1d4ed8);
+      color:white; border:none;
+      padding:8px 16px; border-radius:12px;
+      cursor:pointer; font-weight:600; font-size:14px;
+      transition:0.3s;
+    }
+    .view-btn:hover {
+      background:linear-gradient(90deg,#1e40af,#2563eb);
+      transform:scale(1.05);
+    }
+
+    /* Popup Modal */
+    .popup {
+      position:fixed; top:0; left:0; width:100%; height:100%;
+      background:rgba(0,0,0,0.7); display:none;
+      align-items:center; justify-content:center;
+      z-index:999; padding:20px;
+      animation:fadeIn 0.3s ease-in-out;
+    }
+    @keyframes fadeIn {
+      from{opacity:0;} to{opacity:1;}
+    }
+    .popup-content {
+      background:#1f2937; border-radius:22px; padding:28px 22px;
+      max-width:380px; width:100%; text-align:center; position:relative;
+      box-shadow:0 10px 30px rgba(0,0,0,0.8);
+      animation:scaleUp 0.3s ease-in-out;
+      color:#e5e7eb;
+    }
+    @keyframes scaleUp {
+      from{transform:scale(0.8);} to{transform:scale(1);}
+    }
+    .popup-content lottie-player {width:200px; margin:auto;}
+    .popup-content p {margin:14px 0 22px; font-size:15px; line-height:1.6; color:#d1d5db;}
+    .popup-content strong {color:#60a5fa;}
+    .close-popup {
+      position:absolute; top:12px; right:12px;
+      font-size:22px; cursor:pointer; color:#9ca3af;
+      transition:0.2s;
+    }
+    .close-popup:hover {color:#fff; transform:scale(1.2);}
+    .deposit-btn {
+      background:linear-gradient(90deg,#2563eb,#1d4ed8);
+      color:white;
+      padding:12px 18px; border-radius:14px;
+      font-weight:700; text-decoration:none;
+      display:inline-flex; align-items:center; gap:6px;
+      transition:0.3s;
+    }
+    .deposit-btn:hover {background:linear-gradient(90deg,#1e40af,#2563eb); transform:scale(1.05);}
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header>
+    <div class="left">
+      <span class="material-icons-outlined" onclick="goBack()">arrow_back</span>
+      <h3>TRUST-BD ADS CLICK INCOME</h3>
+    </div>
+    <span class="material-icons-outlined">ads_click</span>
+  </header>
+
+  <!-- Top Banner -->
+  <img class="top-image" id="topImage" src="https://i.postimg.cc/GtwvpB1Z/pop-ups-concept-illustrated-23-2149121840.jpg" alt="Top Banner"/>
+
+  <!-- Filter Menu -->
+  <div class="filter-menu">
+    <button class="filter-btn active" onclick="filterAds('all',event)">ALL</button>
+    <button class="filter-btn" onclick="filterAds('fb',event)">FB ADS</button>
+    <button class="filter-btn" onclick="filterAds('yt',event)">YOUTUBE ADS</button>
+    <button class="filter-btn" onclick="filterAds('google',event)">GOOGLE ADS</button>
+    <button class="filter-btn" onclick="filterAds('other',event)">OTHER</button>
+  </div>
+
+  <!-- Ads List -->
+  <div class="ad-list" id="adList">
+    <!-- Example Ads -->
+    <div class="ad-card" data-category="fb">
+      <div class="ad-info">
+        <img src="https://i.postimg.cc/kMRvQm1j/facebook-15059769.png" alt="FB">
+        <div class="ad-details"><strong>Facebook</strong><span>20 second</span></div>
+      </div>
+      <div class="ad-right">
+        <div class="amount">৳80.00</div>
+        <button class="view-btn" onclick="showPopup()">View Ads</button>
+      </div>
+    </div>
+    <!-- বাকিগুলো আগের মতোই থাকবে -->
+  </div>
+
+  <!-- Popup Modal -->
+  <div class="popup" id="popup">
+    <div class="popup-content">
+      <span class="material-icons-outlined close-popup" onclick="closePopup()">close</span>
+      <lottie-player
+        src="https://lottie.host/64466937-cfce-4511-974f-0031900de9bf/itdRvNPbUL.json"
+        background="transparent"
+        speed="1"
+        autoplay loop>
+      </lottie-player>
+      <p>
+        প্রিয় গ্রাহক! <strong>Ads Click Income</strong> Unlock করতে সর্বনিম্ন
+        <strong>1000</strong> টাকা <strong>Deposit</strong> করতে হবে!
+        <br> এখনই <strong>Deposit</strong> করুন এবং আয় শুরু করুন।
+      </p>
+      <a href="deposit.html" class="deposit-btn">
+        <span class="material-icons-outlined">credit_card</span>GO TO DEPOSIT
+      </a>
+    </div>
+  </div>
+<div class="ad-list" id="adList">
+  <!-- Facebook Ads -->
+  <div class="ad-card" data-category="fb">
+    <div class="ad-info">
+      <img src="https://i.postimg.cc/kMRvQm1j/facebook-15059769.png" alt="FB">
+      <div class="ad-details"><strong>Facebook</strong><span>20 second</span></div>
+    </div>
+    <div class="ad-right">
+      <div class="amount">৳20.00</div>
+      <button class="view-btn" onclick="showPopup()">View Ads</button>
+    </div>
+  </div>
+  <div class="ad-card" data-category="fb">
+    <div class="ad-info">
+      <img src="https://i.postimg.cc/kMRvQm1j/facebook-15059769.png" alt="FB">
+      <div class="ad-details"><strong>Facebook</strong><span>10 second</span></div>
+    </div>
+    <div class="ad-right">
+      <div class="amount">৳10.00</div>
+      <button class="view-btn" onclick="showPopup()">View Ads</button>
+    </div>
+  </div>
+<!-- Facebook Ads 20-50৳ Range -->
+<div class="ad-card" data-category="fb">
+  <div class="ad-info">
+    <img src="https://i.postimg.cc/kMRvQm1j/facebook-15059769.png" alt="FB">
+    <div class="ad-details"><strong>Facebook</strong><span>10 second</span></div>
+  </div>
+  <div class="ad-right">
+    <div class="amount">৳10.00</div>
+    <button class="view-btn" onclick="showPopup()">View Ads</button>
+  </div>
+</div>
+
+<div class="ad-card" data-category="fb">
+  <div class="ad-info">
+    <img src="https://i.postimg.cc/kMRvQm1j/facebook-15059769.png" alt="FB">
+    <div class="ad-details"><strong>Facebook</strong><span>25 second</span></div>
+  </div>
+  <div class="ad-right">
+    <div class="amount">৳25.00</div>
+    <button class="view-btn" onclick="showPopup()">View Ads</button>
+  </div>
+</div>
+
+<div class="ad-card" data-category="fb">
+  <div class="ad-info">
+    <img src="https://i.postimg.cc/kMRvQm1j/facebook-15059769.png" alt="FB">
+    <div class="ad-details"><strong>Facebook</strong><span>20 second</span></div>
+  </div>
+  <div class="ad-right">
+    <div class="amount">৳30.00</div>
+    <button class="view-btn" onclick="showPopup()">View Ads</button>
+  </div>
+</div>
+
+<div class="ad-card" data-category="fb">
+  <div class="ad-info">
+    <img src="https://i.postimg.cc/kMRvQm1j/facebook-15059769.png" alt="FB">
+    <div class="ad-details"><strong>Facebook</strong><span>25 second</span></div>
+  </div>
+  <div class="ad-right">
+    <div class="amount">৳35.00</div>
+    <button class="view-btn" onclick="showPopup()">View Ads</button>
+  </div>
+</div>
+
+<div class="ad-card" data-category="fb">
+  <div class="ad-info">
+    <img src="https://i.postimg.cc/kMRvQm1j/facebook-15059769.png" alt="FB">
+    <div class="ad-details"><strong>Facebook</strong><span>30 second</span></div>
+  </div>
+  <div class="ad-right">
+    <div class="amount">৳40.00</div>
+    <button class="view-btn" onclick="showPopup()">View Ads</button>
+  </div>
+</div>
+
+<div class="ad-card" data-category="fb">
+  <div class="ad-info">
+    <img src="https://i.postimg.cc/kMRvQm1j/facebook-15059769.png" alt="FB">
+    <div class="ad-details"><strong>Facebook</strong><span>35 second</span></div>
+  </div>
+  <div class="ad-right">
+    <div class="amount">৳45.00</div>
+    <button class="view-btn" onclick="showPopup()">View Ads</button>
+  </div>
+</div>
+
+<div class="ad-card" data-category="fb">
+  <div class="ad-info">
+    <img src="https://i.postimg.cc/kMRvQm1j/facebook-15059769.png" alt="FB">
+    <div class="ad-details"><strong>Facebook</strong><span>40 second</span></div>
+  </div>
+  <div class="ad-right">
+    <div class="amount">৳50.00</div>
+    <button class="view-btn" onclick="showPopup()">View Ads</button>
+  </div>
+</div>
+
+<div class="ad-card" data-category="fb">
+  <div class="ad-info">
+    <img src="https://i.postimg.cc/kMRvQm1j/facebook-15059769.png" alt="FB">
+    <div class="ad-details"><strong>Facebook</strong><span>12 second</span></div>
+  </div>
+  <div class="ad-right">
+    <div class="amount">৳22.00</div>
+    <button class="view-btn" onclick="showPopup()">View Ads</button>
+  </div>
+</div>
+
+<div class="ad-card" data-category="fb">
+  <div class="ad-info">
+    <img src="https://i.postimg.cc/kMRvQm1j/facebook-15059769.png" alt="FB">
+    <div class="ad-details"><strong>Facebook</strong><span>18 second</span></div>
+  </div>
+  <div class="ad-right">
+    <div class="amount">৳28.00</div>
+    <button class="view-btn" onclick="showPopup()">View Ads</button>
+  </div>
+</div>
+
+<div class="ad-card" data-category="fb">
+  <div class="ad-info">
+    <img src="https://i.postimg.cc/kMRvQm1j/facebook-15059769.png" alt="FB">
+    <div class="ad-details"><strong>Facebook</strong><span>22 second</span></div>
+  </div>
+  <div class="ad-right">
+    <div class="amount">৳32.00</div>
+    <button class="view-btn" onclick="showPopup()">View Ads</button>
+  </div>
+</div>
+  <!-- YouTube Ads -->
+  <div class="ad-card" data-category="yt">
+    <div class="ad-info">
+      <img src="https://i.postimg.cc/Kjpf8GJL/video-15047410.png" alt="YT">
+      <div class="ad-details"><strong>YouTube</strong><span>50 second</span></div>
+    </div>
+    <div class="ad-right">
+      <div class="amount">৳10.00</div>
+      <button class="view-btn" onclick="showPopup()">View Ads</button>
+    </div>
+  </div>
+  <div class="ad-card" data-category="yt">
+    <div class="ad-info">
+      <img src="https://i.postimg.cc/Kjpf8GJL/video-15047410.png" alt="YT">
+      <div class="ad-details"><strong>YouTube</strong><span>10 Minute</span></div>
+    </div>
+    <div class="ad-right">
+      <div class="amount">৳120.00</div>
+      <button class="view-btn" onclick="showPopup()">View Ads</button>
+    </div>
+  </div>
+<!-- YouTube Ads 1-5 মিনিট (৳20-50) -->
+<div class="ad-card" data-category="yt">
+  <div class="ad-info">
+    <img src="https://i.postimg.cc/Kjpf8GJL/video-15047410.png" alt="YT">
+    <div class="ad-details"><strong>YouTube</strong><span>1 Minute</span></div>
+  </div>
+  <div class="ad-right">
+    <div class="amount">৳20.00</div>
+    <button class="view-btn" onclick="showPopup()">View Ads</button>
+  </div>
+</div>
+
+<div class="ad-card" data-category="yt">
+  <div class="ad-info">
+    <img src="https://i.postimg.cc/Kjpf8GJL/video-15047410.png" alt="YT">
+    <div class="ad-details"><strong>YouTube</strong><span>3 Minute</span></div>
+  </div>
+  <div class="ad-right">
+    <div class="amount">৳35.00</div>
+    <button class="view-btn" onclick="showPopup()">View Ads</button>
+  </div>
+</div>
+
+<div class="ad-card" data-category="yt">
+  <div class="ad-info">
+    <img src="https://i.postimg.cc/Kjpf8GJL/video-15047410.png" alt="YT">
+    <div class="ad-details"><strong>YouTube</strong><span>5 Minute</span></div>
+  </div>
+  <div class="ad-right">
+    <div class="amount">৳50.00</div>
+    <button class="view-btn" onclick="showPopup()">View Ads</button>
+  </div>
+</div>
+
+<!-- YouTube Ads 5-10 মিনিট (৳50-80) -->
+<div class="ad-card" data-category="yt">
+  <div class="ad-info">
+    <img src="https://i.postimg.cc/Kjpf8GJL/video-15047410.png" alt="YT">
+    <div class="ad-details"><strong>YouTube</strong><span>6 Minute</span></div>
+  </div>
+  <div class="ad-right">
+    <div class="amount">৳55.00</div>
+    <button class="view-btn" onclick="showPopup()">View Ads</button>
+  </div>
+</div>
+
+<div class="ad-card" data-category="yt">
+  <div class="ad-info">
+    <img src="https://i.postimg.cc/Kjpf8GJL/video-15047410.png" alt="YT">
+    <div class="ad-details"><strong>YouTube</strong><span>7 Minute</span></div>
+  </div>
+  <div class="ad-right">
+    <div class="amount">৳60.00</div>
+    <button class="view-btn" onclick="showPopup()">View Ads</button>
+  </div>
+</div>
+
+<div class="ad-card" data-category="yt">
+  <div class="ad-info">
+    <img src="https://i.postimg.cc/Kjpf8GJL/video-15047410.png" alt="YT">
+    <div class="ad-details"><strong>YouTube</strong><span>8 Minute</span></div>
+  </div>
+  <div class="ad-right">
+    <div class="amount">৳65.00</div>
+    <button class="view-btn" onclick="showPopup()">View Ads</button>
+  </div>
+</div>
+
+<div class="ad-card" data-category="yt">
+  <div class="ad-info">
+    <img src="https://i.postimg.cc/Kjpf8GJL/video-15047410.png" alt="YT">
+    <div class="ad-details"><strong>YouTube</strong><span>9 Minute</span></div>
+  </div>
+  <div class="ad-right">
+    <div class="amount">৳70.00</div>
+    <button class="view-btn" onclick="showPopup()">View Ads</button>
+  </div>
+</div>
+
+<div class="ad-card" data-category="yt">
+  <div class="ad-info">
+    <img src="https://i.postimg.cc/Kjpf8GJL/video-15047410.png" alt="YT">
+    <div class="ad-details"><strong>YouTube</strong><span>10 Minute</span></div>
+  </div>
+  <div class="ad-right">
+    <div class="amount">৳80.00</div>
+    <button class="view-btn" onclick="showPopup()">View Ads</button>
+  </div>
+</div>
+
+<!-- YouTube Ads 10-20 মিনিট (৳80-120) -->
+<div class="ad-card" data-category="yt">
+  <div class="ad-info">
+    <img src="https://i.postimg.cc/Kjpf8GJL/video-15047410.png" alt="YT">
+    <div class="ad-details"><strong>YouTube</strong><span>12 Minute</span></div>
+  </div>
+  <div class="ad-right">
+    <div class="amount">৳90.00</div>
+    <button class="view-btn" onclick="showPopup()">View Ads</button>
+  </div>
+</div>
+
+<div class="ad-card" data-category="yt">
+  <div class="ad-info">
+    <img src="https://i.postimg.cc/Kjpf8GJL/video-15047410.png" alt="YT">
+    <div class="ad-details"><strong>YouTube</strong><span>15 Minute</span></div>
+  </div>
+  <div class="ad-right">
+    <div class="amount">৳100.00</div>
+    <button class="view-btn" onclick="showPopup()">View Ads</button>
+  </div>
+</div>
+
+<div class="ad-card" data-category="yt">
+  <div class="ad-info">
+    <img src="https://i.postimg.cc/Kjpf8GJL/video-15047410.png" alt="YT">
+    <div class="ad-details"><strong>YouTube</strong><span>18 Minute</span></div>
+  </div>
+  <div class="ad-right">
+    <div class="amount">৳110.00</div>
+    <button class="view-btn" onclick="showPopup()">View Ads</button>
+  </div>
+</div>
+
+<div class="ad-card" data-category="yt">
+  <div class="ad-info">
+    <img src="https://i.postimg.cc/Kjpf8GJL/video-15047410.png" alt="YT">
+    <div class="ad-details"><strong>YouTube</strong><span>20 Minute</span></div>
+  </div>
+  <div class="ad-right">
+    <div class="amount">৳120.00</div>
+    <button class="view-btn" onclick="showPopup()">View Ads</button>
+  </div>
+</div>
+
+<!-- Extra YouTube Ads for variety -->
+<div class="ad-card" data-category="yt">
+  <div class="ad-info">
+    <img src="https://i.postimg.cc/Kjpf8GJL/video-15047410.png" alt="YT">
+    <div class="ad-details"><strong>YouTube</strong><span>4 Minute</span></div>
+  </div>
+  <div class="ad-right">
+    <div class="amount">৳30.00</div>
+    <button class="view-btn" onclick="showPopup()">View Ads</button>
+  </div>
+</div>
+
+<div class="ad-card" data-category="yt">
+  <div class="ad-info">
+    <img src="https://i.postimg.cc/Kjpf8GJL/video-15047410.png" alt="YT">
+    <div class="ad-details"><strong>YouTube</strong><span>6 Minute</span></div>
+  </div>
+  <div class="ad-right">
+    <div class="amount">৳55.00</div>
+    <button class="view-btn" onclick="showPopup()">View Ads</button>
+  </div>
+</div>
+  <!-- Google Ads -->
+  <div class="ad-card" data-category="google">
+    <div class="ad-info">
+      <img src="https://i.postimg.cc/prmYNThD/google-plus-2335329.png" alt="Google">
+      <div class="ad-details"><strong>Google +</strong><span>30 second</span></div>
+    </div>
+    <div class="ad-right">
+      <div class="amount">৳200.00</div>
+      <button class="view-btn" onclick="showPopup()">View Ads</button>
+    </div>
+  </div>
+<!-- Google Ads 1-10 মিনিট (৳10-100) -->
+<div class="ad-card" data-category="google">
+  <div class="ad-info">
+    <img src="https://i.postimg.cc/prmYNThD/google-plus-2335329.png" alt="Google">
+    <div class="ad-details"><strong>Google +</strong><span>1 Minute</span></div>
+  </div>
+  <div class="ad-right">
+    <div class="amount">৳10.00</div>
+    <button class="view-btn" onclick="showPopup()">View Ads</button>
+  </div>
+</div>
+
+<div class="ad-card" data-category="google">
+  <div class="ad-info">
+    <img src="https://i.postimg.cc/prmYNThD/google-plus-2335329.png" alt="Google">
+    <div class="ad-details"><strong>Google +</strong><span>2 Minute</span></div>
+  </div>
+  <div class="ad-right">
+    <div class="amount">৳20.00</div>
+    <button class="view-btn" onclick="showPopup()">View Ads</button>
+  </div>
+</div>
+
+<div class="ad-card" data-category="google">
+  <div class="ad-info">
+    <img src="https://i.postimg.cc/prmYNThD/google-plus-2335329.png" alt="Google">
+    <div class="ad-details"><strong>Google +</strong><span>3 Minute</span></div>
+  </div>
+  <div class="ad-right">
+    <div class="amount">৳25.00</div>
+    <button class="view-btn" onclick="showPopup()">View Ads</button>
+  </div>
+</div>
+
+<div class="ad-card" data-category="google">
+  <div class="ad-info">
+    <img src="https://i.postimg.cc/prmYNThD/google-plus-2335329.png" alt="Google">
+    <div class="ad-details"><strong>Google +</strong><span>4 Minute</span></div>
+  </div>
+  <div class="ad-right">
+    <div class="amount">৳35.00</div>
+    <button class="view-btn" onclick="showPopup()">View Ads</button>
+  </div>
+</div>
+
+<div class="ad-card" data-category="google">
+  <div class="ad-info">
+    <img src="https://i.postimg.cc/prmYNThD/google-plus-2335329.png" alt="Google">
+    <div class="ad-details"><strong>Google +</strong><span>5 Minute</span></div>
+  </div>
+  <div class="ad-right">
+    <div class="amount">৳50.00</div>
+    <button class="view-btn" onclick="showPopup()">View Ads</button>
+  </div>
+</div>
+
+<div class="ad-card" data-category="google">
+  <div class="ad-info">
+    <img src="https://i.postimg.cc/prmYNThD/google-plus-2335329.png" alt="Google">
+    <div class="ad-details"><strong>Google +</strong><span>6 Minute</span></div>
+  </div>
+  <div class="ad-right">
+    <div class="amount">৳55.00</div>
+    <button class="view-btn" onclick="showPopup()">View Ads</button>
+  </div>
+</div>
+
+<div class="ad-card" data-category="google">
+  <div class="ad-info">
+    <img src="https://i.postimg.cc/prmYNThD/google-plus-2335329.png" alt="Google">
+    <div class="ad-details"><strong>Google +</strong><span>7 Minute</span></div>
+  </div>
+  <div class="ad-right">
+    <div class="amount">৳65.00</div>
+    <button class="view-btn" onclick="showPopup()">View Ads</button>
+  </div>
+</div>
+
+<div class="ad-card" data-category="google">
+  <div class="ad-info">
+    <img src="https://i.postimg.cc/prmYNThD/google-plus-2335329.png" alt="Google">
+    <div class="ad-details"><strong>Google +</strong><span>8 Minute</span></div>
+  </div>
+  <div class="ad-right">
+    <div class="amount">৳75.00</div>
+    <button class="view-btn" onclick="showPopup()">View Ads</button>
+  </div>
+</div>
+
+<div class="ad-card" data-category="google">
+  <div class="ad-info">
+    <img src="https://i.postimg.cc/prmYNThD/google-plus-2335329.png" alt="Google">
+    <div class="ad-details"><strong>Google +</strong><span>9 Minute</span></div>
+  </div>
+  <div class="ad-right">
+    <div class="amount">৳90.00</div>
+    <button class="view-btn" onclick="showPopup()">View Ads</button>
+  </div>
+</div>
+
+<div class="ad-card" data-category="google">
+  <div class="ad-info">
+    <img src="https://i.postimg.cc/prmYNThD/google-plus-2335329.png" alt="Google">
+    <div class="ad-details"><strong>Google +</strong><span>10 Minute</span></div>
+  </div>
+  <div class="ad-right">
+    <div class="amount">৳100.00</div>
+    <button class="view-btn" onclick="showPopup()">View Ads</button>
+  </div>
+</div>
+  <!-- Other Ads -->
+  <div class="ad-card" data-category="other">
+    <div class="ad-info">
+      <img src="https://i.postimg.cc/SRGs6Rw2/tik-tok-3046129.png" alt="TikTok">
+      <div class="ad-details"><strong>TikTok</strong><span>10 second</span></div>
+    </div>
+    <div class="ad-right">
+      <div class="amount">৳25.00</div>
+      <button class="view-btn" onclick="showPopup()">View Ads</button>
+    </div>
+  </div>
+  <div class="ad-card" data-category="other">
+    <div class="ad-info">
+      <img src="https://i.postimg.cc/0Q8h6NdH/3955027.png" alt="Insta">
+      <div class="ad-details"><strong>Instagram</strong><span>20 second</span></div>
+    </div>
+    <div class="ad-right">
+      <div class="amount">৳15.00</div>
+      <button class="view-btn" onclick="showPopup()">View Ads</button>
+    </div>
+  </div>
+  <!-- Other Ads 15+ (৳15-120) -->
+  <div class="ad-card" data-category="other">
+  <div class="ad-info">
+  <img src="https://i.postimg.cc/SRGs6Rw2/tik-tok-3046129.png" alt="TikTok">
+  <div class="ad-details"><strong>TikTok</strong><span>10 sec</span></div>
+  </div>
+  <div class="ad-right">
+  <div class="amount">৳15.00</div>
+  <button class="view-btn" onclick="showPopup()">View Ads</button>
+  </div>
+  </div>
+  
+  <div class="ad-card" data-category="other">
+  <div class="ad-info">
+  <img src="https://i.postimg.cc/0Q8h6NdH/3955027.png" alt="Instagram">
+  <div class="ad-details"><strong>Instagram</strong><span>15 sec</span></div>
+  </div>
+  <div class="ad-right">
+  <div class="amount">৳20.00</div>
+  <button class="view-btn" onclick="showPopup()">View Ads</button>
+  </div>
+  </div>
+  
+  <div class="ad-card" data-category="other">
+  <div class="ad-info">
+  <img src="https://i.postimg.cc/SRGs6Rw2/tik-tok-3046129.png" alt="TikTok">
+  <div class="ad-details"><strong>TikTok</strong><span>30 sec</span></div>
+  </div>
+  <div class="ad-right">
+  <div class="amount">৳25.00</div>
+  <button class="view-btn" onclick="showPopup()">View Ads</button>
+  </div>
+  </div>
+  
+  <div class="ad-card" data-category="other">
+  <div class="ad-info">
+  <img src="https://i.postimg.cc/0Q8h6NdH/3955027.png" alt="Instagram">
+  <div class="ad-details"><strong>Instagram</strong><span>45 sec</span></div>
+  </div>
+  <div class="ad-right">
+  <div class="amount">৳35.00</div>
+  <button class="view-btn" onclick="showPopup()">View Ads</button>
+  </div>
+  </div>
+  
+  <div class="ad-card" data-category="other">
+  <div class="ad-info">
+  <img src="https://i.postimg.cc/SRGs6Rw2/tik-tok-3046129.png" alt="TikTok">
+  <div class="ad-details"><strong>TikTok</strong><span>1 min</span></div>
+  </div>
+  <div class="ad-right">
+  <div class="amount">৳40.00</div>
+  <button class="view-btn" onclick="showPopup()">View Ads</button>
+  </div>
+  </div>
+  
+  <div class="ad-card" data-category="other">
+  <div class="ad-info">
+  <img src="https://i.postimg.cc/0Q8h6NdH/3955027.png" alt="Instagram">
+  <div class="ad-details"><strong>Instagram</strong><span>1.5 min</span></div>
+  </div>
+  <div class="ad-right">
+  <div class="amount">৳50.00</div>
+  <button class="view-btn" onclick="showPopup()">View Ads</button>
+  </div>
+  </div>
+  
+  <div class="ad-card" data-category="other">
+  <div class="ad-info">
+  <img src="https://i.postimg.cc/SRGs6Rw2/tik-tok-3046129.png" alt="TikTok">
+  <div class="ad-details"><strong>TikTok</strong><span>2 min</span></div>
+  </div>
+  <div class="ad-right">
+  <div class="amount">৳55.00</div>
+  <button class="view-btn" onclick="showPopup()">View Ads</button>
+  </div>
+  </div>
+  
+  <div class="ad-card" data-category="other">
+  <div class="ad-info">
+  <img src="https://i.postimg.cc/0Q8h6NdH/3955027.png" alt="Instagram">
+  <div class="ad-details"><strong>Instagram</strong><span>3 min</span></div>
+  </div>
+  <div class="ad-right">
+  <div class="amount">৳65.00</div>
+  <button class="view-btn" onclick="showPopup()">View Ads</button>
+  </div>
+  </div>
+  
+  <div class="ad-card" data-category="other">
+  <div class="ad-info">
+  <img src="https://i.postimg.cc/SRGs6Rw2/tik-tok-3046129.png" alt="TikTok">
+  <div class="ad-details"><strong>TikTok</strong><span>4 min</span></div>
+  </div>
+  <div class="ad-right">
+  <div class="amount">৳70.00</div>
+  <button class="view-btn" onclick="showPopup()">View Ads</button>
+  </div>
+  </div>
+  
+  <div class="ad-card" data-category="other">
+  <div class="ad-info">
+  <img src="https://i.postimg.cc/0Q8h6NdH/3955027.png" alt="Instagram">
+  <div class="ad-details"><strong>Instagram</strong><span>5 min</span></div>
+  </div>
+  <div class="ad-right">
+  <div class="amount">৳80.00</div>
+  <button class="view-btn" onclick="showPopup()">View Ads</button>
+  </div>
+  </div>
+  
+  <div class="ad-card" data-category="other">
+  <div class="ad-info">
+  <img src="https://i.postimg.cc/SRGs6Rw2/tik-tok-3046129.png" alt="TikTok">
+  <div class="ad-details"><strong>TikTok</strong><span>6 min</span></div>
+  </div>
+  <div class="ad-right">
+  <div class="amount">৳85.00</div>
+  <button class="view-btn" onclick="showPopup()">View Ads</button>
+  </div>
+  </div>
+  
+  <div class="ad-card" data-category="other">
+  <div class="ad-info">
+  <img src="https://i.postimg.cc/0Q8h6NdH/3955027.png" alt="Instagram">
+  <div class="ad-details"><strong>Instagram</strong><span>7 min</span></div>
+  </div>
+  <div class="ad-right">
+  <div class="amount">৳95.00</div>
+  <button class="view-btn" onclick="showPopup()">View Ads</button>
+  </div>
+  </div>
+  
+  <div class="ad-card" data-category="other">
+  <div class="ad-info">
+  <img src="https://i.postimg.cc/SRGs6Rw2/tik-tok-3046129.png" alt="TikTok">
+  <div class="ad-details"><strong>TikTok</strong><span>8 min</span></div>
+  </div>
+  <div class="ad-right">
+  <div class="amount">৳100.00</div>
+  <button class="view-btn" onclick="showPopup()">View Ads</button>
+  </div>
+  </div>
+  
+  <div class="ad-card" data-category="other">
+  <div class="ad-info">
+  <img src="https://i.postimg.cc/0Q8h6NdH/3955027.png" alt="Instagram">
+  <div class="ad-details"><strong>Instagram</strong><span>9 min</span></div>
+  </div>
+  <div class="ad-right">
+  <div class="amount">৳110.00</div>
+  <button class="view-btn" onclick="showPopup()">View Ads</button>
+  </div>
+  </div>
+  
+  <div class="ad-card" data-category="other">
+  <div class="ad-info">
+  <img src="https://i.postimg.cc/SRGs6Rw2/tik-tok-3046129.png" alt="TikTok">
+  <div class="ad-details"><strong>TikTok</strong><span>10 min</span></div>
+  </div>
+  <div class="ad-right">
+  <div class="amount">৳120.00</div>
+  <button class="view-btn" onclick="showPopup()">View Ads</button>
+  </div>
+  </div>
+</div>
+
+  <!-- Scripts -->
+  <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+  <script>
+    function showPopup(){document.getElementById("popup").style.display="flex";}
+    function closePopup(){document.getElementById("popup").style.display="none";}
+    function goBack(){window.location.href="dashboard.html";}
+    function filterAds(category,event){
+      const cards=document.querySelectorAll(".ad-card");
+      const btns=document.querySelectorAll(".filter-btn");
+      btns.forEach(btn=>btn.classList.remove("active"));
+      event.target.classList.add("active");
+      cards.forEach(card=>{
+        if(category==="all"){card.style.display="flex";}
+        else{
+          card.getAttribute("data-category")===category
+            ? card.style.display="flex"
+            : card.style.display="none";
+        }
+      });
+    }
+  </script>
+</body>
+</html>

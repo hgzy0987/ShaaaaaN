@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Notification Permission</title>
+  <!-- Google Material Icons -->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #000; /* Full dark background */
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    /* Logo */
+    .logo {
+      position: absolute;
+      top: 25px;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+    .logo img {
+      height: 60px;
+      width: auto;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+    }
+
+    /* Popup Box */
+    .popup {
+      background: linear-gradient(160deg, #1f1f1f, #2b2b2b);
+      padding: 28px;
+      border-radius: 18px;
+      text-align: center;
+      max-width: 360px;
+      width: 90%;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+      animation: fadeIn 0.4s ease;
+      color: #fff;
+    }
+
+    .popup .icon {
+      font-size: 45px;
+      color: #4cafef;
+      margin-bottom: 10px;
+    }
+
+    .popup h2 {
+      margin-bottom: 12px;
+      font-size: 20px;
+      font-weight: 600;
+      color: #fff;
+    }
+
+    .popup p {
+      margin-bottom: 22px;
+      font-size: 15px;
+      line-height: 1.5;
+      color: #bbb;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 10px 22px;
+      margin: 0 6px;
+      border-radius: 10px;
+      border: none;
+      font-size: 15px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .btn-allow {
+      background: #27ae60;
+      color: #fff;
+      box-shadow: 0 4px 12px rgba(39,174,96,0.4);
+    }
+    .btn-allow:hover {
+      background: #219150;
+    }
+
+    .btn-deny {
+      background: #444;
+      color: #ccc;
+    }
+    .btn-deny:hover {
+      background: #666;
+    }
+
+    @keyframes fadeIn {
+      from {opacity: 0; transform: translateY(20px);}
+      to {opacity: 1; transform: translateY(0);}
+    }
+  </style>
+</head>
+<body>
+  <!-- Logo -->
+  <div class="logo">
+    <img src="https://i.postimg.cc/PrQzGjDD/20250907-082638.png" alt="Logo">
+  </div>
+
+  <!-- Popup -->
+  <div class="popup" id="popupBox">
+    <span class="material-icons-outlined icon">notifications_active</span>
+    <h2>নোটিফিকেশন অনুমতি</h2>
+    <p>TRUST BD 24  ব্যবহার করতে NOTIFICATION ALLOW করুন অন্যতায় এই App টা ব্যবহার করতে পারবেন না !</p>
+    <button class="btn btn-allow" onclick="allowNotification()">
+      <span class="material-icons-outlined">check_circle</span> Allow
+    </button>
+    <button class="btn btn-deny" onclick="denyNotification()">
+      <span class="material-icons-outlined">cancel</span> Deny
+    </button>
+  </div>
+
+  <script>
+    // যদি আগে Allow করা থাকে তাহলে সরাসরি signup.html এ যাবে
+    if (localStorage.getItem("notificationAllowed") === "true") {
+      window.location.href = "signup.html";
+    }
+
+    // Allow Button
+    function allowNotification() {
+      localStorage.setItem("notificationAllowed", "true");
+
+      // 👉 Browser Notification Permission চাইবে
+      if ("Notification" in window) {
+        Notification.requestPermission().then(permission => {
+          console.log("Notification permission:", permission);
+        });
+      }
+
+      window.location.href = "signup.html";
+    }
+
+    // Deny Button
+    function denyNotification() {
+      document.getElementById("popupBox").style.display = "none";
+      document.body.style.background = "#000"; // dark background থাকবে
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Trust-BD Payment</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.7.5/lottie.min.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js"></script>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet" />
+</head>
+<body class="bg-gradient-to-b from-rose-50 to-white min-h-screen flex justify-center items-start py-6">
+  <div class="w-full max-w-md bg-white rounded-3xl shadow-xl p-6 relative">
+
+    <!-- Header -->
+    <div class="flex items-center justify-center mb-4">
+      <span class="material-icons-outlined text-rose-500 mr-2">payments</span>
+      <h1 class="text-xl font-bold text-gray-800">TRUST-BD PAYMENT PAGE</h1>
+    </div>
+
+    <!-- Back Button -->
+    <a href="dashboard.html" class="absolute top-5 left-5 text-rose-500 flex items-center text-sm">
+      <span class="material-icons-outlined text-lg mr-1">arrow_back</span> 
+    </a>
+
+    <!-- Balance Card -->
+    <div class="bg-gradient-to-r from-pink-500 to-rose-500 text-white rounded-2xl p-5 text-center mb-5 shadow">
+      <div class="text-sm">Available Balance</div>
+      <div id="balance" class="text-3xl font-bold">৳0.00</div>
+    </div>
+
+    <!-- Method Buttons -->
+    <div class="flex justify-between gap-2 mb-4">
+      <button class="method w-1/3 bg-gray-100 py-3 rounded-xl font-semibold border" data-method="Nagad">
+        <img src="https://uploads.onecompiler.io/43ea4pg72/43eq73f47/download%20(2).png" class="mx-auto w-8 mb-1" />
+        Nagad
+      </button>
+      <button class="method w-1/3 bg-gray-100 py-3 rounded-xl font-semibold border" data-method="bKash">
+        <img src="https://uploads.onecompiler.io/43ea4pg72/43eq73f47/download%20(3).png" class="mx-auto w-8 mb-1" />
+        bKash
+      </button>
+      <button class="method w-1/3 bg-gray-100 py-3 rounded-xl font-semibold border" data-method="Rocket">
+        <img src="https://uploads.onecompiler.io/43ea4pg72/43eq73f47/download%20(6).png" class="mx-auto w-8 mb-1" />
+        Rocket
+      </button>
+    </div>
+
+    <p class="text-center text-sm text-gray-600 mb-4">
+      Selected Method: <span id="selectedMethod" class="font-medium">None</span>
+    </p>
+
+    <!-- Input Fields -->
+    <input type="number" id="amount" placeholder="৳700 - ৳20,000"
+           class="w-full mb-3 px-4 py-3 border rounded-xl focus:outline-none focus:ring-2 focus:ring-rose-300" />
+    <input type="text" id="accountNumber" placeholder="Enter 11-digit Account Number"
+           maxlength="11" class="w-full mb-5 px-4 py-3 border rounded-xl focus:outline-none focus:ring-2 focus:ring-rose-300" />
+
+    <!-- Submit Button -->
+    <button id="submitBtn" class="w-full bg-gradient-to-r from-pink-500 to-rose-500 text-white py-3 rounded-2xl font-bold shadow-md">
+      Submit Payment
+    </button>
+
+    <!-- Popup Modal -->
+    <div id="popup" class="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50 hidden">
+      <div class="bg-white rounded-3xl p-6 w-72 text-center relative shadow-lg">
+        <span id="closePopup" class="material-icons-outlined text-red-400 absolute top-2 right-2 cursor-pointer">close</span>
+        <div id="popupAnimation" class="w-36 h-36 mx-auto"></div>
+        <p id="popupMessage" class="mt-3 text-lg font-semibold text-gray-700"></p>
+      </div>
+    </div>
+
+    <!-- Bottom Image -->
+    <img src="https://i.postimg.cc/28SByzSX/shopping-online-online-payment-website-mobile-application-banner-concept-marketing-digital-marketing.jpg"
+         alt="Payment Banner"
+         class="mt-6 rounded-xl shadow-md w-full" />
+  </div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
+    import { getDatabase, ref as dbRef, get, set } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-database.js";
+    import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyBCyR4yHRj4Yze2-M27tktHtV_f03EoVvs",
+      authDomain: "trust-bd-d889e.firebaseapp.com",
+      projectId: "trust-bd-d889e",
+      storageBucket: "trust-bd-d889e.appspot.com",
+      messagingSenderId: "413112954640",
+      appId: "1:41311295410:c8b9ecd4037f95",
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth();
+    const db = getDatabase();
+    const firestore = getFirestore();
+
+    let selectedMethod = null;
+
+    document.querySelectorAll(".method").forEach(btn => {
+      btn.addEventListener("click", () => {
+        selectedMethod = btn.dataset.method;
+        document.getElementById("selectedMethod").textContent = selectedMethod;
+
+        document.querySelectorAll(".method").forEach(b => b.classList.remove("ring", "ring-pink-400", "bg-pink-50"));
+        btn.classList.add("ring", "ring-pink-400", "bg-pink-50");
+      });
+    });
+
+    const popup = document.getElementById("popup");
+    const closeBtn = document.getElementById("closePopup");
+    closeBtn.addEventListener("click", () => popup.classList.add("hidden"));
+
+    onAuthStateChanged(auth, async (user) => {
+      if (!user) {
+        location.href = "login.html";
+        return;
+      }
+      const uid = user.uid;
+      const balanceRef = dbRef(db, `users/${uid}/balance`);
+      let balanceSnap = await get(balanceRef);
+      let balance = balanceSnap.exists() ? parseFloat(balanceSnap.val()) : 0;
+      document.getElementById("balance").textContent = `৳${balance.toFixed(2)}`;
+
+      document.getElementById("submitBtn").addEventListener("click", async () => {
+        const amount = parseFloat(document.getElementById("amount").value);
+        const acct = document.getElementById("accountNumber").value.trim();
+
+        // Validate
+        if (!selectedMethod || isNaN(amount) || isNaN(parseInt(acct)) || amount < 700 || amount > 20000 || acct.length !== 11) {
+          showPopup(" Fill all fields correctly!", "https://lottie.host/64466937-cfce-4511-974f-0031900de9bf/itdRvNPbUL.json");
+          return;
+        }
+
+        const isSuccess = balance >= amount;
+        const animationPath = isSuccess
+          ? "https://lottie.host/693a63f0-0d84-4222-857e-a0adf1f77118/A7H9whEOxz.json"
+          : "https://lottie.host/64466937-cfce-4511-974f-0031900de9bf/itdRvNPbUL.json";
+
+        await addDoc(collection(firestore, `transactions-${uid}`), {
+          method: selectedMethod,
+          amount,
+          accountNumber: acct,
+          status: isSuccess ? "Success" : "Failed",
+          timestamp: serverTimestamp(),
+        });
+
+        if (isSuccess) {
+          balance -= amount;
+          await set(balanceRef, balance);
+          document.getElementById("balance").textContent = `৳${balance.toFixed(2)}`;
+        }
+        showPopup(isSuccess ? "Your Transaction Has Been Successful!" : "Insufficient Balance! Please Try Again Leater", animationPath);
+      });
+    });
+
+    function showPopup(message, animPath) {
+      document.getElementById("popupMessage").textContent = message;
+      const animC = document.getElementById("popupAnimation");
+      animC.innerHTML = "";
+      lottie.loadAnimation({ container: animC, renderer: "svg", loop: false, autoplay: true, path: animPath });
+      popup.classList.remove("hidden");
+    }
+  </script>
+</body>
+</html>
