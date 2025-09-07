@@ -150,7 +150,7 @@
     </div>
 
     <div class="input-group">
-      <label>Enter Amount (300 - 20000 ৳)</label>
+      <label>Enter Amount (100 - 2000 ৳)</label>
       <input type="number" id="amount" placeholder="e.g. 500" />
     </div>
 
@@ -200,7 +200,7 @@
       const friendUid = document.getElementById('friendUid').value.trim();
       const amount = parseInt(document.getElementById('amount').value);
 
-      if (friendUid.length !== 5 || isNaN(amount) || amount < 300 || amount > 20000) {
+      if (friendUid.length !== 5 || isNaN(amount) || amount < 100 || amount > 2000) {
         showPopup('Invalid UID or amount.', false, false);
         return;
       }
