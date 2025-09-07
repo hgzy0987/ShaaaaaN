@@ -3,11 +3,20 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Register - Amar Club</title>
+<title>Register - TRUST BD 24</title>
+
+<!-- Fonts & Icons -->
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" />
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+
+<!-- Firebase -->
 <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
+
+<!-- Manifest -->
+<link rel="manifest" href="manifest.json" />
+<meta name="theme-color" content="#0072ff">
+
 <style>
 * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Roboto', sans-serif; }
 body {
@@ -25,7 +34,6 @@ body {
   padding: 35px 30px;
   border-radius: 25px;
   box-shadow: 0 15px 35px rgba(0,0,0,0.25);
-  position: relative;
 }
 .logo {
   display: block;
@@ -184,7 +192,7 @@ h2 {
 <!-- Install Popup -->
 <div id="installPopup">
   <div class="popup-box">
-    <h3>📲 Install Amar Club</h3>
+    <h3>📲 Install - TRUST BD 24</h3>
     <p>Get quick access by installing this app on your device.</p>
     <button id="installBtn">Install</button>
     <button onclick="closePopup()">Maybe Later</button>
@@ -206,7 +214,7 @@ h2 {
   firebase.initializeApp(firebaseConfig);
   const auth = firebase.auth();
 
-  // Handle form submission
+  // Form submission
   document.getElementById("registerForm").addEventListener("submit", (e) => {
     e.preventDefault();
     const email = document.getElementById("email").value.trim();
@@ -220,7 +228,6 @@ h2 {
 
     auth.createUserWithEmailAndPassword(email, password)
       .then(() => {
-        // Direct redirect
         window.location.href="dashboard.html";
       })
       .catch((error)=>{
@@ -228,21 +235,16 @@ h2 {
       });
   });
 
-  // Autofill Invite Code from URL
+  // Invite Code auto-fill
   window.addEventListener("DOMContentLoaded", ()=>{
     const query = window.location.search;
     if(query.startsWith("?") && query.length>1){
       const refCode = query.slice(1);
-      const inviteInput = document.getElementById("inviteCode");
-      inviteInput.value = refCode;
-      inviteInput.setAttribute("readonly", true);
+      document.getElementById("inviteCode").value = refCode;
     }
-
-    // Show install popup on entry
-    document.getElementById("installPopup").style.display = "flex";
   });
 
-  // PWA Install Event
+  // Install popup
   let deferredPrompt;
   window.addEventListener("beforeinstallprompt", (e) => {
     e.preventDefault();
@@ -261,6 +263,12 @@ h2 {
 
   function closePopup(){
     document.getElementById("installPopup").style.display = "none";
+  }
+
+  // Register service worker
+  if ("serviceWorker" in navigator) {
+    navigator.serviceWorker.register("service-worker.js")
+      .then(() => console.log("✅ Service Worker Registered"));
   }
 </script>
 </body>
