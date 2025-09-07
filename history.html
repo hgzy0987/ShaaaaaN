@@ -1,179 +1,122 @@
 <!DOCTYPE html>
 <html lang="bn">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Trust BD Transaction History</title>
-  
-  <!-- Tailwind CSS -->
-  <script src="https://cdn.tailwindcss.com"></script>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Trust BD Transaction History</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
+import { getFirestore, collection, query, where, getDocs, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
 
-  <!-- Google Material Icons -->
-  <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
+const firebaseConfig = {
+  apiKey: "AIzaSyBCyR4yHRj4Yze2-M27tktHtV_f03EoVvs",
+  authDomain: "trust-bd-d889e.firebaseapp.com",
+  projectId: "trust-bd-d889e",
+  storageBucket: "trust-bd-d889e.appspot.com",
+  messagingSenderId: "413112954640",
+  appId: "1:413112954640:web:beb99410c8b9ecd4037f95",
+};
 
-  <!-- Firebase (module kept) -->
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
-    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
-    import { getFirestore, collection, query, where, orderBy, getDocs } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
+const app = initializeApp(firebaseConfig);
+const auth = getAuth();
+const db = getFirestore();
 
-    const firebaseConfig = {
-      apiKey: "AIzaSyBCyR4yHRj4Yze2-M27tktHtV_f03EoVvs",
-      authDomain: "trust-bd-d889e.firebaseapp.com",
-      projectId: "trust-bd-d889e",
-      storageBucket: "trust-bd-d889e.appspot.com",
-      messagingSenderId: "413112954640",
-      appId: "1:413112954640:web:beb99410c8b9ecd4037f95",
-    };
+document.addEventListener("DOMContentLoaded", () => {
+  const depositTab = document.getElementById("depositTab");
+  const withdrawTab = document.getElementById("withdrawTab");
+  const depositsDiv = document.getElementById("deposits");
+  const withdrawsDiv = document.getElementById("withdraws");
 
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth();
-    const db = getFirestore();
+  function showTab(tab) {
+    if(tab === "deposit") {
+      depositsDiv.classList.remove("hidden");
+      withdrawsDiv.classList.add("hidden");
+      depositTab.classList.add("bg-rose-500","text-white");
+      depositTab.classList.remove("bg-white","text-rose-500");
+      withdrawTab.classList.remove("bg-rose-500","text-white");
+      withdrawTab.classList.add("bg-white","text-rose-500");
+    } else {
+      depositsDiv.classList.add("hidden");
+      withdrawsDiv.classList.remove("hidden");
+      withdrawTab.classList.add("bg-rose-500","text-white");
+      withdrawTab.classList.remove("bg-white","text-rose-500");
+      depositTab.classList.remove("bg-rose-500","text-white");
+      depositTab.classList.add("bg-white","text-rose-500");
+    }
+  }
+  window.showTab = showTab;
+  showTab('deposit'); // initial tab
 
-    // DOM-related code should run after elements are ready
-    document.addEventListener('DOMContentLoaded', () => {
-      const depositsDiv = document.getElementById("deposits");
-      const withdrawsDiv = document.getElementById("withdraws");
-      const depositTab = document.getElementById("depositTab");
-      const withdrawTab = document.getElementById("withdrawTab");
+  function toDateSafe(ts){
+    if(!ts) return null;
+    try{
+      if(typeof ts.toDate==='function') return ts.toDate();
+      return new Date(ts);
+    }catch{
+      return null;
+    }
+  }
 
-      function showTab(tab) {
-        if (tab === "deposit") {
-          depositsDiv.classList.remove("hidden");
-          withdrawsDiv.classList.add("hidden");
-          depositTab.classList.add("bg-rose-500", "text-white");
-          depositTab.classList.remove("bg-white", "text-rose-500");
-          withdrawTab.classList.remove("bg-rose-500", "text-white");
-          withdrawTab.classList.add("bg-white", "text-rose-500");
-        } else {
-          depositsDiv.classList.add("hidden");
-          withdrawsDiv.classList.remove("hidden");
-          withdrawTab.classList.add("bg-rose-500", "text-white");
-          withdrawTab.classList.remove("bg-white", "text-rose-500");
-          depositTab.classList.remove("bg-rose-500", "text-white");
-          depositTab.classList.add("bg-white", "text-rose-500");
-        }
+  async function loadTransactions(type, container){
+    container.innerHTML = `<p class="text-center text-gray-400">Loading ${type}...</p>`;
+    onAuthStateChanged(auth, async (user)=>{
+      if(!user){
+        window.location.href = "login.html";
+        return;
       }
-
-      // expose to global so inline onclick works
-      window.showTab = showTab;
-
-      // set initial tab
-      showTab('deposit');
-
-      // Auth & Firestore logic
-      onAuthStateChanged(auth, async (user) => {
-        if (!user) {
-          alert("Please login first.");
-          window.location.href = "login.html";
+      const uid = user.uid;
+      try{
+        const q = query(collection(db,"transactions"), where("uid","==",uid), where("type","==",type));
+        const snap = await getDocs(q);
+        container.innerHTML = "";
+        if(snap.empty){
+          container.innerHTML = `<p class="text-center text-gray-400">No ${type} found.</p>`;
           return;
         }
-
-        const uid = user.uid;
-
-        // Helper to convert Firestore Timestamp or string to Date
-        function toDateSafe(ts) {
-          if (!ts) return null;
-          try {
-            if (typeof ts.toDate === 'function') return ts.toDate();
-            return new Date(ts);
-          } catch (e) {
-            return null;
-          }
-        }
-
-        // 🔁 Load Deposit History
-        try {
-          const depositQ = query(
-            collection(db, "deposits"),
-            where("uid", "==", uid)
-            // you can add orderBy('time','desc') in query if 'time' field is indexed & consistent
-          );
-          const depositSnap = await getDocs(depositQ);
-          depositsDiv.innerHTML = "";
-          if (depositSnap.empty) {
-            depositsDiv.innerHTML = `<p class="text-center text-gray-400">No deposits found.</p>`;
-          } else {
-            const deposits = [];
-            depositSnap.forEach(doc => deposits.push(doc.data()));
-            deposits.sort((a, b) => {
-              const da = toDateSafe(a.time) || new Date(0);
-              const dbt = toDateSafe(b.time) || new Date(0);
-              return dbt - da;
-            });
-            deposits.forEach(data => {
-              const dateObj = toDateSafe(data.time);
-              const date = dateObj ? dateObj.toLocaleString() : "Unknown date";
-              const statusColor = data.status === "Success" ? "text-green-600" : "text-red-500";
-              depositsDiv.innerHTML += `
-                <div class="bg-white rounded-xl shadow p-4">
-                  <div class="flex justify-between items-center">
-                    <div>
-                      <div class="font-medium text-rose-600">${data.method || '—'}</div>
-                      <div class="text-sm text-gray-500">TrxID: ${data.trxId || '—'}</div>
-                    </div>
-                    <div class="text-right">
-                      <div class="font-bold">৳${data.amount ?? '0'}</div>
-                      <div class="text-xs ${statusColor}">${data.status || '—'}</div>
-                    </div>
-                  </div>
-                  <div class="text-xs text-gray-400 mt-1">${date}</div>
+        let arr=[];
+        snap.forEach(doc=>arr.push(doc.data()));
+        arr.sort((a,b)=>{
+          const da = toDateSafe(a.timestamp)||new Date(0);
+          const dbt = toDateSafe(b.timestamp)||new Date(0);
+          return dbt-da;
+        });
+        arr.forEach(data=>{
+          const date = toDateSafe(data.timestamp)?.toLocaleString()||"Unknown date";
+          const statusColor = data.status==="Success"?"text-green-600":"text-red-500";
+          const color = type==="Deposit"?"text-rose-600":"text-indigo-600";
+          container.innerHTML += `
+            <div class="bg-white rounded-xl shadow p-4">
+              <div class="flex justify-between items-center">
+                <div>
+                  <div class="font-medium ${color}">${data.method||"—"}</div>
+                  <div class="text-sm text-gray-500">TrxID: ${data.trxId||"—"}</div>
                 </div>
-              `;
-            });
-          }
-        } catch (err) {
-          console.error("Error loading deposits:", err);
-          depositsDiv.innerHTML = `<p class="text-center text-red-500">Failed to load deposits.</p>`;
-        }
-
-        // 🔁 Load Withdraw History
-        try {
-          const withdrawQ = query(
-            collection(db, "withdraws"),
-            where("uid", "==", uid)
-          );
-          const withdrawSnap = await getDocs(withdrawQ);
-          withdrawsDiv.innerHTML = "";
-          if (withdrawSnap.empty) {
-            withdrawsDiv.innerHTML = `<p class="text-center text-gray-400">No withdraws found.</p>`;
-          } else {
-            const withdraws = [];
-            withdrawSnap.forEach(doc => withdraws.push(doc.data()));
-            withdraws.sort((a, b) => {
-              const da = toDateSafe(a.time) || new Date(0);
-              const dbt = toDateSafe(b.time) || new Date(0);
-              return dbt - da;
-            });
-            withdraws.forEach(data => {
-              const dateObj = toDateSafe(data.time);
-              const date = dateObj ? dateObj.toLocaleString() : "Unknown date";
-              const statusColor = data.status === "Success" ? "text-green-600" : "text-red-500";
-              withdrawsDiv.innerHTML += `
-                <div class="bg-white rounded-xl shadow p-4">
-                  <div class="flex justify-between items-center">
-                    <div>
-                      <div class="font-medium text-indigo-600">${data.method || '—'}</div>
-                      <div class="text-sm text-gray-500">TrxID: ${data.trxId || '—'}</div>
-                    </div>
-                    <div class="text-right">
-                      <div class="font-bold">৳${data.amount ?? '0'}</div>
-                      <div class="text-xs ${statusColor}">${data.status || '—'}</div>
-                    </div>
-                  </div>
-                  <div class="text-xs text-gray-400 mt-1">${date}</div>
+                <div class="text-right">
+                  <div class="font-bold">৳${data.amount??0}</div>
+                  <div class="text-xs ${statusColor}">${data.status||"—"}</div>
                 </div>
-              `;
-            });
-          }
-        } catch (err) {
-          console.error("Error loading withdraws:", err);
-          withdrawsDiv.innerHTML = `<p class="text-center text-red-500">Failed to load withdraws.</p>`;
-        }
-      });
+              </div>
+              <div class="text-xs text-gray-400 mt-1">${date}</div>
+            </div>
+          `;
+        });
+      }catch(err){
+        container.innerHTML = `<p class="text-center text-red-500">Failed to load ${type}.</p>`;
+        console.error(err);
+      }
     });
-  </script>
+  }
 
+  depositTab.addEventListener("click",()=>loadTransactions("Deposit",depositsDiv));
+  withdrawTab.addEventListener("click",()=>loadTransactions("Withdraw",withdrawsDiv));
+
+  // initial load
+  loadTransactions("Deposit",depositsDiv);
+});
+</script>
 </head>
 <body class="bg-rose-50 min-h-screen flex flex-col items-center px-4 py-6">
 
@@ -190,26 +133,17 @@
     </div>
   </div>
 
-  <!-- Banner Image -->
-  <div class="w-full max-w-md mb-4">
-    <img src="https://i.postimg.cc/YCQcK2QK/Picsart-25-09-06-08-40-53-637.jpg" alt="Banner" class="w-full h-40 object-cover rounded-xl shadow"/>
-  </div>
-
   <!-- Tabs -->
   <div class="w-full max-w-md flex justify-around mb-4">
-    <button id="depositTab" onclick="showTab('deposit')" class="px-4 py-2 rounded-full font-semibold bg-rose-500 text-white">Deposit</button>
-    <button id="withdrawTab" onclick="showTab('withdraw')" class="px-4 py-2 rounded-full font-semibold bg-white text-rose-500 border border-rose-300">Withdraw</button>
+    <button id="depositTab" class="px-4 py-2 rounded-full font-semibold bg-rose-500 text-white">Deposit</button>
+    <button id="withdrawTab" class="px-4 py-2 rounded-full font-semibold bg-white text-rose-500 border border-rose-300">Withdraw</button>
   </div>
 
   <!-- Deposit Section -->
-  <div id="deposits" class="w-full max-w-md space-y-3 text-sm text-gray-700">
-    <p class="text-center text-gray-400">Loading deposits...</p>
-  </div>
+  <div id="deposits" class="w-full max-w-md space-y-3 text-sm text-gray-700"></div>
 
   <!-- Withdraw Section -->
-  <div id="withdraws" class="w-full max-w-md space-y-3 text-sm text-gray-700 hidden">
-    <p class="text-center text-gray-400">Loading withdraws...</p>
-  </div>
+  <div id="withdraws" class="w-full max-w-md space-y-3 text-sm text-gray-700 hidden"></div>
 
 </body>
 </html>
