@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="en">
+<!DOCTYPE html>
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -111,6 +112,21 @@
       font-weight: bold;
       font-size: 1.1rem;
     }
+    .buy-package {
+      margin-top: 15px;
+      display: inline-block;
+      padding: 10px 20px;
+      background: #0066ff;
+      color: white;
+      font-weight: bold;
+      border-radius: 8px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.3s;
+    }
+    .buy-package:hover {
+      background: #004acc;
+    }
   </style>
   <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
@@ -123,29 +139,34 @@
       <i class="material-icons-outlined">sync_alt</i>
       TRUST-BD MONEY EXCHANGE WITH FRIEND
     </div>
-    <img class="image" src="https://i.postimg.cc/YCK1vqnR/people-using-mobile-bank-remittance-money-74855-6617.avif" alt="exchange" /><div class="balance-box">
-  <div class="balance">Your Main Balance: <span id="balance">Loading...</span> ৳</div>
-</div>
+    <img class="image" src="https://i.postimg.cc/YCK1vqnR/people-using-mobile-bank-remittance-money-74855-6617.avif" alt="exchange" />
+    <div class="balance-box">
+      <div class="balance">Your Main Balance: <span id="balance">Loading...</span> ৳</div>
+    </div>
 
-<div class="input-group">
-  <label>Enter Your Friend UID (5-digit)</label>
-  <input type="text" id="friendUid" maxlength="5" placeholder="e.g. 12345" />
-</div>
+    <div class="input-group">
+      <label>Enter Your Friend UID (5-digit)</label>
+      <input type="text" id="friendUid" maxlength="5" placeholder="e.g. 12345" />
+    </div>
 
-<div class="input-group">
-  <label>Enter Amount (300 - 20000 ৳)</label>
-  <input type="number" id="amount" placeholder="e.g. 500" />
-</div>
+    <div class="input-group">
+      <label>Enter Amount (100 - 2000 ৳)</label>
+      <input type="number" id="amount" placeholder="e.g. 500" />
+    </div>
 
-<button onclick="exchangeMoney()">Exchange</button>
+    <button onclick="exchangeMoney()">Exchange</button>
+  </div>
 
-  </div>  <div class="popup" id="popup">
+  <div class="popup" id="popup">
     <div class="popup-content">
       <span class="close" onclick="closePopup()">&times;</span>
       <div id="lottieContainer" style="width: 200px; height: 200px; margin: auto;"></div>
       <div class="popup-message" id="popupMessage"></div>
+      <a href="package.html" class="buy-package" id="buyPackageBtn" style="display:none;">BUY PACKAGE</a>
     </div>
-  </div>  <script>
+  </div>
+
+  <script>
     const firebaseConfig = {
       apiKey: "AIzaSyBCyR4yHRj4Yze2-M27tktHtV_f03EoVvs",
       authDomain: "trust-bd-d889e.firebaseapp.com",
@@ -179,13 +200,19 @@
       const friendUid = document.getElementById('friendUid').value.trim();
       const amount = parseInt(document.getElementById('amount').value);
 
-      if (friendUid.length !== 5 || isNaN(amount) || amount < 300 || amount > 20000) {
+      if (friendUid.length !== 5 || isNaN(amount) || amount < 100 || amount > 2000) {
         showPopup('Invalid UID or amount.', false);
         return;
       }
 
       db.ref('users/' + currentUid + '/balance').once('value').then((snapshot) => {
         const currentBalance = snapshot.val() || 0;
+
+        // ✅ নতুন ব্যালেন্স চেক: 100 - 2000 হলে exchange বন্ধ
+        if (currentBalance >= 100 && currentBalance <= 2000) {
+          showPopup('You cannot use it at this time. Please purchase a package and enjoy this service. Thank you.', false, true);
+          return;
+        }
 
         if (currentBalance >= amount) {
           const updates = {};
@@ -201,16 +228,21 @@
       });
     }
 
-    function showPopup(message, isSuccess) {
+    function showPopup(message, isSuccess, showBuy = false) {
       const popup = document.getElementById('popup');
       const messageBox = document.getElementById('popupMessage');
       const container = document.getElementById('lottieContainer');
+      const buyBtn = document.getElementById('buyPackageBtn');
+
       container.innerHTML = '';
       messageBox.innerText = message;
+      buyBtn.style.display = showBuy ? 'inline-block' : 'none';
+
       popup.style.display = 'flex';
       const path = isSuccess
         ? 'https://lottie.host/693a63f0-0d84-4222-857e-a0adf1f77118/A7H9whEOxz.json'
         : 'https://lottie.host/64466937-cfce-4511-974f-0031900de9bf/itdRvNPbUL.json';
+
       lottie.loadAnimation({
         container: container,
         renderer: 'svg',
@@ -223,5 +255,6 @@
     function closePopup() {
       document.getElementById('popup').style.display = 'none';
     }
-  </script></body>
+  </script>
+</body>
 </html>
