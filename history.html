@@ -1,170 +1,154 @@
 <!DOCTYPE html>
-<html lang="bn">
+<html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Trust BD Transaction History</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Trust BD Transaction History</title>
+  
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
 
-<!-- Tailwind CSS -->
-<script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Material Icons -->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
 
-<!-- Google Material Icons -->
-<link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
+  <!-- Firebase -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
+    import { getFirestore, collection, query, where, orderBy, getDocs } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
 
-<!-- Firebase -->
-<script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
-import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
-import { getFirestore, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
+    const firebaseConfig = {
+      apiKey: "AIzaSyBCyR4yHRj4Yze2-M27tktHtV_f03EoVvs",
+      authDomain: "trust-bd-d889e.firebaseapp.com",
+      projectId: "trust-bd-d889e",
+      storageBucket: "trust-bd-d889e.appspot.com",
+      messagingSenderId: "413112954640",
+      appId: "1:413112954640:web:beb99410c8b9ecd4037f95",
+    };
 
-// Firebase Configuration
-const firebaseConfig = {
-  apiKey: "AIzaSyBCyR4yHRj4Yze2-M27tktHtV_f03EoVvs",
-  authDomain: "trust-bd-d889e.firebaseapp.com",
-  projectId: "trust-bd-d889e",
-  storageBucket: "trust-bd-d889e.appspot.com",
-  messagingSenderId: "413112954640",
-  appId: "1:413112954640:web:beb99410c8b9ecd4037f95",
-};
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth();
+    const db = getFirestore();
 
-const app = initializeApp(firebaseConfig);
-const auth = getAuth();
-const db = getFirestore();
+    const depositsDiv = document.getElementById("deposits");
+    const transactionsDiv = document.getElementById("transactions");
 
-// DOM Elements
-const depositsDiv = document.getElementById("deposits");
-const withdrawsDiv = document.getElementById("withdraws");
-const depositTab = document.getElementById("depositTab");
-const withdrawTab = document.getElementById("withdrawTab");
+    onAuthStateChanged(auth, async (user) => {
+      if (!user) {
+        alert("Please login first.");
+        window.location.href = "login.html";
+        return;
+      }
 
-// Tab Switch Function
-function showTab(tab) {
-  if(tab === "deposit") {
-    depositsDiv.classList.remove("hidden");
-    withdrawsDiv.classList.add("hidden");
-    depositTab.classList.add("bg-rose-500","text-white");
-    depositTab.classList.remove("bg-white","text-rose-500");
-    withdrawTab.classList.remove("bg-rose-500","text-white");
-    withdrawTab.classList.add("bg-white","text-rose-500");
-  } else {
-    depositsDiv.classList.add("hidden");
-    withdrawsDiv.classList.remove("hidden");
-    withdrawTab.classList.add("bg-rose-500","text-white");
-    withdrawTab.classList.remove("bg-white","text-rose-500");
-    depositTab.classList.remove("bg-rose-500","text-white");
-    depositTab.classList.add("bg-white","text-rose-500");
-  }
-}
+      const uid = user.uid;
 
-// Load Deposit History
-async function loadDepositHistory(uid) {
-  const depositQ = query(collection(db,"deposits"),where("uid","==",uid));
-  const snap = await getDocs(depositQ);
-  depositsDiv.innerHTML = "";
-  if(snap.empty){
-    depositsDiv.innerHTML = `<p class="text-center text-gray-400">No deposits found.</p>`;
-  } else {
-    const deposits = [];
-    snap.forEach(doc => deposits.push(doc.data()));
-    deposits.sort((a,b)=> new Date(b.time) - new Date(a.time));
-    deposits.forEach(data => {
-      const date = new Date(data.time).toLocaleString();
-      const statusColor = data.status === "Success" ? "text-green-600" : "text-red-500";
-      depositsDiv.innerHTML += `
-        <div class="bg-white rounded-xl shadow p-4">
-          <div class="flex justify-between items-center">
-            <div>
-              <div class="font-medium text-rose-600">${data.method}</div>
-              <div class="text-sm text-gray-500">TrxID: ${data.trxId}</div>
+      // 🔁 Load Deposit History
+      const depositQ = query(
+        collection(db, "deposits"),
+        where("uid", "==", uid)
+      );
+
+      const depositSnap = await getDocs(depositQ);
+      depositsDiv.innerHTML = "";
+
+      if (depositSnap.empty) {
+        depositsDiv.innerHTML = `<p class="text-center text-gray-400">No deposits found.</p>`;
+      } else {
+        const deposits = [];
+        depositSnap.forEach(doc => deposits.push(doc.data()));
+        deposits.sort((a, b) => new Date(b.time) - new Date(a.time));
+
+        deposits.forEach(data => {
+          const date = new Date(data.time).toLocaleString();
+          const statusColor = data.status === "Success" ? "text-green-600" : "text-red-500";
+          depositsDiv.innerHTML += `
+            <div class="bg-white rounded-xl shadow p-4">
+              <div class="flex justify-between items-center">
+                <div>
+                  <div class="font-medium text-rose-600">${data.method}</div>
+                  <div class="text-sm text-gray-500">TrxID: ${data.trxId}</div>
+                </div>
+                <div class="text-right">
+                  <div class="font-bold">৳${data.amount}</div>
+                  <div class="text-xs ${statusColor}">${data.status}</div>
+                </div>
+              </div>
+              <div class="text-xs text-gray-400 mt-1">${date}</div>
             </div>
-            <div class="text-right">
-              <div class="font-bold">৳${data.amount}</div>
-              <div class="text-xs ${statusColor}">${data.status}</div>
+          `;
+        });
+      }
+
+      // 🔁 Load Transaction History
+      const txQ = query(
+        collection(db, `transactions-${uid}`),
+        orderBy("timestamp", "desc")
+      );
+
+      const txSnap = await getDocs(txQ);
+      transactionsDiv.innerHTML = "";
+
+      if (txSnap.empty) {
+        transactionsDiv.innerHTML = `<p class="text-center text-gray-400">No transactions found.</p>`;
+      } else {
+        txSnap.forEach(doc => {
+          const data = doc.data();
+          const time = data.timestamp?.toDate().toLocaleString() || "Unknown";
+          const statusColor = data.status === "Success" ? "text-green-600" : "text-red-500";
+
+          transactionsDiv.innerHTML += `
+            <div class="bg-white rounded-xl shadow p-4">
+              <div class="flex justify-between items-center">
+                <div>
+                  <div class="font-medium text-indigo-600">${data.method}</div>
+                  <div class="text-sm text-gray-500">${data.accountNumber}</div>
+                </div>
+                <div class="text-right">
+                  <div class="font-bold">৳${data.amount}</div>
+                  <div class="text-xs ${statusColor}">${data.status}</div>
+                </div>
+              </div>
+              <div class="text-xs text-gray-400 mt-1">${time}</div>
             </div>
-          </div>
-          <div class="text-xs text-gray-400 mt-1">${date}</div>
-        </div>
-      `;
+          `;
+        });
+      }
     });
-  }
-}
+  </script>
 
-// Load Withdraw History
-async function loadWithdrawHistory(uid) {
-  const withdrawQ = query(collection(db,"withdraws"),where("uid","==",uid));
-  const snap = await getDocs(withdrawQ);
-  withdrawsDiv.innerHTML = "";
-  if(snap.empty){
-    withdrawsDiv.innerHTML = `<p class="text-center text-gray-400">No withdraws found.</p>`;
-  } else {
-    const withdraws = [];
-    snap.forEach(doc => withdraws.push(doc.data()));
-    withdraws.sort((a,b)=> new Date(b.time) - new Date(a.time));
-    withdraws.forEach(data => {
-      const date = new Date(data.time).toLocaleString();
-      const statusColor = data.status === "Success" ? "text-green-600" : "text-red-500";
-      withdrawsDiv.innerHTML += `
-        <div class="bg-white rounded-xl shadow p-4">
-          <div class="flex justify-between items-center">
-            <div>
-              <div class="font-medium text-indigo-600">${data.method}</div>
-              <div class="text-sm text-gray-500">TrxID: ${data.trxId}</div>
-            </div>
-            <div class="text-right">
-              <div class="font-bold">৳${data.amount}</div>
-              <div class="text-xs ${statusColor}">${data.status}</div>
-            </div>
-          </div>
-          <div class="text-xs text-gray-400 mt-1">${date}</div>
-        </div>
-      `;
-    });
-  }
-}
-
-// Auth Check & Initial Load
-onAuthStateChanged(auth, async(user)=>{
-  if(!user){
-    alert("Please login first.");
-    window.location.href = "login.html";
-    return;
-  }
-  const uid = user.uid;
-  await loadDepositHistory(uid);
-  await loadWithdrawHistory(uid);
-});
-</script>
 </head>
 <body class="bg-rose-50 min-h-screen flex flex-col items-center px-4 py-6">
 
-<!-- Header -->
-<div class="w-full max-w-md mb-2">
-  <div class="bg-white rounded-3xl shadow-md p-4 flex items-center justify-between">
+  <!-- Header -->
+  <div class="w-full max-w-md bg-white rounded-3xl shadow-md p-4 mb-6 flex items-center justify-between">
     <div class="flex items-center space-x-3">
-      <img src="https://i.postimg.cc/PrQzGjDD/20250907-082638.png" alt="Logo" class="w-10 h-10 rounded-full"/>
+      <img src="https://i.postimg.cc/26mXPJWP/20250622-213805.jpg" alt="Logo" class="w-10 h-10 rounded-full"/>
       <h1 class="text-lg font-bold text-rose-600">Trust BD Transaction History</h1>
     </div>
     <button onclick="location.href='dashboard.html'" class="flex items-center text-rose-500 hover:text-rose-700 font-semibold text-sm">
       <span class="material-icons-outlined mr-1">arrow_back</span> Back
     </button>
   </div>
-</div>
 
-<!-- Tabs -->
-<div class="w-full max-w-md flex justify-around mb-4">
-  <button id="depositTab" onclick="showTab('deposit')" class="px-4 py-2 rounded-full font-semibold bg-rose-500 text-white">Deposit</button>
-  <button id="withdrawTab" onclick="showTab('withdraw')" class="px-4 py-2 rounded-full font-semibold bg-white text-rose-500 border border-rose-300">Withdraw</button>
-</div>
+  <!-- Deposit Section -->
+  <div class="w-full max-w-md mb-6">
+    <h2 class="text-lg font-bold mb-2 text-rose-500">
+      <span class="material-icons-outlined align-middle mr-1">account_balance_wallet</span> Deposit History
+    </h2>
+    <div id="deposits" class="space-y-3 text-sm text-gray-700">
+      <p class="text-center text-gray-400">Loading deposits...</p>
+    </div>
+  </div>
 
-<!-- Deposit Section -->
-<div id="deposits" class="w-full max-w-md space-y-3 text-sm text-gray-700">
-  <p class="text-center text-gray-400">Loading deposits...</p>
-</div>
-
-<!-- Withdraw Section -->
-<div id="withdraws" class="w-full max-w-md space-y-3 text-sm text-gray-700 hidden">
-  <p class="text-center text-gray-400">Loading withdraws...</p>
-</div>
+  <!-- Transaction Section -->
+  <div class="w-full max-w-md">
+    <h2 class="text-lg font-bold mb-2 text-rose-500">
+      <span class="material-icons-outlined align-middle mr-1">autorenew</span> Payment Transactions
+    </h2>
+    <div id="transactions" class="space-y-3 text-sm text-gray-700">
+      <p class="text-center text-gray-400">Loading transactions...</p>
+    </div>
+  </div>
 
 </body>
 </html>
