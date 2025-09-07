@@ -1,174 +1,169 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Trust BD Transaction History</title>
-  
-  <!-- Tailwind CSS -->
-  <script src="https://cdn.tailwindcss.com"></script>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Trust BD Transaction History</title>
 
-  <!-- Google Material Icons -->
-  <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
 
-  <!-- Firebase -->
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
-    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
-    import { getFirestore, collection, query, where, orderBy, getDocs } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
+import { getFirestore, collection, query, where, orderBy, getDocs } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
 
-    const firebaseConfig = {
-      apiKey: "AIzaSyBCyR4yHRj4Yze2-M27tktHtV_f03EoVvs",
-      authDomain: "trust-bd-d889e.firebaseapp.com",
-      projectId: "trust-bd-d889e",
-      storageBucket: "trust-bd-d889e.appspot.com",
-      messagingSenderId: "413112954640",
-      appId: "1:413112954640:web:beb99410c8b9ecd4037f95",
-    };
+const firebaseConfig = {
+  apiKey: "AIzaSyBCyR4yHRj4Yze2-M27tktHtV_f03EoVvs",
+  authDomain: "trust-bd-d889e.firebaseapp.com",
+  projectId: "trust-bd-d889e",
+  storageBucket: "trust-bd-d889e.appspot.com",
+  messagingSenderId: "413112954640",
+  appId: "1:413112954640:web:beb99410c8b9ecd4037f95",
+};
 
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth();
-    const db = getFirestore();
+const app = initializeApp(firebaseConfig);
+const auth = getAuth();
+const db = getFirestore();
 
-    const depositsDiv = document.getElementById("deposits");
-    const transactionsDiv = document.getElementById("transactions");
+const depositsDiv = document.getElementById("deposits");
+const withdrawDiv = document.getElementById("withdraw");
+const tabDeposit = document.getElementById("tab-deposit");
+const tabWithdraw = document.getElementById("tab-withdraw");
 
-    onAuthStateChanged(auth, async (user) => {
-      if (!user) {
-        alert("Please login first.");
-        window.location.href = "login.html";
-        return;
-      }
+// Function to load deposits
+async function loadDeposits(uid){
+  const depositQ = query(collection(db, "deposits"), where("uid", "==", uid));
+  const depositSnap = await getDocs(depositQ);
+  depositsDiv.innerHTML = "";
 
-      const uid = user.uid;
-
-      // 🔁 Load Deposit History
-      const depositQ = query(
-        collection(db, "deposits"),
-        where("uid", "==", uid)
-      );
-
-      const depositSnap = await getDocs(depositQ);
-      depositsDiv.innerHTML = "";
-
-      if (depositSnap.empty) {
-        depositsDiv.innerHTML = `<p class="text-center text-gray-400">No deposits found.</p>`;
-      } else {
-        const deposits = [];
-        depositSnap.forEach(doc => deposits.push(doc.data()));
-        deposits.sort((a, b) => new Date(b.time) - new Date(a.time));
-
-        deposits.forEach(data => {
-          const date = new Date(data.time).toLocaleString();
-          const statusColor = data.status === "Success" ? "text-green-600" : "text-red-500";
-          depositsDiv.innerHTML += `
-            <div class="bg-gradient-to-r from-rose-50 to-rose-100 rounded-2xl shadow-lg p-4 hover:scale-[1.02] transition-transform duration-200 border border-rose-200">
-              <div class="flex justify-between items-center mb-2">
-                <div>
-                  <div class="font-semibold text-rose-600">${data.method}</div>
-                  <div class="text-sm text-gray-500">TrxID: <span class="font-mono">${data.trxId}</span></div>
-                </div>
-                <div class="text-right">
-                  <div class="font-bold text-rose-700 text-lg">৳${data.amount}</div>
-                  <div class="text-xs ${statusColor} font-semibold">${data.status}</div>
-                </div>
-              </div>
-              <div class="text-xs text-gray-400 italic">${date}</div>
+  if(depositSnap.empty){
+    depositsDiv.innerHTML = `<p class="text-center text-gray-400">No deposits found.</p>`;
+  } else {
+    const deposits = [];
+    depositSnap.forEach(doc=>deposits.push(doc.data()));
+    deposits.sort((a,b)=>new Date(b.time)-new Date(a.time));
+    deposits.forEach(data=>{
+      const date = new Date(data.time).toLocaleString();
+      const statusColor = data.status === "Success" ? "text-green-600" : "text-red-500";
+      depositsDiv.innerHTML += `
+        <div class="bg-gradient-to-r from-rose-50 to-rose-100 rounded-2xl shadow-lg p-4 hover:scale-[1.02] transition-transform duration-200 border border-rose-200">
+          <div class="flex justify-between items-center mb-2">
+            <div>
+              <div class="font-semibold text-rose-600">${data.method}</div>
+              <div class="text-sm text-gray-500">TrxID: <span class="font-mono">${data.trxId}</span></div>
             </div>
-          `;
-        });
-      }
-
-      // 🔁 Load Transaction History
-      const txQ = query(
-        collection(db, `transactions-${uid}`),
-        orderBy("timestamp", "desc")
-      );
-
-      const txSnap = await getDocs(txQ);
-      transactionsDiv.innerHTML = "";
-
-      if (txSnap.empty) {
-        transactionsDiv.innerHTML = `<p class="text-center text-gray-400">No transactions found.</p>`;
-      } else {
-        txSnap.forEach(doc => {
-          const data = doc.data();
-          const time = data.timestamp?.toDate().toLocaleString() || "Unknown";
-          const statusColor = data.status === "Success" ? "text-green-600" : "text-red-500";
-
-          transactionsDiv.innerHTML += `
-            <div class="bg-gradient-to-r from-indigo-50 to-indigo-100 rounded-2xl shadow-lg p-4 hover:scale-[1.02] transition-transform duration-200 border border-indigo-200">
-              <div class="flex justify-between items-center mb-2">
-                <div>
-                  <div class="font-semibold text-indigo-600">${data.method}</div>
-                  <div class="text-sm text-gray-500 font-mono">${data.accountNumber}</div>
-                </div>
-                <div class="text-right">
-                  <div class="font-bold text-indigo-700 text-lg">৳${data.amount}</div>
-                  <div class="text-xs ${statusColor} font-semibold">${data.status}</div>
-                </div>
-              </div>
-              <div class="text-xs text-gray-400 italic">${time}</div>
+            <div class="text-right">
+              <div class="font-bold text-rose-700 text-lg">৳${data.amount}</div>
+              <div class="text-xs ${statusColor} font-semibold">${data.status}</div>
             </div>
-          `;
-        });
-      }
+          </div>
+          <div class="text-xs text-gray-400 italic">${date}</div>
+        </div>
+      `;
     });
-  </script>
+  }
+}
 
-  <style>
-    /* Custom scrollbar for premium feel */
-    ::-webkit-scrollbar {
-      width: 6px;
-    }
-    ::-webkit-scrollbar-track {
-      background: #fdf2f8;
-      border-radius: 3px;
-    }
-    ::-webkit-scrollbar-thumb {
-      background: #ec4899;
-      border-radius: 3px;
-    }
+// Function to load withdraws
+async function loadWithdraw(uid){
+  const withdrawQ = query(collection(db, "withdraws"), where("uid", "==", uid));
+  const withdrawSnap = await getDocs(withdrawQ);
+  withdrawDiv.innerHTML = "";
 
-    /* Smooth card hover */
-    #deposits div, #transactions div {
-      will-change: transform;
-    }
-  </style>
+  if(withdrawSnap.empty){
+    withdrawDiv.innerHTML = `<p class="text-center text-gray-400">No withdraws found.</p>`;
+  } else {
+    const withdraws = [];
+    withdrawSnap.forEach(doc=>withdraws.push(doc.data()));
+    withdraws.sort((a,b)=>new Date(b.time)-new Date(a.time));
+    withdraws.forEach(data=>{
+      const date = new Date(data.time).toLocaleString();
+      const statusColor = data.status === "Success" ? "text-green-600" : "text-red-500";
+      withdrawDiv.innerHTML += `
+        <div class="bg-gradient-to-r from-rose-50 to-rose-100 rounded-2xl shadow-lg p-4 hover:scale-[1.02] transition-transform duration-200 border border-rose-200">
+          <div class="flex justify-between items-center mb-2">
+            <div>
+              <div class="font-semibold text-rose-600">${data.method}</div>
+              <div class="text-sm text-gray-500">TrxID: <span class="font-mono">${data.trxId}</span></div>
+            </div>
+            <div class="text-right">
+              <div class="font-bold text-rose-700 text-lg">৳${data.amount}</div>
+              <div class="text-xs ${statusColor} font-semibold">${data.status}</div>
+            </div>
+          </div>
+          <div class="text-xs text-gray-400 italic">${date}</div>
+        </div>
+      `;
+    });
+  }
+}
+
+// Auth check & load
+onAuthStateChanged(auth, async (user)=>{
+  if(!user){
+    alert("Please login first.");
+    window.location.href = "login.html";
+    return;
+  }
+  const uid = user.uid;
+  loadDeposits(uid);
+  loadWithdraw(uid);
+});
+
+// Tab switching
+tabDeposit.addEventListener("click", ()=>{
+  tabDeposit.classList.add("bg-rose-500", "text-white");
+  tabDeposit.classList.remove("bg-white", "text-rose-500");
+  tabWithdraw.classList.add("bg-white", "text-rose-500");
+  tabWithdraw.classList.remove("bg-rose-500", "text-white");
+  depositsDiv.parentElement.style.display = "block";
+  withdrawDiv.parentElement.style.display = "none";
+});
+tabWithdraw.addEventListener("click", ()=>{
+  tabWithdraw.classList.add("bg-rose-500", "text-white");
+  tabWithdraw.classList.remove("bg-white", "text-rose-500");
+  tabDeposit.classList.add("bg-white", "text-rose-500");
+  tabDeposit.classList.remove("bg-rose-500", "text-white");
+  depositsDiv.parentElement.style.display = "none";
+  withdrawDiv.parentElement.style.display = "block";
+});
+</script>
+
+<style>
+::-webkit-scrollbar{width:6px;}
+::-webkit-scrollbar-track{background:#fdf2f8;border-radius:3px;}
+::-webkit-scrollbar-thumb{background:#ec4899;border-radius:3px;}
+</style>
 
 </head>
 <body class="bg-rose-50 min-h-screen flex flex-col items-center px-4 py-6">
 
-  <!-- Header -->
-  <div class="w-full max-w-md bg-white rounded-3xl shadow-xl p-4 mb-6 flex items-center justify-between border border-rose-200">
-    <div class="flex items-center space-x-3">
-      <img src="https://i.postimg.cc/26mXPJWP/20250622-213805.jpg" alt="Logo" class="w-12 h-12 rounded-full shadow-md"/>
-      <h1 class="text-xl font-bold text-rose-600">Trust BD Transaction History</h1>
-    </div>
-    <button onclick="location.href='dashboard.html'" class="flex items-center text-rose-500 hover:text-rose-700 font-semibold text-sm transition-colors duration-200">
-      <span class="material-icons-outlined mr-1">arrow_back</span> Back
-    </button>
+<div class="w-full max-w-md bg-white rounded-3xl shadow-xl p-4 mb-4 flex items-center justify-between border border-rose-200">
+  <div class="flex items-center space-x-3">
+    <img src="https://i.postimg.cc/26mXPJWP/20250622-213805.jpg" alt="Logo" class="w-12 h-12 rounded-full shadow-md"/>
+    <h1 class="text-xl font-bold text-rose-600">Trust BD History</h1>
   </div>
+  <button onclick="location.href='dashboard.html'" class="flex items-center text-rose-500 hover:text-rose-700 font-semibold text-sm transition-colors duration-200">
+    <span class="material-icons-outlined mr-1">arrow_back</span> Back
+  </button>
+</div>
 
-  <!-- Deposit Section -->
-  <div class="w-full max-w-md mb-6">
-    <h2 class="text-xl font-bold mb-3 text-rose-500 flex items-center">
-      <span class="material-icons-outlined align-middle mr-2 text-rose-600">account_balance_wallet</span> Deposit History
-    </h2>
-    <div id="deposits" class="space-y-3 text-sm text-gray-700 max-h-[400px] overflow-y-auto p-2">
-      <p class="text-center text-gray-400">Loading deposits...</p>
-    </div>
-  </div>
+<!-- Tabs -->
+<div class="w-full max-w-md flex mb-4 border-b border-rose-200 rounded-xl overflow-hidden">
+  <button id="tab-deposit" class="flex-1 py-2 bg-rose-500 text-white font-semibold transition-colors duration-200">Deposit</button>
+  <button id="tab-withdraw" class="flex-1 py-2 bg-white text-rose-500 font-semibold transition-colors duration-200">Withdraw</button>
+</div>
 
-  <!-- Transaction Section -->
-  <div class="w-full max-w-md">
-    <h2 class="text-xl font-bold mb-3 text-rose-500 flex items-center">
-      <span class="material-icons-outlined align-middle mr-2 text-indigo-600">autorenew</span> Payment Transactions
-    </h2>
-    <div id="transactions" class="space-y-3 text-sm text-gray-700 max-h-[400px] overflow-y-auto p-2">
-      <p class="text-center text-gray-400">Loading transactions...</p>
-    </div>
-  </div>
+<!-- Deposit Section -->
+<div class="w-full max-w-md mb-6">
+  <div id="deposits" class="space-y-3 text-sm text-gray-700 max-h-[400px] overflow-y-auto p-2"></div>
+</div>
+
+<!-- Withdraw Section -->
+<div class="w-full max-w-md mb-6" style="display:none;">
+  <div id="withdraw" class="space-y-3 text-sm text-gray-700 max-h-[400px] overflow-y-auto p-2"></div>
+</div>
 
 </body>
 </html>
