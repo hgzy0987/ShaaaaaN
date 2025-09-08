@@ -13,7 +13,6 @@
     body {
       font-family: 'Inter', sans-serif;
       background: linear-gradient(#FF69B4, #FF69B4, #FF69B4);
-      color: #255;
       min-height: 100vh;
       display: flex;
       justify-content: center;
@@ -30,7 +29,7 @@
       animation: fadeInUp 0.8s ease;
     }
     .header {
-      background: linear-gradient(#FF1493,  #FF69B4,  #FF1493);
+      background: linear-gradient(#FF1493, #FF69B4, #FF1493);
       padding: 20px;
       text-align: center;
       color: #fff;
@@ -42,13 +41,9 @@
       background: #fff;
       padding: 8px;
     }
-    .header 
-    h2 {
-        text-align: center;
-        margin-bottom: 25px;
-        color: #fff;
-        font-size: 1.8rem;
-        text-shadow: 1px 1px 2px #000;
+    .header h2 {
+      font-size: 1.6rem;
+      text-shadow: 1px 1px 2px #000;
     }
     .content {
       padding: 25px 20px;
@@ -80,20 +75,9 @@
       font-size: 13px;
       transition: background 0.3s;
     }
-    .copy-btn:hover {
-      background: #800080;
-    }
-    p {
-      font-size: 14px;
-      line-height: 1.6;
-      color: #FF1493;
-      margin-bottom: 20px;
-    }
-    label {
-      font-size: 14px;
-      font-weight: 600;
-      color: #333;
-    }
+    .copy-btn:hover { background: #800080; }
+    p { font-size: 14px; line-height: 1.6; color: #FF1493; margin-bottom: 20px; }
+    label { font-size: 14px; font-weight: 600; color: #333; }
     input {
       width: 100%;
       padding: 14px;
@@ -102,12 +86,8 @@
       margin-top: 10px;
       font-size: 15px;
       outline: none;
-      transition: all 0.3s;
     }
-    input:focus {
-      border-color: #F69220;
-      box-shadow: 0 0 0 3px rgba(246,146,32,0.2);
-    }
+    input:focus { border-color: #F69220; box-shadow: 0 0 0 3px rgba(246,146,32,0.2); }
     .btn {
       margin-top: 25px;
       width: 100%;
@@ -119,11 +99,8 @@
       font-weight: 600;
       border-radius: 12px;
       cursor: pointer;
-      transition: transform 0.2s;
     }
-    .btn:hover {
-      transform: translateY(-2px);
-    }
+    .btn:disabled { background: #ccc !important; cursor: not-allowed; }
     .popup {
       position: fixed;
       top: 0; left: 0;
@@ -131,24 +108,38 @@
       display: none;
       align-items: center;
       justify-content: center;
-      background-color: rgba(0,0,0,0.7);
+      background-color: rgba(0,0,0,0.4);
       z-index: 9999;
-      backdrop-filter: blur(4px);
+      backdrop-filter: blur(3px);
     }
     .popup-content {
-      background: white;
-      border-radius: 20px;
-      padding: 30px 20px;
+      background: #fff;
+      border-radius: 16px;
+      padding: 20px 15px;
       text-align: center;
-      width: 90%;
-      max-width: 360px;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+      width: 85%;
+      max-width: 320px;
+      position: relative;
+      box-shadow: 0 6px 16px rgba(0,0,0,0.25);
     }
-    .popup-content h3 {
-      margin-top: 15px;
-      font-size: 16px;
+    .popup-content h3 { margin-top: 10px; font-size: 15px; font-weight: 600; color: #333; }
+    .popup-close {
+      position: absolute;
+      top: 10px; right: 10px;
+      font-size: 20px;
+      color: #555;
+      cursor: pointer;
+    }
+    .unblock-btn {
+      margin-top: 12px;
+      display: inline-block;
+      background: linear-gradient(#FF1493,#FF69B4);
+      padding: 8px 16px;
+      font-size: 14px;
+      border-radius: 8px;
+      color: #fff;
       font-weight: 600;
-      color: #333;
+      text-decoration: none;
     }
     @keyframes fadeInUp {
       from { opacity: 0; transform: translateY(30px); }
@@ -166,7 +157,7 @@
       <div class="info-box">
         <div class="info-item">
           <strong>পেমেন্ট নাম্বার:</strong>
-          <span id="bkashNumber">01775716460
+          <span>01775716460
             <button class="copy-btn" onclick="copyText('01775716460')">কপি</button>
           </span>
         </div>
@@ -178,14 +169,16 @@
       <p>উপরে দেওয়া নাম্বারে <strong>bKash</strong> থেকে <strong>Send Money</strong> করুন এবং সফল লেনদেনের <strong>Transaction ID</strong> নিচে প্রদান করুন।</p>
       <label for="trxId">লেনদেন আইডি:</label>
       <input type="text" id="trxId" placeholder="Ex: TX12345678" />
-      <button class="btn" onclick="submitPayment()">জমা দিন</button>
+      <button class="btn" id="submitBtn" onclick="submitPayment()" disabled>জমা দিন</button>
     </div>
   </div>
 
   <div id="popup" class="popup">
     <div class="popup-content animate__animated animate__zoomIn">
+      <span class="popup-close" onclick="closePopup()">✖</span>
       <div id="popupAnimation"></div>
       <h3 id="popupMessage"></h3>
+      <a id="unblockBtn" class="unblock-btn" style="display:none;" href="support.html">Unblock Now</a>
     </div>
   </div>
 
@@ -211,36 +204,38 @@
     const amount = localStorage.getItem("depositAmount") || 0;
     document.getElementById("amountDisplay").innerText = `৳${amount}`;
 
-    const validTrxIds = ["TX123456", "CEN3C66U8V", "TRX2025"];
+    const validTrxIds = ["TX123456", "TXABC789", "TRX2025"];
+    const attemptCount = {}; // ট্র্যাক করার জন্য
 
     window.copyText = function(text) {
       navigator.clipboard.writeText(text).then(() => alert(" নাম্বার কপি হয়েছে!"));
     }
 
-    function showPopup(type, message) {
+    function showPopup(type, message, block=false) {
       const popup = document.getElementById("popup");
       const animation = document.getElementById("popupAnimation");
       const popupMsg = document.getElementById("popupMessage");
+      const unblockBtn = document.getElementById("unblockBtn");
+
+      unblockBtn.style.display = block ? "inline-block" : "none";
 
       if (type === "success") {
-        animation.innerHTML = `<dotlottie-player src="https://lottie.host/b2b372b3-8825-485b-ac08-b53482e078f3/APTvGDc67i.lottie" background="transparent" speed="1" style="width: 340px; height: 200px" loop autoplay></dotlottie-player>`;
-        popupMsg.innerText = message || "✅ পেমেন্ট সফলভাবে জমা হয়েছে!";
+        animation.innerHTML = `<dotlottie-player src="https://lottie.host/b2b372b3-8825-485b-ac08-b53482e078f3/APTvGDc67i.lottie" background="transparent" speed="1" style="width:180px;height:130px" loop autoplay></dotlottie-player>`;
       } else {
-        animation.innerHTML = `<dotlottie-player src="https://lottie.host/434d9e32-e112-47d8-b7fd-6da85a0b6389/coMuvsLgHL.lottie" background="transparent" speed="1" style="width: 340px; height: 200px" loop autoplay></dotlottie-player>`;
-        popupMsg.innerText = message || "❌ লেনদেন আইডি সঠিক নয়!";
+        animation.innerHTML = `<dotlottie-player src="https://lottie.host/434d9e32-e112-47d8-b7fd-6da85a0b6389/coMuvsLgHL.lottie" background="transparent" speed="1" style="width:180px;height:130px" loop autoplay></dotlottie-player>`;
       }
 
+      popupMsg.innerText = message;
       popup.style.display = "flex";
-      setTimeout(() => { popup.style.display = "none"; }, 7500);
+    }
+
+    window.closePopup = function() {
+      document.getElementById("popup").style.display = "none";
     }
 
     window.submitPayment = function () {
       const trxId = document.getElementById("trxId").value.trim();
-
-      if (!trxId) {
-        showPopup("error", "❌ লেনদেন আইডি লিখুন!");
-        return;
-      }
+      if (!trxId) { return; }
 
       onAuthStateChanged(auth, (user) => {
         if (!user) {
@@ -250,6 +245,17 @@
 
         const uid = user.uid;
         const isValid = validTrxIds.includes(trxId);
+
+        attemptCount[uid] = attemptCount[uid] || { wrong:0 };
+
+        if (!isValid) {
+          attemptCount[uid].wrong++;
+        }
+
+        if (attemptCount[uid].wrong > 1) {
+          showPopup("error", "🚫 The account has been blocked due to submitting the ID in additional incorrect transactions.", true);
+          return;
+        }
 
         const data = {
           uid: uid,
@@ -263,18 +269,25 @@
         addDoc(collection(firestore, "deposits"), data)
           .then(() => {
             if (isValid) {
-              showPopup("success", " পেমেন্ট সফলভাবে জমা হয়েছে! দয়া করে কিছুক্ষণ অপেক্ষা করুন! ধন্যবাদ");
+              showPopup("success", "✅ পেমেন্ট সফলভাবে জমা হয়েছে! দয়া করে কিছুক্ষণ অপেক্ষা করুন!");
               document.getElementById("trxId").value = "";
+              document.getElementById("submitBtn").disabled = true;
             } else {
-              showPopup("error", "❌ লেনদেন আইডি সঠিক নয়! দয়া করে সঠিকভাবে পেমেন্ট করার পর ট্রানজেকশন আইডি জমা দিন। একাধিক ভুল সাবমিশন করলে একাউন্ট ব্লক হতে পারে!");
+              showPopup("error", "❌ লেনদেন আইডি সঠিক নয়! আবার চেষ্টা করুন।");
             }
           })
-          .catch((err) => {
+          .catch(() => {
             showPopup("error", "❌ তথ্য সংরক্ষণ ব্যর্থ হয়েছে! আবার চেষ্টা করুন।");
-            console.error(err);
           });
       });
     }
+
+    // ইনপুটের সাথে বাটন এনাবল/ডিসেবল
+    const trxInput = document.getElementById("trxId");
+    const submitBtn = document.getElementById("submitBtn");
+    trxInput.addEventListener("input", () => {
+      submitBtn.disabled = trxInput.value.trim() === "";
+    });
   </script>
 </body>
 </html>
