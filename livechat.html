@@ -1,275 +1,264 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="bn">
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Trust BD Live Chat</title>
-  <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined|Material+Icons" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
   <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
     body {
-      font-family: 'Roboto', sans-serif;
-      background: linear-gradient(to bottom right, #e3f2fd, #ffffff);
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, sans-serif;
+      background: linear-gradient(160deg, #0f2027, #203a43, #2c5364);
       display: flex;
-      flex-direction: column;
+      justify-content: center;
       align-items: center;
       height: 100vh;
-      padding: 10px;
     }
 
-    .chat-wrapper {
-      width: 100%;
-      max-width: 480px;
-      background: #fff;
-      border-radius: 16px;
+    /* Chat Container */
+    .chat-container {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(14px);
+      border-radius: 22px;
+      width: 96%;
+      max-width: 430px;
+      height: 93vh;
       display: flex;
       flex-direction: column;
-      height: 100%;
+      box-shadow: 0 10px 35px rgba(0,0,0,0.65);
       overflow: hidden;
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+      animation: fadeIn 0.6s ease;
     }
 
-    .header {
-      background-color: #1976d2;
-      color: white;
-      padding: 16px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 20px;
-      font-weight: 600;
-    }
-
-    .header .material-icons-outlined {
-      margin-right: 8px;
-    }
-
-    .chat-body {
-      flex: 1;
-      padding: 15px;
-      overflow-y: auto;
-      display: flex;
-      flex-direction: column;
-    }
-
-    .chat-msg {
-      max-width: 80%;
-      padding: 10px 14px;
-      background-color: #e3f2fd;
-      border-radius: 18px 18px 18px 0;
-      margin-bottom: 10px;
-      align-self: flex-start;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-      position: relative;
-      animation: fadeIn 0.4s ease;
-    }
-
-    .chat-msg.typing::after {
-      content: "...";
-      font-weight: bold;
-      animation: blink 1s infinite;
-    }
-
-    @keyframes blink {
-      0% { opacity: 1; }
-      50% { opacity: 0.2; }
-      100% { opacity: 1; }
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    .chat-image {
-      width: 100%;
-      height: auto;
-      border-bottom: 1px solid #eee;
-    }
-
-    .button-bar {
-      padding: 10px;
-      border-top: 1px solid #ddd;
-      background: #fafafa;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      justify-content: center;
-    }
-
-    .option-btn {
-      background-color: #1976d2;
-      color: white;
-      border: none;
-      padding: 10px 16px;
-      font-size: 14px;
-      border-radius: 24px;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      cursor: pointer;
-      flex-shrink: 0;
-      transition: 0.3s;
-    }
-
-    .option-btn:hover {
-      background-color: #0d47a1;
-    }
-
-    .support-form, .support-response {
-      padding: 15px;
-      display: none;
-      flex-direction: column;
-      gap: 10px;
-    }
-
-    .support-form input {
-      padding: 10px;
-      font-size: 14px;
-      border-radius: 8px;
-      border: 1px solid #ccc;
-    }
-
-    .support-form button {
-      background: #1976d2;
-      color: white;
-      border: none;
-      padding: 10px;
-      border-radius: 8px;
-      font-size: 15px;
-      cursor: pointer;
-    }
-
-    .support-response img {
-      max-width: 100px;
-      align-self: center;
-    }
-
-    .telegram-btn {
-      background: #0088cc;
-      color: white;
-      padding: 10px;
-      border-radius: 24px;
+    /* Header */
+    .chat-header {
+      background: rgba(0, 0, 0, 0.65);
+      padding: 14px;
       text-align: center;
-      text-decoration: none;
+      font-size: 18px;
       font-weight: bold;
-      display: inline-flex;
+      color: #fff;
+      display: flex;
       justify-content: center;
       align-items: center;
       gap: 8px;
-      margin-top: 10px;
+      border-bottom: 1px solid rgba(255,255,255,0.15);
+    }
+    .chat-header .material-icons-outlined {
+      font-size: 22px;
+      color: #4cafef;
     }
 
-    .telegram-btn .material-icons {
-      font-size: 18px;
+    /* Chat Body */
+    .chat-body {
+      flex: 1;
+      padding: 14px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    /* Message bubbles */
+    .message {
+      padding: 12px 16px;
+      border-radius: 18px;
+      max-width: 85%;
+      word-wrap: break-word;
+      font-size: 14px;
+      line-height: 1.5;
+      animation: slideUp 0.3s ease;
+    }
+    .bot {
+      align-self: flex-start;
+      background: rgba(76,175,239,0.15);
+      color: #e0f7ff;
+      border: 1px solid rgba(76,175,239,0.3);
+    }
+    .user {
+      align-self: flex-end;
+      background: rgba(39,174,96,0.15);
+      color: #d7ffd9;
+      border: 1px solid rgba(39,174,96,0.3);
+    }
+
+    /* Inline Action Button */
+    .action-btn {
+      margin-top: 8px;
+      display: inline-block;
+      background: linear-gradient(145deg, #27ae60, #2ecc71);
+      padding: 8px 14px;
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 500;
+      color: #fff;
+      text-decoration: none;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.3);
+      transition: 0.3s;
+    }
+    .action-btn:hover {
+      background: linear-gradient(145deg, #219150, #27ae60);
+      transform: translateY(-2px);
+    }
+
+    /* Bot Card with image */
+    .bot-card {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+    .bot-card img {
+      max-width: 100%;
+      border-radius: 12px;
+      margin-bottom: 8px;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.4);
+    }
+
+    /* Bottom Buttons Section */
+    .chat-footer {
+      padding: 12px;
+      background: rgba(0,0,0,0.55);
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+      border-top: 1px solid rgba(255,255,255,0.15);
+    }
+    .option-btn {
+      flex: 1 1 45%;
+      background: linear-gradient(145deg, #4cafef, #2196f3);
+      border: none;
+      border-radius: 14px;
+      color: #fff;
+      font-size: 14px;
+      padding: 12px 0;
+      font-weight: 500;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      transition: 0.3s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+    .option-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(0,0,0,0.4);
+    }
+
+    @keyframes fadeIn {
+      from {opacity: 0; transform: scale(0.9);}
+      to {opacity: 1; transform: scale(1);}
+    }
+    @keyframes slideUp {
+      from {opacity: 0; transform: translateY(10px);}
+      to {opacity: 1; transform: translateY(0);}
+    }
+
+    /* Scrollbar custom */
+    .chat-body::-webkit-scrollbar {
+      width: 5px;
+    }
+    .chat-body::-webkit-scrollbar-thumb {
+      background: rgba(255,255,255,0.2);
+      border-radius: 5px;
     }
   </style>
 </head>
 <body>
+  <div class="chat-container">
+    <!-- Header -->
+    <div class="chat-header">
+      <span class="material-icons-outlined">chat_bubble_outline</span>
+      Trust BD Live Chat
+    </div>
 
-<div class="chat-wrapper">
-  <div class="header">
-    <span class="material-icons-outlined">chat</span> Trust BD Live Chat
+    <!-- Chat Body -->
+    <div class="chat-body" id="chatBody">
+      <div class="message bot">👋 স্বাগতম TRUST BD 24 সাপোর্টে। নিচের অপশন থেকে সিলেক্ট করুন।</div>
+    </div>
+
+    <!-- Footer Buttons -->
+    <div class="chat-footer">
+      <button class="option-btn" onclick="sendOption('Referral Bonus')">
+        <span class="material-icons-outlined">card_giftcard</span> Referral Bonus
+      </button>
+      <button class="option-btn" onclick="sendOption('Deposit')">
+        <span class="material-icons-outlined">account_balance_wallet</span> Deposit
+      </button>
+      <button class="option-btn" onclick="sendOption('Withdraw')">
+        <span class="material-icons-outlined">payments</span> Withdraw
+      </button>
+      <button class="option-btn" onclick="sendOption('Buy Package')">
+        <span class="material-icons-outlined">shopping_bag</span> Buy Package
+      </button>
+      <button class="option-btn" onclick="sendOption('Customer Support')">
+        <span class="material-icons-outlined">support_agent</span> Support
+      </button>
+    </div>
   </div>
 
-  <img class="chat-image" src="https://i.postimg.cc/wvVkt2BL/operator-man-working-with-laptop-flat-design-vector-illustration-flyer-design-support-service-concep.jpg" alt="Operator"/>
+  <script>
+    const chatBody = document.getElementById("chatBody");
 
-  <div class="chat-body" id="chatBody">
-    <!-- Messages will appear here -->
-  </div>
+    // প্রতিটি অপশনের জন্য ইমেজ লিংক + মেসেজ + বাটন সেট করা হয়েছে
+    const replies = {
+      "Referral Bonus": {
+        text: "🎁 আপনার রেফারেল বোনাস চেক করতে প্রোফাইল এ যান।",
+        btn: "<a href='refer.html' class='action-btn'>REFAR NOW</a>",
+        img: "https://i.postimg.cc/L53XySD3/Picsart-25-09-08-14-43-24-314.jpg"
+      },
+      "Deposit": {
+        text: "💳 ডিপোজিট করতে bKash/Nagad ব্যবহার করুন।",
+        btn: "<a href='deposit.html' class='action-btn'>DEPOSIT NOW</a>",
+        img: "https://i.postimg.cc/qqJ0v3c2/6929199-2508.jpg"
+      },
+      "Withdraw": {
+        text: "🏦 উইথড্র এর জন্য ন্যূনতম 500 টাকা লাগবে।",
+        btn: "<a href='withdraw.html' class='action-btn'>WITHDRAW NOW</a>",
+        img: "https://i.postimg.cc/BQt97smZ/20922972-56-Z-2111-w012-n001-13-B-p12-13.jpg"
+      },
+      "Buy Package": {
+        text: "📦 প্যাকেজ কিনতে মেনু থেকে Buy Package এ যান।",
+        btn: "<a href='package.html' class='action-btn'>BUY NOW</a>",
+        img: "https://i.postimg.cc/zDt4g68s/79310804-9846845.jpg"
+      },
+      "Customer Support": {
+        text: "☎️ আমাদের সাপোর্ট এজেন্ট এর সাথে যোগাযোগ করতে CONTACT NOW অপশন এ ক্লিক করুন।",
+        btn: "<a href='https://t.me/TrustBdsupbot' class='action-btn'>CONTACT NOW</a>",
+        img: "https://i.postimg.cc/0yZ49S6Y/31149830-7773612.jpg"
+      }
+    };
 
-  <div class="support-form" id="supportForm">
-    <input type="text" placeholder="Your Name" id="nameInput" />
-    <input type="email" placeholder="Your Email" id="emailInput" />
-    <button onclick="submitSupport()">Submit</button>
-  </div>
-
-  <div class="support-response" id="supportResponse">
-    <div class="chat-msg">Dear Customer! All our representatives are busy at the moment. Please wait a moment. Or contact us on Telegram. Thank you.</div>
-    <img src="https://i.postimg.cc/3Jdb6k97/customer-service-call-center-character-flat-cartoon-business-people-illustration-vector-design-40876.jpg"/>
-    <a href="https://t.me/TrustBD_Support_bot" target="_blank" class="telegram-btn">
-      <span class="material-icons">send</span> Chat On Telegram Agent
-    </a>
-  </div>
-
-  <div class="button-bar">
-    <button class="option-btn" onclick="sendMessage('Refaral Bonus Problem')">
-      <span class="material-icons">redeem</span> Refaral Bonus
-    </button>
-    <button class="option-btn" onclick="sendMessage('Deposit Problem')">
-      <span class="material-icons">account_balance_wallet</span> Deposit
-    </button>
-    <button class="option-btn" onclick="sendMessage('Withdraw Problem')">
-      <span class="material-icons">credit_card</span> Withdraw
-    </button>
-    <button class="option-btn" onclick="sendMessage('How can Buy Package')">
-      <span class="material-icons">shopping_bag</span> Buy Package
-    </button>
-    <button class="option-btn" onclick="openSupportForm()">
-      <span class="material-icons">support_agent</span> Customer Support
-    </button>
-  </div>
-</div>
-
-<script>
-  const chatBody = document.getElementById("chatBody");
-  const supportForm = document.getElementById("supportForm");
-  const supportResponse = document.getElementById("supportResponse");
-
-  function sendMessage(type) {
-    supportForm.style.display = "none";
-    supportResponse.style.display = "none";
-
-    const msg = document.createElement("div");
-    msg.className = "chat-msg typing";
-    msg.textContent = type;
-    chatBody.appendChild(msg);
-    chatBody.scrollTop = chatBody.scrollHeight;
-
-    setTimeout(() => {
-      msg.classList.remove("typing");
-      msg.textContent = getReply(type);
-    }, 1200);
-  }
-
-  function getReply(type) {
-    switch(type) {
-      case "Refaral Bonus Problem":
-        return "Please ensure your referred user used your code. If not reflected, contact our support.";
-      case "Deposit Problem":
-        return "Deposit issues are normally resolved within 30 minutes. Please wait or contact us.";
-      case "Withdraw Problem":
-        return "Withdraws take 1–12 hours to process. Kindly wait if the time hasn't passed.";
-      case "How can Buy Package":
-        return "Go to Dashboard > Buy Package and select your preferred package.";
-      default:
-        return "Thank you!";
-    }
-  }
-
-  function openSupportForm() {
-    supportForm.style.display = "flex";
-    supportResponse.style.display = "none";
-  }
-
-  function submitSupport() {
-    const name = document.getElementById("nameInput").value.trim();
-    const email = document.getElementById("emailInput").value.trim();
-    if (!name || !email) {
-      alert("Please fill in both fields.");
-      return;
+    function sendOption(option) {
+      addMessage(option, "user");
+      setTimeout(() => {
+        const reply = replies[option];
+        addMessage(
+          `<div class='bot-card'>
+            <img src="${reply.img}" alt="${option}">
+            <div>${reply.text}</div>
+            ${reply.btn}
+          </div>`,
+          "bot",
+          true
+        );
+      }, 600);
     }
 
-    supportForm.style.display = "none";
-    supportResponse.style.display = "flex";
-  }
-</script>
-
+    function addMessage(text, type, isHTML=false) {
+      const div = document.createElement("div");
+      div.className = `message ${type}`;
+      if(isHTML) {
+        div.innerHTML = text;
+      } else {
+        div.textContent = text;
+      }
+      chatBody.appendChild(div);
+      chatBody.scrollTop = chatBody.scrollHeight;
+    }
+  </script>
 </body>
 </html>
