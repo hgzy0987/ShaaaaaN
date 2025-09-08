@@ -60,20 +60,27 @@ onAuthStateChanged(auth, async (user) => {
 
     deposits.forEach(data => {
       const date = new Date(data.time).toLocaleString();
-      const statusColor = data.status === "Success" ? "text-green-600" : "text-red-500";
+      const isSuccess = data.status === "Success";
+      const cardColor = isSuccess 
+        ? "from-green-100 via-green-50 to-green-100 border-green-300" 
+        : "from-red-100 via-red-50 to-red-100 border-red-300";
+      const titleColor = isSuccess ? "text-green-600" : "text-red-600";
+      const amountColor = isSuccess ? "text-green-700" : "text-red-700";
+      const statusColor = isSuccess ? "text-green-600" : "text-red-500";
+
       depositsDiv.innerHTML += `
-      <div class="bg-gradient-to-r from-rose-100 via-rose-50 to-rose-100 rounded-3xl shadow-2xl p-5 hover:scale-105 transform transition-transform duration-300 border border-rose-300">
+      <div class="bg-gradient-to-r ${cardColor} rounded-3xl shadow-2xl p-5 hover:scale-105 transform transition-transform duration-300 border">
         <div class="flex justify-between items-center mb-3">
           <div>
-            <div class="font-bold text-rose-600 text-lg">${data.method}</div>
+            <div class="font-bold ${titleColor} text-lg">${data.method}</div>
             <div class="text-gray-500 text-sm mt-1">TrxID: <span class="font-mono">${data.trxId}</span></div>
           </div>
           <div class="text-right">
-            <div class="font-extrabold text-rose-700 text-xl">৳${data.amount}</div>
+            <div class="font-extrabold ${amountColor} text-xl">৳${data.amount}</div>
             <div class="text-xs ${statusColor} font-semibold mt-1">${data.status}</div>
           </div>
         </div>
-        <div class="text-gray-400 text-xs italic border-t border-rose-200 pt-2">${date}</div>
+        <div class="text-gray-400 text-xs italic border-t pt-2">${date}</div>
       </div>
       `;
     });
@@ -167,7 +174,7 @@ onAuthStateChanged(auth, async (user) => {
 <!-- Transaction Section -->
 <div class="w-full max-w-md">
   <h2 class="text-2xl font-bold mb-4 text-indigo-500 flex items-center">
-    <span class="material-icons-outlined align-middle mr-2 text-indigo-600 text-xl">autorenew</span> Payment Transactions
+    <span class="material-icons-outlined align-middle mr-2 text-indigo-600 text-xl">autorenew</span> Withdraw History 
   </h2>
   <div id="transactions" class="space-y-4 text-sm text-gray-700 max-h-[450px] overflow-y-auto p-2">
     <p class="text-center text-gray-400">Loading transactions...</p>
