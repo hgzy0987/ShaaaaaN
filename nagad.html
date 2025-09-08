@@ -12,7 +12,7 @@
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
       font-family: 'Inter', sans-serif;
-      background: linear-gradient(135deg, #F69220, #FF4E50);
+      background: linear-gradient(90deg, #F69220, #FF4E50);
       min-height: 100vh;
       display: flex;
       justify-content: center;
@@ -29,7 +29,7 @@
       animation: fadeInUp 0.8s ease;
     }
     .header {
-      background: linear-gradient(90deg, #F69220, #FF4E50);
+      background: linear-gradient(135deg, #F69220, #FF4E50);
       padding: 20px;
       text-align: center;
       color: #fff;
@@ -156,15 +156,15 @@
 </head>
 <body>
   <div class="container animate__animated animate__fadeIn">
-   <div class="header">
-      <img src="https://i.postimg.cc/4NZVCx18/20250622-115726.jpg" alt="bKash Logo">
+    <div class="header">
+      <img src="https://i.postimg.cc/dQ7JW0Hx/1656235223bkash-logo.png" alt="bKash Logo">
       <h2>নগদ পেমেন্ট জমা দিন</h2>
     </div>
     <div class="content">
       <div class="info-box">
         <div class="info-item">
           <strong>পেমেন্ট নাম্বার:</strong>
-          <span id="bkashNumber">01855966005
+          <span>01855966005
             <button class="copy-btn" onclick="copyText('01855966005')">কপি</button>
           </span>
         </div>
@@ -175,8 +175,8 @@
       </div>
       <p>উপরে দেওয়া নাম্বারে <strong>Nagad</strong> থেকে <strong>Send Money</strong> করুন এবং সফল লেনদেনের <strong>Transaction ID</strong> নিচে প্রদান করুন।</p>
       <label for="trxId">লেনদেন আইডি:</label>
-      <input type="text" id="trxId" placeholder="Ex: 7462LLYN" />
-      <button class="btn" onclick="submitPayment()">জমা দিন</button>
+      <input type="text" id="trxId" placeholder="Ex: CFJ41UK0ZI" />
+      <button class="btn" id="submitBtn" onclick="submitPayment()" disabled>জমা দিন</button>
     </div>
   </div>
 
