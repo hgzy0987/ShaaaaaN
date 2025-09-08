@@ -99,8 +99,13 @@
       font-weight: 600;
       border-radius: 12px;
       cursor: pointer;
+      transition: background 0.3s;
     }
-    .btn:disabled { background: #ccc !important; cursor: not-allowed; }
+    .btn:disabled {
+      background: #ccc !important;
+      cursor: not-allowed;
+      color: #666;
+    }
     .popup {
       position: fixed;
       top: 0; left: 0;
@@ -134,9 +139,7 @@
       cursor: pointer;
       font-weight: 600;
     }
-    .popup-cancel:hover {
-      color: #FF1493;
-    }
+    .popup-cancel:hover { color: #FF1493; }
     .unblock-btn {
       margin-top: 12px;
       display: inline-block;
@@ -176,7 +179,7 @@
       <p>উপরে দেওয়া নাম্বারে <strong>Nagad</strong> থেকে <strong>Send Money</strong> করুন এবং সফল লেনদেনের <strong>Transaction ID</strong> নিচে প্রদান করুন।</p>
       <label for="trxId">লেনদেন আইডি:</label>
       <input type="text" id="trxId" placeholder="Ex: CFJ41UK0ZI" />
-      <button class="btn" id="submitBtn" onclick="submitPayment()" disabled>জমা দিন</button>
+      <button class="btn" id="submitBtn" disabled>জমা দিন</button>
     </div>
   </div>
 
@@ -275,7 +278,7 @@
             if (isValid) {
               showPopup("success", "✅ পেমেন্ট সফলভাবে জমা হয়েছে! দয়া করে কিছুক্ষণ অপেক্ষা করুন!");
               document.getElementById("trxId").value = "";
-              document.getElementById("submitBtn").disabled = true;
+              submitBtn.disabled = true;
             } else {
               showPopup("error", " লেনদেন আইডি সঠিক নয়! আবার চেষ্টা করুন।");
             }
@@ -286,14 +289,14 @@
       });
     }
 
-    // ইনপুটের সাথে বাটন এনাবল/ডিসেবল
+    // ইনপুট অনুযায়ী বাটন এনাবল/ডিসেবল
     const trxInput = document.getElementById("trxId");
     const submitBtn = document.getElementById("submitBtn");
     trxInput.addEventListener("input", () => {
       submitBtn.disabled = trxInput.value.trim() === "";
     });
 
-    // Cancel বাটন ক্লিক ইভেন্ট (ডাইনামিক বা DOM-ready)
+    // Cancel বাটন ক্লিক ইভেন্ট
     document.addEventListener("click", function(e){
       if(e.target.classList.contains("popup-cancel")){
         closePopup();
