@@ -218,7 +218,7 @@
     const attemptCount = {};
 
     window.copyText = function(text) {
-      navigator.clipboard.writeText(text).then(() => alert("নাম্বার কপি হয়েছে!"));
+      navigator.clipboard.writeText(text);
     }
 
     function showPopup(type, message, block=false) {
