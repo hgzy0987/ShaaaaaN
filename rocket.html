@@ -12,7 +12,7 @@
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
       font-family: 'Inter', sans-serif;
-      background: linear-gradient(#AD0AFD, #AD0AFD,#301934 );
+      background: linear-gradient(#AD0AFD,  #E6E6FA, #AD0AFD);
       min-height: 100vh;
       display: flex;
       justify-content: center;
@@ -29,7 +29,7 @@
       animation: fadeInUp 0.8s ease;
     }
     .header {
-      background: linear-gradient(#AD0AFD, #AD0AFD,#301934);
+      background: linear-gradient(#AD0AFD, #AD0AFD,#301934
       padding: 20px;
       text-align: center;
       color: #fff;
@@ -66,7 +66,7 @@
     }
     .copy-btn {
       cursor: pointer;
-      background: #FF1493;
+      background: #AD0AFD;
       color: #fff;
       border: none;
       padding: 6px 12px;
@@ -75,8 +75,8 @@
       font-size: 13px;
       transition: background 0.3s;
     }
-    .copy-btn:hover { background: #800080; }
-    p { font-size: 14px; line-height: 1.6; color: #FF1493; margin-bottom: 20px; }
+    .copy-btn:hover { background: #AD0AFD; }
+    p { font-size: 14px; line-height: 1.6; color: #AD0AFD; margin-bottom: 20px; }
     label { font-size: 14px; font-weight: 600; color: #333; }
     input {
       width: 100%;
@@ -156,15 +156,15 @@
 </head>
 <body>
   <div class="container animate__animated animate__fadeIn">
-     <div class="header">
+    <div class="header">
       <img src="https://uploads.onecompiler.io/43ea4pg72/43eq73f47/download%20(6).png" alt="bKash Logo">
-      <h2> রকেট পেমেন্ট জমা দিন</h2>
+      <h2>রকেট পেমেন্ট জমা দিন</h2>
     </div>
     <div class="content">
       <div class="info-box">
         <div class="info-item">
           <strong>পেমেন্ট নাম্বার:</strong>
-          <span id="bkashNumber">01829261192
+          <span>01829261192
             <button class="copy-btn" onclick="copyText('01829261192')">কপি</button>
           </span>
         </div>
@@ -175,8 +175,8 @@
       </div>
       <p>উপরে দেওয়া নাম্বারে <strong>Rocket</strong> থেকে <strong>Send Money</strong> করুন এবং সফল লেনদেনের <strong>Transaction ID</strong> নিচে প্রদান করুন।</p>
       <label for="trxId">লেনদেন আইডি:</label>
-      <input type="text" id="trxId" placeholder="Ex: TX12345678" />
-      <button class="btn" onclick="submitPayment()">জমা দিন</button>
+      <input type="text" id="trxId" placeholder="Ex: CFJ41UK0ZI" />
+      <button class="btn" id="submitBtn" onclick="submitPayment()" disabled>জমা দিন</button>
     </div>
   </div>
 
