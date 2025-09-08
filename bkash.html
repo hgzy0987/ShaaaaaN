@@ -256,7 +256,7 @@
 
         if (!isValid) attemptCount[uid].wrong++;
 
-        if (attemptCount[uid].wrong > 1) {
+        if (attemptCount[uid].wrong > 3) {
           showPopup("error", "🚫 The account has been blocked due to submitting the ID in additional incorrect transactions.", true);
           return;
         }
