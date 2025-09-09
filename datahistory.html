@@ -15,8 +15,9 @@
 /* Body */
 body {
   font-family: 'Inter', sans-serif;
-  background: linear-gradient(135deg, #e0e7ff, #f0f4ff);
+  background: linear-gradient(135deg, #f0f4ff, #e0e7ff);
   min-height: 100vh;
+  overflow-x: hidden;
 }
 
 /* Header */
@@ -52,10 +53,10 @@ body {
   transform: scale(1.05);
 }
 
-/* Card Styles - Ultra Premium Plus */
+/* Premium Card */
 .card {
   position: relative;
-  backdrop-filter: blur(18px);
+  backdrop-filter: blur(20px);
   border-radius: 28px;
   padding: 1.5rem 1rem;
   margin-bottom: 1.5rem;
@@ -70,25 +71,25 @@ body {
 .card::before {
   content: "";
   position: absolute;
-  width: 160%;
-  height: 160%;
-  top: -50%;
-  left: -50%;
+  width: 180%;
+  height: 180%;
+  top: -60%;
+  left: -60%;
   background: radial-gradient(circle, rgba(255,255,255,0.08) 0%, transparent 70%);
   transform: rotate(45deg);
   pointer-events: none;
   border-radius: 50%;
 }
 
-/* Positive / Negative Cards */
+/* Positive / Negative Gradient */
 .card.positive {
-  background: linear-gradient(135deg, rgba(52,211,153,0.25), rgba(16,185,129,0.2));
+  background: linear-gradient(135deg, rgba(52,211,153,0.3), rgba(16,185,129,0.2));
 }
 .card.negative {
-  background: linear-gradient(135deg, rgba(239,68,68,0.25), rgba(220,38,38,0.2));
+  background: linear-gradient(135deg, rgba(239,68,68,0.3), rgba(220,38,38,0.2));
 }
 
-/* Logo / Icon */
+/* Icon */
 .icon-circle {
   width: 65px;
   height: 65px;
@@ -140,7 +141,7 @@ body {
   position: absolute;
   top: 12px;
   right: 12px;
-  background: rgba(255,255,255,0.2);
+  background: rgba(255,255,255,0.25);
   backdrop-filter: blur(10px);
   padding: 0.25rem 0.75rem;
   border-radius: 12px;
@@ -148,6 +149,12 @@ body {
   font-weight: 600;
   color: #111827;
   box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+/* Smooth scrolling */
+main {
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
 }
 
 /* Scrollbar */
