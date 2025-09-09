@@ -12,16 +12,106 @@
 <script src="https://cdn.tailwindcss.com"></script>
 
 <style>
-body { font-family: 'Inter', sans-serif; background-color: #f3f4f6; }
-.header { background: linear-gradient(90deg,#4f46e5,#3b82f6); color: white; padding: 1rem; position: sticky; top:0; z-index:50; }
-.header img { width: 100%; max-height: 150px; object-fit: cover; border-radius: 12px; margin-top: 0.5rem; }
-.back-btn { display: inline-flex; align-items: center; gap:0.5rem; background: rgba(255,255,255,0.2); padding:0.5rem 1rem; border-radius:8px; cursor:pointer; transition: background 0.2s; }
-.back-btn:hover { background: rgba(255,255,255,0.4); }
-.card { background: white; border-radius: 16px; padding: 1rem; box-shadow: 0 6px 20px rgba(0,0,0,0.1); margin-bottom: 1rem; transition: transform 0.2s, box-shadow 0.2s; }
-.card:hover { transform: translateY(-2px); box-shadow: 0 10px 25px rgba(0,0,0,0.15); }
-.amount-positive { color: #16a34a; font-weight: 600; }
-.amount-negative { color: #dc2626; font-weight: 600; }
-.icon-circle { width: 50px; height: 50px; border-radius: 50%; overflow: hidden; flex-shrink: 0; }
+body {
+  font-family: 'Inter', sans-serif;
+  background: linear-gradient(135deg, #f3f4f6, #e0e7ff);
+}
+
+/* Header */
+.header {
+  background: linear-gradient(90deg,#4f46e5,#3b82f6);
+  color: white;
+  padding: 1rem;
+  position: sticky;
+  top:0;
+  z-index:50;
+  border-bottom-left-radius: 20px;
+  border-bottom-right-radius: 20px;
+}
+.header img {
+  width: 100%;
+  max-height: 160px;
+  object-fit: cover;
+  border-radius: 16px;
+  margin-top: 0.5rem;
+}
+.back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap:0.5rem;
+  background: rgba(255,255,255,0.2);
+  padding:0.5rem 1rem;
+  border-radius:12px;
+  cursor:pointer;
+  transition: all 0.3s ease;
+}
+.back-btn:hover {
+  background: rgba(255,255,255,0.35);
+  transform: scale(1.05);
+}
+
+/* Card Styles - Ultra Premium Glassmorphism */
+.card {
+  backdrop-filter: blur(15px);
+  background: rgba(255, 255, 255, 0.25);
+  border-radius: 20px;
+  padding: 1.5rem 1rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.08), 0 6px 20px rgba(0,0,0,0.05);
+  transition: transform 0.3s, box-shadow 0.3s;
+  position: relative;
+  overflow: hidden;
+}
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.15), 0 10px 25px rgba(0,0,0,0.1);
+}
+.amount-positive {
+  color: #16a34a;
+  font-weight: 700;
+  font-size: 1.2rem;
+}
+.amount-negative {
+  color: #dc2626;
+  font-weight: 700;
+  font-size: 1.2rem;
+}
+.icon-circle {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  overflow: hidden;
+  flex-shrink: 0;
+  border: 2px solid rgba(255,255,255,0.6);
+  transition: transform 0.3s, box-shadow 0.3s;
+  backdrop-filter: blur(10px);
+}
+.icon-circle img {
+  transition: transform 0.3s;
+}
+.card:hover .icon-circle img {
+  transform: scale(1.1) rotate(5deg);
+}
+.card h2 {
+  font-size: 1.05rem;
+  color: #111827;
+}
+.card p, .card span {
+  font-size: 0.85rem;
+  color: #6b7280;
+}
+
+/* Scrollbar Style */
+main::-webkit-scrollbar {
+  width: 8px;
+}
+main::-webkit-scrollbar-track {
+  background: transparent;
+}
+main::-webkit-scrollbar-thumb {
+  background: rgba(79,70,229,0.5);
+  border-radius: 4px;
+}
 </style>
 </head>
 <body class="min-h-screen flex flex-col">
@@ -85,18 +175,18 @@ onAuthStateChanged(auth, (user) => {
           const card = document.createElement('div');
           card.className = 'card flex justify-between items-center';
           card.innerHTML = `
-            <div class="flex items-center space-x-3">
+            <div class="flex items-center space-x-4">
               <div class="icon-circle">
-                <img src="${msg.icon || 'https://via.placeholder.com/50'}" alt="icon" class="w-full h-full object-cover">
+                <img src="${msg.icon || 'https://via.placeholder.com/60'}" alt="icon" class="w-full h-full object-cover">
               </div>
               <div>
-                <p class="text-gray-400 text-sm">#${count}</p>
-                <h2 class="font-semibold text-gray-800">${msg.subject}</h2>
+                <p class="text-gray-400 text-sm font-medium">#${count}</p>
+                <h2 class="font-semibold">${msg.subject}</h2>
                 <span class="text-gray-400 text-sm">${msg.date} ${msg.time}</span>
               </div>
             </div>
             <div>
-              <p class="${msg.amount >=0 ? 'amount-positive' : 'amount-negative'} text-lg">${msg.amount} BDT</p>
+              <p class="${msg.amount >=0 ? 'amount-positive' : 'amount-negative'}">${msg.amount} BDT</p>
             </div>
           `;
           messagesContainer.appendChild(card);
@@ -108,7 +198,6 @@ onAuthStateChanged(auth, (user) => {
     });
 
   } else {
-    // ইউজার লগ ইন না থাকলে
     window.location.href = "index.html";
   }
 });
