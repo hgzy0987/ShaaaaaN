@@ -53,12 +53,11 @@ body {
 /* Premium Balance Card */
 .card {
   backdrop-filter: blur(20px);
-  background: rgba(255, 255, 255, 0.2);
   border-radius: 24px;
   padding: 1.5rem 1rem;
   margin-bottom: 1.5rem;
   box-shadow: 0 15px 35px rgba(0,0,0,0.12), 0 8px 25px rgba(0,0,0,0.08);
-  transition: transform 0.3s, box-shadow 0.3s;
+  transition: transform 0.3s, box-shadow 0.3s, background 0.3s;
   position: relative;
   overflow: hidden;
 }
@@ -69,13 +68,21 @@ body {
   height: 150%;
   top: -50%;
   left: -50%;
-  background: radial-gradient(circle, rgba(79,70,229,0.15) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
   transform: rotate(45deg);
   pointer-events: none;
 }
 .card:hover {
   transform: translateY(-6px);
   box-shadow: 0 25px 50px rgba(0,0,0,0.2), 0 15px 35px rgba(0,0,0,0.1);
+}
+
+/* Positive and Negative Cards */
+.card.positive {
+  background: linear-gradient(135deg, rgba(52,211,153,0.25), rgba(16,185,129,0.2));
+}
+.card.negative {
+  background: linear-gradient(135deg, rgba(239,68,68,0.25), rgba(220,38,38,0.2));
 }
 
 /* Logo/Icon Circle */
@@ -194,7 +201,9 @@ onAuthStateChanged(auth, (user) => {
 
         messages.forEach(msg => {
           const card = document.createElement('div');
-          card.className = 'card flex justify-between items-center';
+          const cardClass = msg.amount >= 0 ? 'card positive flex justify-between items-center' : 'card negative flex justify-between items-center';
+          card.className = cardClass;
+
           card.innerHTML = `
             <div class="flex items-center space-x-4">
               <div class="icon-circle">
