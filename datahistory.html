@@ -29,7 +29,9 @@ body { font-family: 'Inter', sans-serif; background-color: #f3f4f6; }
 <header class="header">
   <div class="flex items-center justify-between">
     <div class="back-btn" onclick="window.location.href='profile.html'">
-      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" /></svg>
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+      </svg>
       <span>Back</span>
     </div>
     <h1 class="text-xl font-bold text-white">Earnings Details</h1>
@@ -45,64 +47,69 @@ body { font-family: 'Inter', sans-serif; background-color: #f3f4f6; }
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-app.js";
 import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-database.js";
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-auth.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBCyR4yHRj4Yze2-M27tktHtV_f03EoVvs",
   authDomain: "trust-bd-d889e.firebaseapp.com",
   databaseURL: "https://trust-bd-d889e-default-rtdb.firebaseio.com",
   projectId: "trust-bd-d889e",
-  storageBucket: "trust-bd-d889e.firebasestorage.app",
+  storageBucket: "trust-bd-d889e.appspot.com",
   messagingSenderId: "413112954640",
   appId: "1:413112954640:web:beb99410c8b9ecd4037f95",
   measurementId: "G-8JEWWCZ0Y4"
 };
 
-
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
+const auth = getAuth(app);
 
-// UID auto-detect
-const uid = localStorage.getItem('userUID') || sessionStorage.getItem('userUID');
-if(!uid){
-  window.location.href = "index.html";
-}
-
-const messagesRef = ref(db, `earnings/${uid}/messages`);
 const messagesContainer = document.getElementById('messagesContainer');
 const emptyState = document.getElementById('emptyState');
 
-onValue(messagesRef, (snapshot) => {
-  messagesContainer.innerHTML = '';
-  if(snapshot.exists()){
-    emptyState.classList.add('hidden');
-    let count = 1;
-    const messages = [];
-    snapshot.forEach(child => { messages.push({...child.val(), key: child.key}); });
-    messages.sort((a,b)=> a.timestamp - b.timestamp);
+onAuthStateChanged(auth, (user) => {
+  if (user) {
+    const uid = user.uid;
+    const messagesRef = ref(db, `earnings/${uid}/messages`);
 
-    messages.forEach(msg => {
-      const card = document.createElement('div');
-      card.className = 'card flex justify-between items-center';
-      card.innerHTML = `
-        <div class="flex items-center space-x-3">
-          <div class="icon-circle">
-            <img src="${msg.icon || 'https://via.placeholder.com/50'}" alt="icon" class="w-full h-full object-cover">
-          </div>
-          <div>
-            <p class="text-gray-400 text-sm">#${count}</p>
-            <h2 class="font-semibold text-gray-800">${msg.subject}</h2>
-            <span class="text-gray-400 text-sm">${msg.date} ${msg.time}</span>
-          </div>
-        </div>
-        <div>
-          <p class="${msg.amount >=0 ? 'amount-positive' : 'amount-negative'} text-lg">${msg.amount} BDT</p>
-        </div>
-      `;
-      messagesContainer.appendChild(card);
-      count++;
+    onValue(messagesRef, (snapshot) => {
+      messagesContainer.innerHTML = '';
+      if(snapshot.exists()){
+        emptyState.classList.add('hidden');
+        let count = 1;
+        const messages = [];
+        snapshot.forEach(child => { messages.push({...child.val(), key: child.key}); });
+        messages.sort((a,b)=> a.timestamp - b.timestamp);
+
+        messages.forEach(msg => {
+          const card = document.createElement('div');
+          card.className = 'card flex justify-between items-center';
+          card.innerHTML = `
+            <div class="flex items-center space-x-3">
+              <div class="icon-circle">
+                <img src="${msg.icon || 'https://via.placeholder.com/50'}" alt="icon" class="w-full h-full object-cover">
+              </div>
+              <div>
+                <p class="text-gray-400 text-sm">#${count}</p>
+                <h2 class="font-semibold text-gray-800">${msg.subject}</h2>
+                <span class="text-gray-400 text-sm">${msg.date} ${msg.time}</span>
+              </div>
+            </div>
+            <div>
+              <p class="${msg.amount >=0 ? 'amount-positive' : 'amount-negative'} text-lg">${msg.amount} BDT</p>
+            </div>
+          `;
+          messagesContainer.appendChild(card);
+          count++;
+        });
+      } else {
+        emptyState.classList.remove('hidden');
+      }
     });
+
   } else {
-    emptyState.classList.remove('hidden');
+    // ইউজার লগ ইন না থাকলে
+    window.location.href = "index.html";
   }
 });
 </script>
