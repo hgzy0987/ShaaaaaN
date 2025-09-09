@@ -6,15 +6,17 @@
 <title>Earnings Details - TRUST BD</title>
 
 <!-- Google Fonts -->
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
 
 <!-- Tailwind CSS -->
 <script src="https://cdn.tailwindcss.com"></script>
 
 <style>
+/* Body */
 body {
   font-family: 'Inter', sans-serif;
-  background: linear-gradient(135deg, #f0f4ff, #e0e7ff);
+  background: linear-gradient(135deg, #e0e7ff, #f0f4ff);
+  min-height: 100vh;
 }
 
 /* Header */
@@ -50,34 +52,35 @@ body {
   transform: scale(1.05);
 }
 
-/* Premium Balance Card */
+/* Card Styles - Ultra Premium Plus */
 .card {
-  backdrop-filter: blur(20px);
-  border-radius: 24px;
+  position: relative;
+  backdrop-filter: blur(18px);
+  border-radius: 28px;
   padding: 1.5rem 1rem;
   margin-bottom: 1.5rem;
-  box-shadow: 0 15px 35px rgba(0,0,0,0.12), 0 8px 25px rgba(0,0,0,0.08);
-  transition: transform 0.3s, box-shadow 0.3s, background 0.3s;
-  position: relative;
+  box-shadow: 0 18px 40px rgba(0,0,0,0.12), 0 10px 30px rgba(0,0,0,0.08);
+  transition: all 0.3s ease-in-out;
   overflow: hidden;
+}
+.card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 30px 60px rgba(0,0,0,0.18), 0 15px 35px rgba(0,0,0,0.1);
 }
 .card::before {
   content: "";
   position: absolute;
-  width: 150%;
-  height: 150%;
+  width: 160%;
+  height: 160%;
   top: -50%;
   left: -50%;
-  background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(255,255,255,0.08) 0%, transparent 70%);
   transform: rotate(45deg);
   pointer-events: none;
-}
-.card:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 25px 50px rgba(0,0,0,0.2), 0 15px 35px rgba(0,0,0,0.1);
+  border-radius: 50%;
 }
 
-/* Positive and Negative Cards */
+/* Positive / Negative Cards */
 .card.positive {
   background: linear-gradient(135deg, rgba(52,211,153,0.25), rgba(16,185,129,0.2));
 }
@@ -85,15 +88,16 @@ body {
   background: linear-gradient(135deg, rgba(239,68,68,0.25), rgba(220,38,38,0.2));
 }
 
-/* Logo/Icon Circle */
+/* Logo / Icon */
 .icon-circle {
-  width: 60px;
-  height: 60px;
+  width: 65px;
+  height: 65px;
   border-radius: 50%;
   overflow: hidden;
   flex-shrink: 0;
   border: 2px solid rgba(255,255,255,0.7);
-  backdrop-filter: blur(10px);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
   transition: transform 0.3s, box-shadow 0.3s;
 }
 .icon-circle img {
@@ -103,12 +107,12 @@ body {
   transition: transform 0.3s;
 }
 .card:hover .icon-circle img {
-  transform: scale(1.1) rotate(5deg);
+  transform: scale(1.15) rotate(5deg);
 }
 
-/* Text Styles */
+/* Text */
 .card h2 {
-  font-size: 1.1rem;
+  font-size: 1.15rem;
   font-weight: 700;
   color: #111827;
 }
@@ -119,14 +123,31 @@ body {
 .amount-positive {
   color: #16a34a;
   font-weight: 700;
-  font-size: 1.3rem;
+  font-size: 1.35rem;
   text-align: right;
+  text-shadow: 0 1px 3px rgba(0,0,0,0.2);
 }
 .amount-negative {
   color: #dc2626;
   font-weight: 700;
-  font-size: 1.3rem;
+  font-size: 1.35rem;
   text-align: right;
+  text-shadow: 0 1px 3px rgba(0,0,0,0.2);
+}
+
+/* Badge */
+.badge {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: rgba(255,255,255,0.2);
+  backdrop-filter: blur(10px);
+  padding: 0.25rem 0.75rem;
+  border-radius: 12px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: #111827;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
 }
 
 /* Scrollbar */
@@ -207,7 +228,7 @@ onAuthStateChanged(auth, (user) => {
           card.innerHTML = `
             <div class="flex items-center space-x-4">
               <div class="icon-circle">
-                <img src="${msg.icon || 'https://via.placeholder.com/60'}" alt="icon">
+                <img src="${msg.icon || 'https://via.placeholder.com/65'}" alt="icon">
               </div>
               <div>
                 <p class="text-gray-400 text-sm font-medium">#${count}</p>
@@ -218,6 +239,7 @@ onAuthStateChanged(auth, (user) => {
             <div>
               <p class="${msg.amount >=0 ? 'amount-positive' : 'amount-negative'}">${msg.amount} BDT</p>
             </div>
+            ${msg.amount >=0 ? '<div class="badge">+Earning</div>' : '<div class="badge">Loss</div>'}
           `;
           messagesContainer.appendChild(card);
           count++;
