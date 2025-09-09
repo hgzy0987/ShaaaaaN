@@ -228,7 +228,7 @@ onAuthStateChanged(auth, (user) => {
             <div class="text-right">
               <p class="${msg.amount >=0 ? 'amount-positive' : 'amount-negative'}">${msg.amount} BDT</p>
             </div>
-            ${msg.amount >=0 ? '<div class="badge">+Earning</div>' : '<div class="badge">Loss</div>'}
+            ${msg.amount >=0 ? '<div class="badge">+Earning</div>' : '<div class="badge">Invest</div>'}
           `;
           messagesContainer.appendChild(card);
           count++;
