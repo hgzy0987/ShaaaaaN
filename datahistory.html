@@ -12,7 +12,6 @@
 <script src="https://cdn.tailwindcss.com"></script>
 
 <style>
-/* Body */
 body {
   font-family: 'Inter', sans-serif;
   background: linear-gradient(135deg, #f0f4ff, #e0e7ff);
@@ -20,7 +19,6 @@ body {
   overflow-x: hidden;
 }
 
-/* Header */
 .header {
   background: linear-gradient(90deg,#4f46e5,#3b82f6);
   color: white;
@@ -33,7 +31,7 @@ body {
 }
 .header img {
   width: 100%;
-  max-height: 160px;
+  max-height: 140px;
   object-fit: cover;
   border-radius: 16px;
   margin-top: 0.5rem;
@@ -43,7 +41,7 @@ body {
   align-items: center;
   gap:0.5rem;
   background: rgba(255,255,255,0.2);
-  padding:0.5rem 1rem;
+  padding:0.4rem 0.8rem;
   border-radius:12px;
   cursor:pointer;
   transition: all 0.3s ease;
@@ -53,102 +51,88 @@ body {
   transform: scale(1.05);
 }
 
-/* Premium Card */
+/* Compact Premium Card */
 .card {
   position: relative;
-  backdrop-filter: blur(20px);
-  border-radius: 28px;
-  padding: 1.5rem 1rem;
-  margin-bottom: 1.5rem;
-  box-shadow: 0 18px 40px rgba(0,0,0,0.12), 0 10px 30px rgba(0,0,0,0.08);
+  backdrop-filter: blur(15px);
+  border-radius: 20px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 12px 25px rgba(0,0,0,0.08), 0 6px 15px rgba(0,0,0,0.05);
   transition: all 0.3s ease-in-out;
-  overflow: hidden;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 .card:hover {
-  transform: translateY(-8px);
-  box-shadow: 0 30px 60px rgba(0,0,0,0.18), 0 15px 35px rgba(0,0,0,0.1);
-}
-.card::before {
-  content: "";
-  position: absolute;
-  width: 180%;
-  height: 180%;
-  top: -60%;
-  left: -60%;
-  background: radial-gradient(circle, rgba(255,255,255,0.08) 0%, transparent 70%);
-  transform: rotate(45deg);
-  pointer-events: none;
-  border-radius: 50%;
+  transform: translateY(-4px);
+  box-shadow: 0 20px 45px rgba(0,0,0,0.12), 0 10px 30px rgba(0,0,0,0.08);
 }
 
-/* Positive / Negative Gradient */
+/* Gradient Colors */
 .card.positive {
-  background: linear-gradient(135deg, rgba(52,211,153,0.3), rgba(16,185,129,0.2));
+  background: linear-gradient(135deg, rgba(52,211,153,0.25), rgba(16,185,129,0.15));
 }
 .card.negative {
-  background: linear-gradient(135deg, rgba(239,68,68,0.3), rgba(220,38,38,0.2));
+  background: linear-gradient(135deg, rgba(239,68,68,0.25), rgba(220,38,38,0.15));
 }
 
 /* Icon */
 .icon-circle {
-  width: 65px;
-  height: 65px;
+  width: 50px;
+  height: 50px;
   border-radius: 50%;
   overflow: hidden;
   flex-shrink: 0;
-  border: 2px solid rgba(255,255,255,0.7);
-  backdrop-filter: blur(12px);
-  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-  transition: transform 0.3s, box-shadow 0.3s;
+  border: 2px solid rgba(255,255,255,0.6);
+  backdrop-filter: blur(8px);
+  box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+  transition: transform 0.3s;
 }
 .icon-circle img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.3s;
 }
-.card:hover .icon-circle img {
-  transform: scale(1.15) rotate(5deg);
+.card:hover .icon-circle {
+  transform: scale(1.1);
 }
 
 /* Text */
 .card h2 {
-  font-size: 1.15rem;
-  font-weight: 700;
+  font-size: 1rem;
+  font-weight: 600;
   color: #111827;
 }
 .card p, .card span {
-  font-size: 0.85rem;
+  font-size: 0.75rem;
   color: #6b7280;
 }
 .amount-positive {
   color: #16a34a;
-  font-weight: 700;
-  font-size: 1.35rem;
+  font-weight: 600;
+  font-size: 1.15rem;
   text-align: right;
-  text-shadow: 0 1px 3px rgba(0,0,0,0.2);
 }
 .amount-negative {
   color: #dc2626;
-  font-weight: 700;
-  font-size: 1.35rem;
+  font-weight: 600;
+  font-size: 1.15rem;
   text-align: right;
-  text-shadow: 0 1px 3px rgba(0,0,0,0.2);
 }
 
 /* Badge */
 .badge {
   position: absolute;
-  top: 12px;
-  right: 12px;
-  background: rgba(255,255,255,0.25);
-  backdrop-filter: blur(10px);
-  padding: 0.25rem 0.75rem;
-  border-radius: 12px;
-  font-size: 0.7rem;
+  top: 8px;
+  right: 8px;
+  background: rgba(255,255,255,0.2);
+  backdrop-filter: blur(6px);
+  padding: 0.15rem 0.5rem;
+  border-radius: 10px;
+  font-size: 0.65rem;
   font-weight: 600;
   color: #111827;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
 }
 
 /* Smooth scrolling */
@@ -159,14 +143,14 @@ main {
 
 /* Scrollbar */
 main::-webkit-scrollbar {
-  width: 8px;
+  width: 6px;
 }
 main::-webkit-scrollbar-track {
   background: transparent;
 }
 main::-webkit-scrollbar-thumb {
-  background: rgba(79,70,229,0.5);
-  border-radius: 4px;
+  background: rgba(79,70,229,0.4);
+  border-radius: 3px;
 }
 </style>
 </head>
@@ -180,13 +164,13 @@ main::-webkit-scrollbar-thumb {
       </svg>
       <span>Back</span>
     </div>
-    <h1 class="text-xl font-bold text-white">Earnings Details</h1>
+    <h1 class="text-lg font-bold text-white">Earnings Details</h1>
   </div>
   <img src="https://i.postimg.cc/mhWcd1rh/Picsart-25-09-09-10-52-46-930.jpg" alt="Banner Image">
 </header>
 
 <main class="flex-1 p-4 overflow-y-auto">
-  <div class="max-w-lg mx-auto" id="messagesContainer"></div>
+  <div class="max-w-md mx-auto" id="messagesContainer"></div>
   <div id="emptyState" class="text-center text-gray-400 mt-10 hidden">কোনও মেসেজ নেই।</div>
 </main>
 
@@ -229,21 +213,19 @@ onAuthStateChanged(auth, (user) => {
 
         messages.forEach(msg => {
           const card = document.createElement('div');
-          const cardClass = msg.amount >= 0 ? 'card positive flex justify-between items-center' : 'card negative flex justify-between items-center';
-          card.className = cardClass;
-
+          card.className = msg.amount >= 0 ? 'card positive' : 'card negative';
           card.innerHTML = `
-            <div class="flex items-center space-x-4">
+            <div class="flex items-center space-x-3">
               <div class="icon-circle">
-                <img src="${msg.icon || 'https://via.placeholder.com/65'}" alt="icon">
+                <img src="${msg.icon || 'https://via.placeholder.com/50'}" alt="icon">
               </div>
               <div>
-                <p class="text-gray-400 text-sm font-medium">#${count}</p>
+                <p class="text-gray-400 text-xs font-medium">#${count}</p>
                 <h2 class="font-semibold">${msg.subject}</h2>
-                <span class="text-gray-400 text-sm">${msg.date} ${msg.time}</span>
+                <span class="text-gray-400 text-xs">${msg.date} ${msg.time}</span>
               </div>
             </div>
-            <div>
+            <div class="text-right">
               <p class="${msg.amount >=0 ? 'amount-positive' : 'amount-negative'}">${msg.amount} BDT</p>
             </div>
             ${msg.amount >=0 ? '<div class="badge">+Earning</div>' : '<div class="badge">Loss</div>'}
