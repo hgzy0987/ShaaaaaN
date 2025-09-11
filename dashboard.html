@@ -1024,3 +1024,164 @@ document.getElementById('chat-icon').addEventListener('click', function () {
   popup.style.display = popup.style.display === 'none' ? 'block' : 'none';
 });
 </script>
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PWA Notification Banner</title>
+  <style>
+    /* =============================
+       Premium Bottom Banner Scoped
+       ============================= */
+    #pwa-notify-banner {
+      position: fixed;
+      bottom: -180px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 95%;
+      max-width: 420px;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.35);
+      font-family: 'Inter', sans-serif;
+      z-index: 99999; /* অন্য পপআপের উপরে দেখানোর জন্য */
+      background: #fff;
+      transition: bottom 0.6s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+    }
+
+    #pwa-notify-banner.show {
+      bottom: 25px;
+    }
+
+    #pwa-notify-banner img {
+      width: 80%;
+      height: 100px;
+      display: block;
+      object-fit: cover;
+      margin: 0 auto;
+    }
+
+    #pwa-notify-banner .pwa-content {
+      padding: 16px 20px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      background: linear-gradient(180deg, #6a11cb 0%, #2575fc 100%);
+      color: #fff;
+    }
+
+    #pwa-notify-banner .pwa-content .pwa-text {
+      font-size: 16px;
+      font-weight: 600;
+      line-height: 1.4;
+    }
+
+    #pwa-notify-banner .pwa-content button {
+      background: #fff;
+      color: #2575fc;
+      border: none;
+      padding: 10px 18px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 14px;
+      transition: all 0.3s ease;
+    }
+
+    #pwa-notify-banner .pwa-content button:hover {
+      background: #e6e6e6;
+      transform: translateY(-2px);
+    }
+
+    @media (max-width: 480px) {
+      #pwa-notify-banner .pwa-content {
+        padding: 14px 12px;
+      }
+      #pwa-notify-banner .pwa-content .pwa-text {
+        font-size: 15px;
+      }
+      #pwa-notify-banner .pwa-content button {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Premium Bottom Notification Banner -->
+  <div id="pwa-notify-banner">
+    <img src="https://i.postimg.cc/y8r6TM73/20111674-bell-4.jpg" alt="Notification Banner">
+    <div class="pwa-content">
+      <div class="pwa-text">আমাদের নতুন আপডেট পেতে Notification চালু করুন</div>
+      <button id="pwa-allow-btn">Allow</button>
+    </div>
+  </div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
+    import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-database.js";
+    import { getMessaging, getToken } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-messaging.js";
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyBCyR4yHRj4Yze2-M27tktHtV_f03EoVvs",
+      authDomain: "trust-bd-d889e.firebaseapp.com",
+      databaseURL: "https://trust-bd-d889e-default-rtdb.firebaseio.com",
+      projectId: "trust-bd-d889e",
+      storageBucket: "trust-bd-d889e.appspot.com",
+      messagingSenderId: "413112954640",
+      appId: "1:413112954640:web:beb99410c8b9ecd4037f95",
+      measurementId: "G-8JEWWCZ0Y4"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getDatabase(app);
+    const messaging = getMessaging(app);
+
+    const banner = document.getElementById("pwa-notify-banner");
+    const allowBtn = document.getElementById("pwa-allow-btn");
+
+    // =============================
+    // Show banner only if not allowed
+    // =============================
+    if(localStorage.getItem("pwaNotifAllowed") === "true"){
+      banner.style.display = "none";
+    } else {
+      window.addEventListener("load", () => {
+        setTimeout(() => {
+          banner.classList.add("show");
+        }, 800);
+      });
+    }
+
+    // =============================
+    // Button click
+    // =============================
+    allowBtn.addEventListener("click", () => {
+      onAuthStateChanged(auth, (user) => {
+        if(user){
+          const uid = user.uid;
+          Notification.requestPermission().then(permission => {
+            if(permission === "granted"){
+              getToken(messaging, { vapidKey: "BAS0Gw19N2jNLrahbcHiUnSewzv2pQLqH2PIp-K4IZv_1XLinmOrSB-naADBuXaXU-JPrhuS9csFSOszy3KqPbg" })
+                .then((token) => {
+                  if(token){
+                    set(ref(db, "users/" + uid), { token: token });
+                    localStorage.setItem("pwaNotifAllowed", "true");
+                  }
+                })
+                .catch(err => console.error("Token Error:", err));
+            }
+            banner.classList.remove("show");
+          });
+        } else {
+          console.log("User not logged in");
+          banner.classList.remove("show");
+        }
+      });
+    });
+  </script>
+</body>
+</html>
