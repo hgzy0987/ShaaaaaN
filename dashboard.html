@@ -1174,11 +1174,23 @@ document.getElementById('chat-icon').addEventListener('click', function () {
                 })
                 .catch(err => console.error("Token Error:", err));
             }
+
+            // Slide out animation
             banner.classList.remove("show");
+
+            // Transition শেষে পুরোপুরি remove করা
+            banner.addEventListener("transitionend", function hideBanner() {
+              banner.style.display = "none";
+              banner.removeEventListener("transitionend", hideBanner);
+            });
           });
         } else {
           console.log("User not logged in");
           banner.classList.remove("show");
+          banner.addEventListener("transitionend", function hideBanner() {
+            banner.style.display = "none";
+            banner.removeEventListener("transitionend", hideBanner);
+          });
         }
       });
     });
