@@ -244,15 +244,15 @@ h2 {
       });
   });
 
-  // Invite Code auto-fill
-  window.addEventListener("DOMContentLoaded", ()=>{
-    const query = window.location.search;
-    if(query.startsWith("?") && query.length>1){
-      const refCode = query.slice(1);
-      document.getElementById("inviteCode").value = refCode;
-    }
-  });
-
+  // Invite Code auto-fill (first 5 characters only)
+window.addEventListener("DOMContentLoaded", ()=>{
+  const query = window.location.search;
+  if(query.startsWith("?") && query.length > 1){
+    let refCode = query.slice(1); // ? এর পরের অংশ
+    refCode = refCode.substring(0, 5); // শুধু প্রথম ৫ টা ক্যারেক্টার নিবে
+    document.getElementById("inviteCode").value = refCode;
+  }
+});
   // Install popup
   let deferredPrompt;
   window.addEventListener("beforeinstallprompt", (e) => {
