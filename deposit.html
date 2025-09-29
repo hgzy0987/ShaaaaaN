@@ -3,165 +3,289 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>TRUST‑BD PAYMENT PAGE</title>
-  <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
+  <title>TRUST-BD PAYMENT PAGE</title>
   <style>
-    * { box-sizing: border-box; }
-    body { margin: 0; font-family: 'Segoe UI', Tahoma, sans-serif; background: #f2f3f7; color: #333; }
-    .container { max-width: 480px; margin: 0 auto; padding: 16px; }
-    .header { text-align: center; margin-bottom: 16px; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Segoe UI', Tahoma, sans-serif;
+      background: #f8f9fb;
+      color: #222;
+      transition: background .4s ease;
+    }
+    .container {
+      max-width: 500px;
+      margin: auto;
+      padding: 18px 14px 60px;
+      transition: background .4s ease;
+    }
+
+    /* Header */
+    .header { text-align: center; margin-bottom: 18px; }
     .header h2 {
-      font-size: 24px; font-weight: 700; margin: 0; color: #f57c00;
-      display: flex; align-items: center; justify-content: center; gap: 8px;
+      font-size: 22px;
+      font-weight: 700;
+      color: #f57c00;
     }
-    .header .material-icons-outlined { font-size: 28px; }
-    .back-btn { display: flex; align-items: center; gap: 6px; cursor: pointer; color: #444; margin-bottom: 10px; }
+
+    /* Back button */
+    .back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      color: #555;
+      margin-bottom: 16px;
+      font-size: 14px;
+      transition: all .3s;
+    }
+    .back-btn:hover { color: #f57c00; transform: translateX(-3px); }
+    .back-btn img { width: 18px; height: 18px; }
+
+    /* Balance */
     .balance-box {
-      background: linear-gradient(135deg, #fdbb2d, #f57c00);
-      color: #fff; padding: 20px; border-radius: 16px;
-      display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;
+      background: linear-gradient(135deg, #ff9800, #f57c00);
+      color: #fff;
+      padding: 16px;
+      border-radius: 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
+      box-shadow: 0 4px 14px rgba(0,0,0,.25);
     }
-    .offer-button {
-  position: relative;
-  width: 30%;
-}
-
-.offer-button button {
-  width: 100%;
-  padding: 10px;
-  font-size: 15px;
-  font-weight: bold;
-  border-radius: 10px;
-  border: 1px solid #ccc;
-  background: #fff;
-  cursor: pointer;
-  transition: 0.2s;
-}
-
-.offer-button button:hover {
-  background: #f57c00;
-  color: #fff;
-}
-
-.offer-badge {
-  position: absolute;
-  top: -6px;
-  right: -6px;
-  background: #00E676;
-  color: #fff;
-  font-size: 11px;
-  font-weight: bold;
-  padding: 2px 6px;
-  border-radius: 12px;
-  box-shadow: 0 0 5px rgba(0,0,0,0.2);
-}
+    .balance-box img { width: 30%; height: 20%; margin-right: 4px; }
+    .balance-box div { font-size: 15px; font-weight: 600; }
     .balance-box span { font-size: 20px; font-weight: bold; }
-    .methods { display: flex; justify-content: space-between; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
+
+    /* Section Titles */
+    .section-title {
+      font-size: 15px;
+      font-weight: 700;
+      margin-bottom: 10px;
+      color: #444;
+    }
+
+    /* Methods */
+    .methods {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      margin-bottom: 22px;
+    }
     .method {
-      flex: 1 1 45%; background: #fff; border-radius: 12px;
-      padding: 10px; text-align: center; cursor: pointer;
-      border: 2px solid transparent; transition: 0.3s;
+      background: #fff;
+      border-radius: 12px;
+      padding: 10px 6px;
+      text-align: center;
+      cursor: pointer;
+      border: 1.5px solid #e0e0e0;
+      transition: all .25s;
     }
-    .method.active { border-color: #f57c00; box-shadow: 0 0 8px rgba(245,124,0,0.4); }
-    .method img { width: 38px; height: 38px; margin-bottom: 6px; }
-    .amount-buttons { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 16px; }
-    .amount-buttons button {
-      flex: 1 1 30%; padding: 10px; font-size: 15px; font-weight: bold;
-      border-radius: 10px; border: 1px solid #ccc; background: #fff;
-      cursor: pointer; transition: 0.2s;
+    .method img {
+      width: 100%;
+      max-width: 50px;
+      border-radius: 10px;
+      margin-bottom: 6px;
     }
-    .amount-buttons button:hover { background: #f57c00; color: #fff; }
+    .method div {
+      font-size: 12px;
+      font-weight: 600;
+      color: #666;
+    }
+    .method.active {
+      border-color: #fff;
+      box-shadow: 0 0 12px rgba(0,0,0,.4);
+      transform: translateY(-3px);
+    }
+    .method.active div { color: #fff; }
+
+    /* Quick amounts */
+    .amount-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 18px;
+    }
+    .offer-button { position: relative; flex: 1 1 30%; }
+    .offer-button button {
+      width: 100%;
+      padding: 12px;
+      font-size: 14px;
+      font-weight: bold;
+      border-radius: 12px;
+      border: 1px solid #ddd;
+      background: #fff;
+      color: #333;
+      cursor: pointer;
+      transition: all .25s;
+    }
+    .offer-button button:hover {
+      background: #f57c00;
+      color: #fff;
+      border-color: #f57c00;
+      transform: scale(1.03);
+    }
+    .offer-badge {
+      position: absolute;
+      top: -6px; right: -6px;
+      background: #00C853;
+      color: #fff;
+      font-size: 10px;
+      font-weight: bold;
+      padding: 2px 6px;
+      border-radius: 10px;
+      box-shadow: 0 0 4px rgba(0,0,0,.3);
+    }
+
+    /* Input */
     .input-box { margin-bottom: 20px; }
-    .input-box label { display: block; margin-bottom: 6px; font-weight: 600; }
+    .input-box label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: 600;
+      font-size: 13px;
+      color: #444;
+    }
     .input-box input {
-      width: 100%; padding: 12px; font-size: 16px;
-      border-radius: 10px; border: 1px solid #ccc;
+      width: 100%;
+      padding: 12px;
+      font-size: 15px;
+      border-radius: 12px;
+      border: 1px solid #ddd;
+      background: #fff;
+      color: #222;
+      outline: none;
+      transition: border-color .25s;
     }
+    .input-box input:focus { border-color: #f57c00; }
+
+    /* Button */
     .btn {
-      width: 100%; padding: 14px; font-size: 16px; border: none;
-      border-radius: 10px; background: #f57c00; color: #fff;
-      font-weight: bold; cursor: pointer;
+      width: 100%;
+      padding: 14px;
+      font-size: 15px;
+      border: none;
+      border-radius: 12px;
+      background: #ccc;
+      color: #fff;
+      font-weight: bold;
+      cursor: not-allowed;
+      transition: all .3s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
     }
-    .btn:hover { background: #ff9800; }
+    .btn.enabled {
+      background: #f57c00;
+      cursor: pointer;
+    }
+    .btn.enabled:hover {
+      background: #ff9800;
+      box-shadow: 0 4px 12px rgba(255,152,0,.4);
+      transform: translateY(-2px);
+    }
+    .btn img { width: 30px; height: 30px; }
+
+    /* Notes */
     .note {
-      background: #fff8e1; padding: 12px; border-left: 4px solid #ffc107;
-      border-radius: 6px; font-size: 14px; margin-top: 20px;
+      background: #fff;
+      padding: 12px;
+      border-left: 3px solid #ffc107;
+      border-radius: 6px;
+      font-size: 13px;
+      margin-top: 20px;
+      color: #555;
+      line-height: 1.5;
+      box-shadow: 0 2px 6px rgba(0,0,0,.1);
     }
+    .note ul { margin: 0; padding-left: 16px; }
+
+    /* Footer Image */
     .footer-img {
-      margin-top: 24px; width: 100%; border-radius: 16px;
+      margin-top: 22px;
+      width: 100%;
+      border-radius: 14px;
+      box-shadow: 0 4px 14px rgba(0,0,0,.2);
     }
+
+    /* Mobile Responsive */
+    @media (max-width: 420px) {
+      .methods { grid-template-columns: repeat(2, 1fr); }
+      .offer-button { flex: 1 1 45%; }
+    }
+
+    /* Brand Theme Colors */
+    .theme-bkash   { background: linear-gradient(135deg, #e2186f, #f06292); }
+    .theme-nagad   { background: linear-gradient(135deg, #e53935, #ff7043); }
+    .theme-rocket  { background: linear-gradient(135deg, #7b1fa2, #ba68c8); }
+    .theme-upay    { background: linear-gradient(135deg, #0288d1, #26c6da); }
   </style>
 </head>
 <body>
-  <div class="container">
+  <div class="container" id="mainContainer">
+    <!-- Header -->
     <div class="header">
-      <h2><span class="material-icons-outlined">payments</span> TRUST‑BD PAYMENT PAGE</h2>
+      <h2>TRUST-BD PAYMENT PAGE</h2>
     </div>
     <div class="back-btn" onclick="window.location.href='dashboard.html'">
-      <span class="material-icons-outlined">arrow_back</span>
+      <img src="https://i.postimg.cc/rF3Sb4JC/left-arrow.png" alt="Back">
       <span>Back to Dashboard</span>
     </div>
 
+    <!-- Balance -->
     <div class="balance-box">
-      <div><span class="material-icons-outlined">account_balance_wallet</span> Balance</div>
+      <div><img src="https://i.postimg.cc/zXFr2w5t/20250929-152000.png" alt="Wallet"> </div>
       <span id="balance">৳0.00</span>
     </div>
 
+    <!-- Methods -->
+    <div class="section-title">Select Payment Method</div>
     <div class="methods">
       <div class="method" onclick="selectMethod('bkash')" id="bkash">
-        <img src="https://i.postimg.cc/qMFt2YT3/images-1-4.png" alt="bKash">
+        <img src="https://i.postimg.cc/FR2V5JbL/bkash.png" alt="bKash">
         <div>bKash</div>
       </div>
       <div class="method" onclick="selectMethod('nagad')" id="nagad">
-        <img src="https://i.postimg.cc/7Zp2rRtk/images-1-5.png" alt="Nagad">
+        <img src="https://i.postimg.cc/ht0PWb05/nagad.png" alt="Nagad">
         <div>Nagad</div>
       </div>
       <div class="method" onclick="selectMethod('rocket')" id="rocket">
-        <img src="https://uploads.onecompiler.io/43ea4pg72/43eq73f47/download%20(6).png" alt="Rocket">
+        <img src="https://i.postimg.cc/ZK8JpF22/rsz-rocket.png" alt="Rocket">
         <div>Rocket</div>
       </div>
       <div class="method" onclick="selectMethod('upay')" id="upay">
-        <img src="https://uploads.onecompiler.io/43ea4pg72/43eq73f47/download%20(5).png" alt="Upay">
+        <img src="https://i.postimg.cc/GhDGwNVD/Upay-Logo-PNG-HD-Image-1200x1200.png" alt="Upay">
         <div>Upay</div>
       </div>
     </div>
-<div class="amount-buttons">
-  <div class="offer-button">
-    <button onclick="setAmount(500)">৳500</button>
-    <span class="offer-badge">+10%</span>
-  </div>
-  <div class="offer-button">
-    <button onclick="setAmount(1000)">৳1K</button>
-    <span class="offer-badge">+20%</span>
-  </div>
-  <div class="offer-button">
-    <button onclick="setAmount(2500)">৳2.5K</button>
-    <span class="offer-badge">+30%</span>
-  </div>
-  <div class="offer-button">
-    <button onclick="setAmount(5000)">৳5K</button>
-    <span class="offer-badge">+20%</span>
-  </div>
-  <div class="offer-button">
-    <button onclick="setAmount(10000)">৳10K</button>
-    <span class="offer-badge">+20%</span>
-  </div>
-  <div class="offer-button">
-    <button onclick="setAmount(20000)">৳20K</button>
-    <span class="offer-badge">+20%</span>
-  </div>
-</div>
 
-    <div class="input-box">
-      <label for="amount">Enter Deposit Amount (৳500 – ৳20 000)</label>
-      <input type="number" id="amount" placeholder="৳ Amount" min="500" max="20000">
+    <!-- Quick Amounts -->
+    <div class="section-title">Select Deposit Amount</div>
+    <div class="amount-buttons">
+      <div class="offer-button"><button onclick="setAmount(500)">৳500</button><span class="offer-badge">+10%</span></div>
+      <div class="offer-button"><button onclick="setAmount(1000)">৳1K</button><span class="offer-badge">+20%</span></div>
+      <div class="offer-button"><button onclick="setAmount(2500)">৳2.5K</button><span class="offer-badge">+30%</span></div>
+      <div class="offer-button"><button onclick="setAmount(5000)">৳5K</button><span class="offer-badge">+20%</span></div>
+      <div class="offer-button"><button onclick="setAmount(10000)">৳10K</button><span class="offer-badge">+20%</span></div>
+      <div class="offer-button"><button onclick="setAmount(20000)">৳20K</button><span class="offer-badge">+20%</span></div>
     </div>
 
-    <button class="btn" onclick="proceedDeposit()">
-      <span class="material-icons-outlined">send</span> Proceed to Deposit
+    <!-- Amount Input -->
+    <div class="input-box">
+      <label for="amount">Enter Custom Deposit Amount (৳500 – ৳20 000)</label>
+      <input type="number" id="amount" placeholder="৳ Amount" min="500" max="20000" oninput="validateForm()">
+    </div>
+
+    <!-- Proceed Button -->
+    <button class="btn" id="depositBtn" onclick="proceedDeposit()" disabled>
+      <img src="https://i.postimg.cc/Qt3mz7j6/apply.png" alt="Send"> Proceed to Deposit
     </button>
-      <img src="https://i.postimg.cc/qq2ps5BD/20250624-194442.jpg" class="footer-img" alt="Payment Illustration" />
-  </div>
+
+    <!-- Footer Image -->
+    <img src="https://i.postimg.cc/qq2ps5BD/20250624-194442.jpg" class="footer-img" alt="Payment Illustration" />
+
+    <!-- Notes -->
     <div class="note">
       <ul>
         <li>Minimum deposit ৳500, maximum ৳20,000.</li>
@@ -170,8 +294,7 @@
         <li>Do not cancel after payment is made.</li>
       </ul>
     </div>
-
-    
+  </div>
 
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
@@ -197,32 +320,55 @@
       if (user) {
         const uid = user.uid;
         const balanceRef = ref(db, `users/${uid}/balance`);
-        get(balanceRef)
-          .then((snapshot) => {
-            if (snapshot.exists()) {
-              const balance = snapshot.val();
-              document.getElementById("balance").innerText = `৳${parseFloat(balance || 0).toFixed(2)}`;
-            }
-          })
-          .catch(console.error);
-      } else {
-        console.log("User not logged in.");
+        get(balanceRef).then((snapshot) => {
+          if (snapshot.exists()) {
+            const balance = snapshot.val();
+            document.getElementById("balance").innerText = `৳${parseFloat(balance || 0).toFixed(2)}`;
+          }
+        }).catch(console.error);
       }
     });
 
     let selectedMethod = "";
+    const container = document.getElementById("mainContainer");
+
+    function updateButtonState() {
+      const amount = parseInt(document.getElementById("amount").value, 10);
+      const btn = document.getElementById("depositBtn");
+      if (selectedMethod && amount >= 500 && amount <= 20000) {
+        btn.disabled = false;
+        btn.classList.add("enabled");
+      } else {
+        btn.disabled = true;
+        btn.classList.remove("enabled");
+      }
+    }
+
     window.selectMethod = (method) => {
       ["bkash","nagad","rocket","upay"].forEach(id => document.getElementById(id).classList.remove("active"));
       selectedMethod = method;
       document.getElementById(method).classList.add("active");
+
+      // Background theme change
+      container.classList.remove("theme-bkash","theme-nagad","theme-rocket","theme-upay");
+      if (method === "bkash") container.classList.add("theme-bkash");
+      if (method === "nagad") container.classList.add("theme-nagad");
+      if (method === "rocket") container.classList.add("theme-rocket");
+      if (method === "upay") container.classList.add("theme-upay");
+
+      updateButtonState();
     };
 
-    window.setAmount = amount => document.getElementById("amount").value = amount;
+    window.setAmount = amount => {
+      document.getElementById("amount").value = amount;
+      updateButtonState();
+    };
+
+    window.validateForm = () => updateButtonState();
 
     window.proceedDeposit = () => {
       const amount = parseInt(document.getElementById("amount").value, 10);
-      if (!selectedMethod) return alert("Please select a payment method.");
-      if (!amount || amount < 500 || amount > 20000) return alert("Please enter an amount between ৳500 and ৳20000.");
+      if (!selectedMethod || !amount) return;
       localStorage.setItem("depositAmount", amount);
       window.location.href = `${selectedMethod}.html`;
     };
