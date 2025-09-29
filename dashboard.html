@@ -717,6 +717,91 @@ db.ref('popup').on('value', snapshot => {
     document.getElementById('trustbd-msg').style.display = 'block';
     }
     </script>
+      <!-- Income Journey Widget -->
+<div id="income-journey-widget">
+    <img src="https://i.postimg.cc/Fsdg2FJ3/20250929-102136.jpg" alt="Income Journey" class="ij-img">
+    <p class="ij-text">Start your income journey by buying packages and earn a lot more.</p>
+    <button class="ij-btn" onclick="window.location.href='package.html'">
+        <span class="material-icons ij-icon">shopping_cart</span>
+        Purchase A Package
+    </button>
+</div>
+
+<!-- Google Fonts & Material Icons -->
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+<style>
+    /* Scoped widget CSS */
+    #income-journey-widget {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        padding: 15px;
+        background: transparent;
+        font-family: 'Roboto', sans-serif;
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    #income-journey-widget .ij-img {
+        max-width: 100%;
+        height: auto;
+        border-radius: 12px;
+        margin-bottom: 15px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    }
+
+    #income-journey-widget .ij-text {
+        font-size: 1rem;
+        color: #333;
+        margin-bottom: 20px;
+        line-height: 1.5;
+    }
+
+    #income-journey-widget .ij-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        background: linear-gradient(135deg, #ff7e5f, #feb47b);
+        color: #fff;
+        border: none;
+        padding: 12px 25px;
+        border-radius: 10px;
+        font-size: 1rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    #income-journey-widget .ij-btn:hover {
+        transform: scale(1.05);
+        box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+    }
+
+    #income-journey-widget .ij-icon {
+        font-size: 20px;
+    }
+
+    /* Responsive for smaller screens */
+    @media (max-width: 480px) {
+        #income-journey-widget .ij-text {
+            font-size: 0.9rem;
+        }
+
+        #income-journey-widget .ij-btn {
+            width: 80%;
+            padding: 10px 0;
+            font-size: 0.95rem;
+        }
+
+        #income-journey-widget .ij-icon {
+            font-size: 18px;
+        }
+    }
+</style>
     <!-- TRUST-BD CLAIM BONUS WIDGET END -->
     <div style="all: initial;">
     <style>
